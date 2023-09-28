@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Eagle_Defender",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Eagle_Defender::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Eagle_Defender-Debug-24e5a2a99f04dd40fd9b.json",
+					"name" : "Eagle_Defender",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/maest/OneDrive/Documents/1. TEC/II Semestre - 2023/Modelado/proyecto/PROYECTO SERIO/Eagle_Defender/cmake-build-debug",
+		"source" : "C:/Users/maest/OneDrive/Documents/1. TEC/II Semestre - 2023/Modelado/proyecto/PROYECTO SERIO/Eagle_Defender"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}
