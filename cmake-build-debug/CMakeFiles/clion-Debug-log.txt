@@ -1,4 +1,0 @@
-C:\Users\maest\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\231.9161.40\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/maest/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/231.9161.40/bin/ninja/win/x64/ninja.exe -G Ninja -S "C:\Users\maest\OneDrive\Documents\1. TEC\II Semestre - 2023\Modelado\proyecto\PROYECTO SERIO\Eagle_Defender" -B "C:\Users\maest\OneDrive\Documents\1. TEC\II Semestre - 2023\Modelado\proyecto\PROYECTO SERIO\Eagle_Defender\cmake-build-debug"
--- Configuring done
--- Generating done
--- Build files have been written to: C:/Users/maest/OneDrive/Documents/1. TEC/II Semestre - 2023/Modelado/proyecto/PROYECTO SERIO/Eagle_Defender/cmake-build-debug
