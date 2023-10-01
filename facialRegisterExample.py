@@ -46,7 +46,8 @@ def registrar_usuario():
 def facialRegister():
     userReg = usuario.get()
     datapath = os.getcwd() + "\Data"
-    personPath = datapath + "\\"+ userReg
+    personPath = datapath + "\\"+ userReg + "\\Images"
+
     if not os.path.exists(personPath):
         print('FOLDER CREATED:' ,personPath)
         os.makedirs(personPath)
@@ -158,7 +159,6 @@ def normalLogin():
 # Description: Logins a user using the facial recognizor
 # Output: A String that confirms if the user is logged or not
 def facialLogin():
-
     cap = cv2.VideoCapture(0)  # Choose the camera for face detection
     while (True):
         ret, frame = cap.read()  # Read the video
@@ -167,8 +167,8 @@ def facialLogin():
             break
     usuario_loginFac = userVerification.get()   # Save the photo with a different name to avoid overwriting
     datapath = os.getcwd() + "\Data"
-    personPath = datapath + "\\" + usuario_loginFac
-    rostroPath = datapath + "\\" + usuario_loginFac + "\\rostro"
+    personPath = datapath + "\\" + usuario_loginFac + "\\Images"
+    rostroPath = datapath + "\\" + usuario_loginFac +"\\Images" + "\\rostro"
     #lista_archivos = os.listdir(personPath)
     cv2.imwrite(rostroPath + "LOG.jpg", frame)   # Save the last video frame as an image and assign the username as the name
     cap.release()   # Close the video capture
