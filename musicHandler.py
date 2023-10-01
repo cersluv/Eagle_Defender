@@ -9,6 +9,7 @@ API_KEY = 'AIzaSyDj1am7jSbTOzU9VS6xqOMmVr1lqzpxGZs'
 # Global variables for storing suggestions
 suggestions = []
 
+
 def search_youtube(query):
     try:
         search_url = f"https://www.googleapis.com/youtube/v3/search?key={API_KEY}&q={query}&maxResults=5&type=video"
@@ -28,6 +29,7 @@ def search_youtube(query):
         print("Error:", e)
         return None
 
+
 def update_suggestions():
     song_name = song_entry.get()
     if song_name:
@@ -41,6 +43,7 @@ def update_suggestions():
         else:
             suggestion_listbox.delete(0, tk.END)
             suggestion_listbox.insert(tk.END, "No suggestions found.")
+
 
 def download_audio():
     selected_index = suggestion_listbox.curselection()
