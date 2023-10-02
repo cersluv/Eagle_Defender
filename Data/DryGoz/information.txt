@@ -1,7 +1,10 @@
 password
+suscripción
 respuesta_pregunta#1
 respuesta_pregunta#2
 respuesta_pregunta#3
 respuesta_pregunta#4
 respuesta_pregunta#5
-suscripción
+cancion1
+cancion2
+cancion3
