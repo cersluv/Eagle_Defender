@@ -6,12 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="59554c66-ef53-4a42-ba49-21598c851126" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/2022 LCK 대기화면 브금 - All Your Love/2022 LCK 대기화면 브금 - All Your Love.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/Hardwired/Hardwired.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/If Darkness Had a Son/If Darkness Had a Son.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/Minecraft  Minero ft StarkinDJ Parodia de Torero de Chayanne/Minecraft - Minero ft StarkinDJ (Parodia de Torero de Chayanne).mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/DryGoz/configuration.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/DryGoz/configuration.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/DryGoz/information.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Data/DryGoz/information.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/musicHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicHandler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/registrationWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/registrationWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visuals/4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/visuals/5.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +49,7 @@
       <recent name="C:\Users\maest\OneDrive\Documents\1. TEC\II Semestre - 2023\Modelado\proyecto\PROYECTO SERIO\Eagle_Defender" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.registrationWindow (1)">
+  <component name="RunManager" selected="Python.musicHandler">
     <configuration name="musicHandler" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Eagle_Defender" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -118,8 +118,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.registrationWindow (1)" />
         <item itemvalue="Python.musicHandler" />
+        <item itemvalue="Python.registrationWindow (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -138,17 +138,28 @@
       <workItem from="1696111148705" duration="3256000" />
       <workItem from="1696114451554" duration="5413000" />
       <workItem from="1696137244261" duration="200000" />
-      <workItem from="1696173429038" duration="7253000" />
+      <workItem from="1696173429038" duration="29519000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Eagle_Defender$main.coverage" NAME="registrationWindow Coverage Results" MODIFIED="1696034322155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Eagle_Defender$registrationWindow.coverage" NAME="registrationWindow Coverage Results" MODIFIED="1696094462897" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Eagle_Defender$musicHandler.coverage" NAME="musicHandler Coverage Results" MODIFIED="1696180518563" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Eagle_Defender$registrationWindow__1_.coverage" NAME="registrationWindow (1) Coverage Results" MODIFIED="1696180553707" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Eagle_Defender$musicHandler.coverage" NAME="musicHandler Coverage Results" MODIFIED="1696207611071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Eagle_Defender$registrationWindow__1_.coverage" NAME="registrationWindow (1) Coverage Results" MODIFIED="1696207266683" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

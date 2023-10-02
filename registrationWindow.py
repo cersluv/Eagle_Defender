@@ -1,21 +1,21 @@
 import pygame
-import sys
 import tkinter as tk
 from tkinter import filedialog
 import tkinter.messagebox as tkMessageBox
 import os
 from googletrans import Translator
 import re
+import subprocess
 
 # Initialize pygame
 pygame.init()
+pygame.display.set_caption("Eagle Defender - Registration")
 
 # Constants
 width, height = 800, 600
 white = (255, 255, 255)
 font = pygame.font.Font(None, 36)
-
-target_language = 'en'
+target_language = 'es'
 
 # Set screen resolution
 screen_info = pygame.display.Info()
@@ -32,7 +32,7 @@ input_box_width = 300
 input_box_height = 32
 
 # Load your image
-image = pygame.image.load('visuals/4.png')
+image = pygame.image.load('visuals/imágenesEspañol/6.png')
 
 # Get the image's original dimensions
 original_width, original_height = image.get_size()
@@ -49,14 +49,34 @@ new_width = int(original_width * min_scale_factor)
 new_height = int(original_height * min_scale_factor)
 scaled_image = pygame.transform.scale(image, (new_width, new_height))
 
-pygame.display.set_caption("Eagle Defender - Registration")
-
 # Image upload
-uploadedImage = None
+uploadedImage = ""
 imagePreviewRect = pygame.Rect(center_x + 1175 // 2, center_y, 1000, 500)
-uploadButtonRect = pygame.Rect(center_x - input_box_width // 2, center_y + 340, input_box_width, input_box_height + 30)
-uploadButtonText = "Cargar Imagen!"
+uploadButtonRect = pygame.Rect(center_x - 500 // 2, center_y + 280, input_box_width + 200, input_box_height)
+uploadButtonText = ""
 maxImageSizeBytes = 300 * 1024 * 1024  # 300MB limit
+
+# Define a Next button rectangle
+nextButtonRect = pygame.Rect(center_x - 150, center_y + 440, 300, 50)
+nextButtonText = "Next"
+
+# Position the input boxes at the center
+inputBoxUsername = pygame.Rect(center_x - input_box_width // 2, center_y - 115, input_box_width, input_box_height)
+inputBoxPassword = pygame.Rect(center_x - input_box_width // 2, center_y + 50, input_box_width, input_box_height)
+inputConfirmPassword = pygame.Rect(center_x - input_box_width // 2, center_y + 200, input_box_width, input_box_height)
+
+colorActive = pygame.Color('#BD2927')
+colorUsername = colorPassword = colorInactive = pygame.Color('#FFD6D5')
+boxUsernameColor = pygame.Color('#FFD6D5')
+boxPasswordColor = pygame.Color('#FFD6D5')
+boxConfirmPasswordColor = pygame.Color('#FFD6D5')
+textUsername = ''
+textPassword = ''
+textConfirmPassword = ''
+fileExtension = ''
+activeUsername = False
+activePassword = False
+activeConfirmPassword = False
 
 """
 input: text (str), x coord (int), y coord (int)
@@ -177,45 +197,53 @@ def translate_text(text, target_language):
         return text  # Return the original text in case of an error
 
 
-# Define a Next button rectangle
-nextButtonRect = pygame.Rect(center_x - 150, center_y + 440, 300, 50)
-nextButtonText = "Next"
+"""
+input: None
+summary: saves Information for future logins
+outputs: None
+"""
 
-# Position the input boxes at the center
-inputBoxUsername = pygame.Rect(center_x - input_box_width // 2, center_y - 115, input_box_width, input_box_height)
-inputBoxPassword = pygame.Rect(center_x - input_box_width // 2, center_y + 50, input_box_width, input_box_height)
-inputConfirmPassword = pygame.Rect(center_x - input_box_width // 2, center_y + 200, input_box_width, input_box_height)
 
-colorUsername = colorPassword = pygame.Color('#FFD6D5')
-font = pygame.font.Font(None, 32)
-textUsername = ''
-textPassword = ''
-textConfirmPassword = ''
-activeUsername = False
-activePassword = False
-activeConfirmPassword = False
+def saveInformation():
+    mainDir = f"Data/{textUsername}/"
+    os.makedirs(os.path.dirname(f"{mainDir}Images/"), exist_ok=True)
+    file_path = "Data/" + textUsername + "/information.txt"
+    with open(file_path, "w") as file:
+        file.write(textPassword + "\n")
+    with open("Data/tempUser.txt", "w") as tempFile:
+        tempFile.write(f"{textUsername}")
+
+    pygame.image.save(uploadedImage, f"{mainDir}Images/icon{file_extension}")
+
 
 clock = pygame.time.Clock()
-
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # Check if username or password input boxes were clicked
+            # Check if username were clicked
             if inputBoxUsername.collidepoint(event.pos):
                 activeUsername = not activeUsername
+                boxUsernameColor = colorActive
             else:
                 activeUsername = False
+                boxUsernameColor = colorInactive
+            # Check if passwod were clicked
             if inputBoxPassword.collidepoint(event.pos):
                 activePassword = not activePassword
+                boxPasswordColor = colorActive
             else:
                 activePassword = False
+                boxPasswordColor = colorInactive
+            # Check if confirmPassword were clicked
             if inputConfirmPassword.collidepoint(event.pos):
                 activeConfirmPassword = not activeConfirmPassword
+                boxConfirmPasswordColor = colorActive
             else:
                 activeConfirmPassword = False
+                boxConfirmPasswordColor = colorInactive
             # Check if the upload button was clicked
             if uploadButtonRect.collidepoint(event.pos):
                 root = tk.Tk()
@@ -228,6 +256,7 @@ while running:
                 )
                 root.destroy()  # Destroy the tkinter window
                 if fileDialog:
+                    file_extension = os.path.splitext(fileDialog)[1]
                     # Check the size of the selected image
                     if os.path.getsize(fileDialog) <= maxImageSizeBytes:
                         # Load the image and display it in the preview area
@@ -243,12 +272,15 @@ while running:
                     # Passwords do not match, display a pop-up error message
                     error_message = translate_text(passwordVerification(textPassword), target_language)
                     tkMessageBox.showerror("Error", error_message)
-                if usernameVerification(textUsername) != "":
+                elif usernameVerification(textUsername) != "":
                     error_message = translate_text(usernameVerification(textUsername), target_language)
                     tkMessageBox.showerror("Error", error_message)
-
-
-
+                elif uploadedImage == "":
+                    error_message = translate_text("Es necesario cargar una imagen para continuar", target_language)
+                    tkMessageBox.showerror("Error", error_message)
+                else:
+                    saveInformation()
+                    running = False
 
         if event.type == pygame.KEYDOWN:
             if activeUsername:
@@ -293,12 +325,9 @@ while running:
     updateImagePreview()
 
     # Draw the border around the input boxes
-    pygame.draw.rect(window, '#FFD6D5', inputBoxUsername, 2)
-    pygame.draw.rect(window, '#FFD6D5', inputBoxPassword, 2)
-    pygame.draw.rect(window, '#FFD6D5', inputConfirmPassword, 2)
-
-    pygame.display.flip()
-    clock.tick(30)
+    pygame.draw.rect(window, boxUsernameColor, inputBoxUsername, 2)
+    pygame.draw.rect(window, boxPasswordColor, inputBoxPassword, 2)
+    pygame.draw.rect(window, boxConfirmPasswordColor, inputConfirmPassword, 2)
 
     # Render the text input fields
     txtSurfaceUsername = font.render(textUsername, True, colorUsername)
@@ -312,6 +341,6 @@ while running:
     pygame.display.flip()
     clock.tick(30)
 
-# Quit pygame
 pygame.quit()
-sys.exit()
+
+subprocess.run(["python", "MusicHandler.py"])
