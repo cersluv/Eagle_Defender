@@ -1,3 +1,3 @@
 paleta
-canción_seleccionada
+path a canción_seleccionada
 efecto_especial
