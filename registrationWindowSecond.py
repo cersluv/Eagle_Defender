@@ -9,6 +9,8 @@ import numpy as np
 import tensorflow
 import requests
 from googletrans import Translator
+from customSettings import startCustomSettings
+
 
 # Replace 'YOUR_API_KEY' with your actual YouTube API key
 apiKey = 'AIzaSyDj1am7jSbTOzU9VS6xqOMmVr1lqzpxGZs'
@@ -64,7 +66,7 @@ def saveInformation():
         file.write(q4.get() + "\n")
         file.write(q5.get() + "\n")
 
-    os.remove("Data/tempUser.txt")
+    #os.remove("Data/tempUser.txt")
 
 """
 Input: text, target language code
@@ -103,6 +105,12 @@ def onClick(event):
                 if not boolImageRec:
                     print("Click detected within the specified region!")
                     saveInformation()
+                    with open("Data/tempUser.txt", "r") as tempFile1:
+                        textUsername = tempFile1.readline()
+                        language = tempFile1.readline()
+                    targetLanguage1 = language.rstrip('\n')
+                    cleanTextUsername = textUsername.rstrip('\n')
+                    startCustomSettings(cleanTextUsername, targetLanguage1)
                 else:
                     error_message = translateText("Es seleccionar una opción de biométrica", targetLanguage)
                     tkMessageBox.showerror("Error", error_message)

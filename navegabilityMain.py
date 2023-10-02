@@ -11,7 +11,8 @@ from matplotlib import pyplot
 from mtcnn.mtcnn import MTCNN
 import numpy as np
 import tensorflow
-
+from baseLogin import startBaseLogin
+from registrationWindow import startRegistrationWindow
 
 
 pygame.init()
@@ -226,13 +227,13 @@ while running:
 
                 if changeLanguage != 2:
                     if faceRect.collidepoint(event.pos):
-                        print("Reconocimiento facial")
-
-                    if userRect.collidepoint(event.pos):
                         login()
 
+                    if userRect.collidepoint(event.pos):
+                        startBaseLogin(language[changeLanguage])
+
                     if registerRect.collidepoint(event.pos):
-                        print("Enviar a registro")
+                        startRegistrationWindow(language[changeLanguage])
 
 
 

@@ -333,4 +333,4 @@ def startRegistrationWindow(targetLanguage):
     subprocess.run(["python", "registrationWindowSecond.py"])
 
 
-startRegistrationWindow("en")
+#startRegistrationWindow("en")

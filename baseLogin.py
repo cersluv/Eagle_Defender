@@ -3,7 +3,9 @@ import sys
 import tkinter.messagebox as tkMessageBox
 from googletrans import Translator
 import loginConfig
-import questionLogin
+from questionLogin import startQuestionLogin
+from customSettings import startCustomSettings
+
 
 def startBaseLogin(language):
     # Initialize pygame
@@ -120,7 +122,7 @@ def startBaseLogin(language):
                 if nextButtonRect.collidepoint(event.pos):
                     try:
                         if questionCounter > 2:
-                            tkMessageBox.showerror(":/", "mongolo, llame a Dios, use preguntas") #acá se llama la pestaña questionLogin
+                            startQuestionLogin(activeUsername, language)
 
                         elif loginConfig.baseLogin(textUsername, textPassword) == False:
                             # Passwords do not match, display a pop-up error message
@@ -128,7 +130,7 @@ def startBaseLogin(language):
                             error_message = translate_text("Contraseña Incorrecta", target_language)
                             tkMessageBox.showerror("Error", error_message)
                         else:
-                            tkMessageBox.showerror(":D", "Acá va lo de Felipe")
+                            startCustomSettings(activeUsername, language)
                     except(FileNotFoundError):
                         tkMessageBox.showerror(":D", "usuario no encontrado")
                     except():

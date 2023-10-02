@@ -11,7 +11,16 @@ input: user (str), songList (list), language (str)
 summary: It starts the custom settings window, with the user that has logged in before
 output: None
 """
-def startCustomSettings(user, songList, language):
+def startCustomSettings(user, language):
+
+    datapath = os.getcwd() + "\Data"
+    personPath = datapath + "\\" + user
+    musicPath = personPath + "\Music"
+    musicList = os.listdir(musicPath)
+    songList = []
+    for x in musicList:
+        y = x.replace(".mp3", "")
+        songList.append(y)
     pygame.init()
 
     # Constants
@@ -217,4 +226,3 @@ def startCustomSettings(user, songList, language):
     pygame.quit()
     sys.exit()
 
-startCustomSettings("Felipe", ["7 Lágrimas", "Volando Remix", "Amapolas"], "es")
