@@ -10,7 +10,7 @@ import tensorflow
 import requests
 from googletrans import Translator
 from customSettings import startCustomSettings
-
+from loginConfig import registerConfiguration
 
 # Replace 'YOUR_API_KEY' with your actual YouTube API key
 apiKey = 'AIzaSyDj1am7jSbTOzU9VS6xqOMmVr1lqzpxGZs'
@@ -66,13 +66,16 @@ def saveInformation():
         file.write(q4.get() + "\n")
         file.write(q5.get() + "\n")
 
-    #os.remove("Data/tempUser.txt")
+    os.remove("Data/tempUser.txt")
+    window.destroy()
+
 
 """
 Input: text, target language code
 Summary: Function to translate a given text using Google Translate
 Output: text translated
 """
+
 
 def translateText(text, targetLanguage):
     translator = Translator()
@@ -86,6 +89,12 @@ def translateText(text, targetLanguage):
 
 def onClick(event):
     global boolImageRec
+    with open("Data/tempUser.txt", "r") as tempFile1:
+        textUsername = tempFile1.readline()
+        language = tempFile1.readline()
+    targetLanguage1 = language.rstrip('\n')
+    cleanTextUsername = textUsername.rstrip('\n')
+
     # Define the region coordinates and dimensions
     x1, y1, x2, y2 = 870, 970, 1066, 1039
 
@@ -105,20 +114,16 @@ def onClick(event):
                 if not boolImageRec:
                     print("Click detected within the specified region!")
                     saveInformation()
-                    with open("Data/tempUser.txt", "r") as tempFile1:
-                        textUsername = tempFile1.readline()
-                        language = tempFile1.readline()
-                    targetLanguage1 = language.rstrip('\n')
-                    cleanTextUsername = textUsername.rstrip('\n')
+                    registerConfiguration(cleanTextUsername)
                     startCustomSettings(cleanTextUsername, targetLanguage1)
                 else:
-                    error_message = translateText("Es seleccionar una opción de biométrica", targetLanguage)
+                    error_message = translateText("Es necesario seleccionar una opción de biométrica", targetLanguage1)
                     tkMessageBox.showerror("Error", error_message)
             else:
-                error_message = translateText("Es necesario escoger 3 canciones", targetLanguage)
+                error_message = translateText("Es necesario escoger 3 canciones", targetLanguage1)
                 tkMessageBox.showerror("Error", error_message)
         else:
-            error_message = translateText("Es necesario que todas las preguntas seasn respondidas", targetLanguage)
+            error_message = translateText("Es necesario que todas las preguntas seasn respondidas", targetLanguage1)
             tkMessageBox.showerror("Error", error_message)
 
     if x11 <= clickX <= x22 and y11 <= clickY <= y22:
@@ -146,6 +151,10 @@ def update_suggestions():
 def download_audio():
     global songCount
     selectecIndex = suggestionListbox.curselection()
+    with open("Data/tempUser.txt", "r") as tempFile1:
+        textUsername = tempFile1.readline()
+        language = tempFile1.readline()
+    targetLanguage1 = language.rstrip('\n')
     if selectecIndex:
         selectedTitle = suggestionListbox.get(selectecIndex)
         for url in suggestions:
@@ -153,38 +162,38 @@ def download_audio():
             if yt.title == selectedTitle:
                 try:
                     print(songCount)
-                    translator = Translator()
                     if songCount == 0:
                         songCount += 1
                         song1.config(text=selectedTitle)
                         downloadYtVideo(yt, selectedTitle)
-                        translated = translator.translate("Primera canción descargada", dest=targetLanguage)
-                        statusLabel.config(text=translated)
+                        message = translateText("Primera canción descargada", targetLanguage1)
+                        statusLabel.config(text=message)
 
                     elif songCount == 1:
                         songCount += 1
                         song2.config(text=selectedTitle)
                         downloadYtVideo(yt, selectedTitle)
-                        translated = translator.translate("Segunda canción descargada", dest=targetLanguage)
-                        statusLabel.config(text=translated)
+                        message = translateText("Segunda canción descargada", targetLanguage1)
+                        statusLabel.config(text=message)
 
                     elif songCount == 2:
                         songCount += 1
                         song3.config(text=selectedTitle)
                         downloadYtVideo(yt, selectedTitle)
-                        translated = translator.translate("Tercera canción descargada", dest=targetLanguage)
-                        statusLabel.config(text=translated)
+                        message = translateText("Tercera canción descargada", targetLanguage1)
+                        statusLabel.config(text=message)
                         # os.remove("Data/tempUser.txt")
 
                     else:
-                        translated = translator.translate("No se aceptan más canciones", dest=targetLanguage)
-                        statusLabel.config(text=translated)
+                        message = translateText("No se aceptan más canciones", targetLanguage1)
+                        statusLabel.config(text=message)
 
                 except Exception as e:
                     statusLabel.config(text="Error: " + str(e))
                 break
     else:
-        statusLabel.config(text="Please select a suggestion.")
+        message = translateText("Please select a suggestion", targetLanguage1)
+        statusLabel.config(text=message)
 
 
 def downloadYtVideo(yt, selected_title):
@@ -192,7 +201,6 @@ def downloadYtVideo(yt, selected_title):
     with open("Data/tempUser.txt", "r") as tempFile:
         textUsername = tempFile.readline()
         cleanTextUsername = textUsername.rstrip('\n')
-
 
     outputPath = f"Data/{cleanTextUsername}/Music/"
     os.makedirs(os.path.dirname(outputPath), exist_ok=True)
@@ -236,7 +244,7 @@ def facialRegister():
             pyplot.axis('off')
             caraReg = data[y1:y2, x1:x2]
             caraReg = cv2.resize(caraReg, (150, 200),
-                                  interpolation=cv2.INTER_CUBIC)  # Guardamos la imagen con un tamaño de 150x200
+                                 interpolation=cv2.INTER_CUBIC)  # Guardamos la imagen con un tamaño de 150x200
             cv2.imwrite(userReg + ".jpg", caraReg)
             pyplot.imshow(data[y1:y2, x1:x2])
         pyplot.show()
@@ -272,7 +280,6 @@ window.bind("<Button-1>", onClick)
 screen_width = window.winfo_screenwidth()
 screen_height = window.winfo_screenheight()
 window.geometry(f"{screen_width}x{screen_height}")
-
 # Create and pack widgets
 frame = tk.Frame(window)
 frame.pack(padx=20, pady=20)
@@ -300,7 +307,7 @@ download_button = tk.Button(frame, text="Download Audio", command=download_audio
 download_button.config(borderwidth=8)
 download_button.pack()
 
-statusLabel = tk.Label(frame, text="", bg="#121212", fg="#FF6C69", font=("Arial", 5))
+statusLabel = tk.Label(frame, text="", bg="#121212", fg="#FF6C69", font=("Arial", 10))
 
 statusLabel.pack()
 

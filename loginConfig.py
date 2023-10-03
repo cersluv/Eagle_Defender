@@ -2,7 +2,13 @@ import os
 
 questions = ["¿En cuál país le gustaria vivir?", "¿Cuál es su libro favorito?", "¿Cuál es su animal favorito?", "¿Cuál es su juego de mesa favorito?", "¿Cuál es su pelicula favorita?"]
 
-# Input      : The User Name and the password
+"""
+   input: text, Language code
+   summary: uses Google Translate to translate a given text
+   outputs: translated language
+   """
+
+# Input      : The Username and the password
 # Description: Login funtion, using the password.
 # Output     : True, if the passwords match. False, if there´s no registered username, or if the password it´s wrong
 def baseLogin(userInfo, passwordInfo):
@@ -10,9 +16,11 @@ def baseLogin(userInfo, passwordInfo):
     personPath = datapath + "\\" + userInfo
     infoPath = personPath + "\\information.txt"
     lista_archivos = os.listdir(personPath)
-    if 'Information.txt' in lista_archivos:
+    if 'information.txt' in lista_archivos:
         archivo2 = open(infoPath, "r")
         verification = archivo2.read().splitlines()
+        print(verification)
+        print(passwordInfo)
         if passwordInfo in verification:
             print("Inicio de sesion exitoso")
             return True # everything´s fine
@@ -32,7 +40,7 @@ def questionsLogin(Q1, Q2, user):
     personPath = datapath + "\\" + user
     infoPath = personPath + "\\information.txt"
     lista_archivos = os.listdir(personPath)
-    if 'Information.txt' in lista_archivos:
+    if 'information.txt' in lista_archivos:
         archivo2 = open(infoPath, "r")
         verification = archivo2.read().splitlines()
         if Q1 in verification and Q2 in verification:
@@ -49,12 +57,13 @@ def questionsLogin(Q1, Q2, user):
 # Input      : The color palet, the selected song, special effect and the user
 # Description: The funtion to register and create the configuration file
 # Output     : The created and updated file
-def registerConfiguration(colorPalet, selectedSong, specialEffect, user):
+def registerConfiguration(user):
     datapath = os.getcwd() + "\Data"
     personPath = datapath + "\\" + user
     configPath = personPath + "\\configuration.txt"
     archivo = open(configPath, "w")
-    archivo.write("Palette1" + "\n")
+    archivo.write("." + "\n")
+    archivo.write("." + "\n")
     archivo.write("." + "\n")
     archivo.write("." + "\n")
     archivo.close()

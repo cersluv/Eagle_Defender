@@ -100,16 +100,6 @@ def startRegistrationWindow(targetLanguage):
 
     """
     Input: None
-    Summary: draws the Upload Button
-    Output: None
-    """
-
-    def drawUploadButton():
-        pygame.draw.rect(window, (0, 128, 255), uploadButtonRect, 0)
-        drawText(uploadButtonText, uploadButtonRect.x + 10, uploadButtonRect.y + 5)
-
-    """
-    Input: None
     Summary: Function to update and display the uploaded image preview on the screen
     Output: None
     """
@@ -126,7 +116,7 @@ def startRegistrationWindow(targetLanguage):
 
     def usernameVerification(text):
         if len(text) < 5:
-            return "Nombre de usuario tiene que ser de al menos 5 caracteres de largo"
+            return str("Nombre de usuario tiene que ser de al menos 5 caracteres de largo")
 
         hasLetters = False
         hasNumbers = False
@@ -140,7 +130,7 @@ def startRegistrationWindow(targetLanguage):
             if hasLetters and hasNumbers:
                 return ""
 
-        return "Nombre de usuario tiene que contener al menos 1 letra y 1 número"
+        return str("Nombre de usuario tiene que contener al menos 1 letra y 1 número")
 
     """
     Input: text
@@ -150,22 +140,22 @@ def startRegistrationWindow(targetLanguage):
 
     def passwordVerification(password):
         if len(password) < 8:
-            return "Contraseña tiene que ser de al menos 8 caracteres de largo"
+            return str("Contraseña tiene que ser de al menos 8 caracteres de largo")
 
         if not re.search(r'[A-Z]', password):
-            return "Contraseña tiene contener al menos 1 letra mayúscula"
+            return str("Contraseña tiene contener al menos 1 letra mayúscula")
 
         if not re.search(r'[a-z]', password):
-            return "Contraseña tiene contener al menos 1 letra minúscula"
+            return str("Contraseña tiene contener al menos 1 letra minúscula")
 
         if not re.search(r'[^a-zA-Z0-9]', password):
-            return "Contraseña tiene contener al menos 1 número y 1 letra especial: [!¡@#$%^&*?¿]"
+            return str("Contraseña tiene contener al menos 1 número y 1 letra especial: [!¡@#$%^&*?¿]")
 
         if textUsername in password:
-            return "Contraseña NO puede contener el nombre de usuario"
+            return str("Contraseña NO puede contener el nombre de usuario")
 
         if textPassword != textConfirmPassword:
-            return "Passwords do not match. Please re-enter."
+            return str("Passwords do not match. Please re-enter.")
 
         return ""
 
@@ -250,19 +240,22 @@ def startRegistrationWindow(targetLanguage):
                             uploadedImage = pygame.image.load(fileDialog)
                             uploadedImage = pygame.transform.scale(uploadedImage, (300, 300))
                         else:
-                            error_message = translateText(
+                            errorMessage = translateText(
                                 "Image size exceeds the limit (300MB). Please select a smaller image.", targetLanguage)
-                            tkMessageBox.showerror("Error", error_message)
+                            tkMessageBox.showerror("Error", errorMessage)
                 if nextButtonRect.collidepoint(event.pos):
                     if passwordVerification(textPassword) != "":
-                        error_message = translateText(passwordVerification(textPassword), targetLanguage)
-                        tkMessageBox.showerror("Error", error_message)
+                        errorMessage = translateText(passwordVerification(textPassword), targetLanguage)
+                        tkMessageBox.showerror("Error", errorMessage)
+
                     elif usernameVerification(textUsername) != "":
-                        error_message = translateText(usernameVerification(textUsername), targetLanguage)
-                        tkMessageBox.showerror("Error", error_message)
+                        errorMessage = translateText(usernameVerification(textUsername), targetLanguage)
+                        tkMessageBox.showerror("Error", errorMessage)
+
                     elif uploadedImage == "":
-                        error_message = translateText("Es necesario cargar una imagen para continuar", targetLanguage)
-                        tkMessageBox.showerror("Error", error_message)
+                        errorMessage = translateText("Es necesario cargar una imagen para continuar", targetLanguage)
+                        tkMessageBox.showerror("Error", errorMessage)
+
                     else:
                         saveInformation()
                         running = False
