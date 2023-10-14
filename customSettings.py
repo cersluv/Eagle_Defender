@@ -1,10 +1,6 @@
 import pygame
 import sys
-import tkinter as tk
-from tkinter import filedialog
-import tkinter.messagebox as tkMessageBox
 import os
-from googletrans import Translator
 from loginConfig import configColorPalet, configSpecialEffect, configChangeSelectedSong
 """
 input: user (str), songList (list), language (str)
@@ -69,25 +65,40 @@ def startCustomSettings(user, language):
     scaledImage = pygame.transform.scale(backgroundSettings, (newWidth, newHeigth))
 
     # Rectangles for every button in this window
-    colorsRect = pygame.Rect(320, 320, 440, 250)
-    effectsRect = pygame.Rect(1160, 320, 440, 250)
-    musicRect = pygame.Rect(320, 695, 440, 250)
-    textureRect = pygame.Rect(1160, 695, 440, 250)
+    colorsRect = pygame.Rect(320 * scaleFactorWidth, 320 * scaleFactorHeigth, 440 * scaleFactorWidth,
+                             250 * scaleFactorHeigth)
+    effectsRect = pygame.Rect(1160 * scaleFactorWidth, 320 * scaleFactorHeigth, 440 * scaleFactorWidth,
+                              250 * scaleFactorHeigth)
+    musicRect = pygame.Rect(320 * scaleFactorWidth, 695 * scaleFactorHeigth, 440 * scaleFactorWidth,
+                            250 * scaleFactorHeigth)
+    textureRect = pygame.Rect(1160 * scaleFactorWidth, 695 * scaleFactorHeigth, 440 * scaleFactorWidth,
+                              250 * scaleFactorHeigth)
 
     # Rectangles for every palette
-    palette1 = pygame.Rect(260, 555, 190, 50)
-    palette2 = pygame.Rect(855, 555, 190, 50)
-    palette3 = pygame.Rect(1460, 555, 190, 50)
-    palette4 = pygame.Rect(550, 980, 190, 50)
-    palette5 = pygame.Rect(1160, 980, 190, 50)
+    palette1 = pygame.Rect(260 * scaleFactorWidth, 555 * scaleFactorHeigth, 190 * scaleFactorWidth,
+                           50 * scaleFactorHeigth)
+    palette2 = pygame.Rect(855 * scaleFactorWidth, 555 * scaleFactorHeigth, 190 * scaleFactorWidth,
+                           50 * scaleFactorHeigth)
+    palette3 = pygame.Rect(1460 * scaleFactorWidth, 555 * scaleFactorHeigth, 190 * scaleFactorWidth,
+                           50 * scaleFactorHeigth)
+    palette4 = pygame.Rect(550 * scaleFactorWidth, 980 * scaleFactorHeigth, 190 * scaleFactorWidth,
+                           50 * scaleFactorHeigth)
+    palette5 = pygame.Rect(1160 * scaleFactorWidth, 980 * scaleFactorHeigth, 190 * scaleFactorWidth,
+                           50 * scaleFactorHeigth)
 
-    # Rectangles in the music selection, also the coordinates of the text for every song
-    song1 = pygame.Rect(centerX - 205, centerY - 75, 410, 60)
-    fill1 = pygame.Rect(centerX - 200, centerY - 70, 400, 50)
-    song2 = pygame.Rect(centerX - 205, centerY + 65, 410, 60)
-    fill2 = pygame.Rect(centerX - 200, centerY + 70, 400, 50)
-    song3 = pygame.Rect(centerX - 205, centerY + 205, 410, 60)
-    fill3 = pygame.Rect(centerX - 200, centerY + 210, 400, 50)
+    # Rectangles in the soundEffects selection, also the coordinates of the text for every song
+    song1 = pygame.Rect(centerX - 205 * scaleFactorWidth, centerY - 75 * scaleFactorHeigth, 410 * scaleFactorWidth,
+                        60 * scaleFactorHeigth)
+    fill1 = pygame.Rect(centerX - 200 * scaleFactorWidth, centerY - 70 * scaleFactorHeigth, 400 * scaleFactorWidth,
+                        50 * scaleFactorHeigth)
+    song2 = pygame.Rect(centerX - 205 * scaleFactorWidth, centerY + 65 * scaleFactorHeigth, 410 * scaleFactorWidth,
+                        60 * scaleFactorHeigth)
+    fill2 = pygame.Rect(centerX - 200 * scaleFactorWidth, centerY + 70 * scaleFactorHeigth, 400 * scaleFactorWidth,
+                        50 * scaleFactorHeigth)
+    song3 = pygame.Rect(centerX - 205 * scaleFactorWidth, centerY + 205 * scaleFactorHeigth, 410 * scaleFactorWidth,
+                        60 * scaleFactorHeigth)
+    fill3 = pygame.Rect(centerX - 200 * scaleFactorWidth, centerY + 210 * scaleFactorHeigth, 400 * scaleFactorWidth,
+                        50 * scaleFactorHeigth)
 
     """
     Input: None

@@ -5,11 +5,15 @@ import cv2
 import pygame
 import sys
 import tkinter.messagebox as tkMessageBox
+
+from deepface import DeepFace
 from googletrans import Translator
 from matplotlib import pyplot
 from mtcnn import MTCNN
 
 import loginConfig
+import menu
+from musicHandler import musicPlayer, buttonSoundEffect
 from questionLogin import startQuestionLogin
 from customSettings import startCustomSettings
 from registrationWindow import startRegistrationWindow
@@ -27,9 +31,7 @@ def startBaseLogin(language):
         image = pygame.image.load('visuals/imágenesInglés/13.png')
 
     # Constants
-    width, height = 800, 600
-    white = (255, 255, 255)
-    font = pygame.font.Font(None, 36)
+
     target_language = language
 
     # Set screen resolution
@@ -52,6 +54,7 @@ def startBaseLogin(language):
     # Calculate the scaling factors to fit the image to the screen
     scaleFactorWidth = screenWidth / originalWidth
     scaleFactorHeight = screenHeight / originalHeight
+    print(f'{scaleFactorWidth} / {scaleFactorHeight}')
 
     # Choose the minimum scaling factor to maintain aspect ratio
     minScaleFactor = min(scaleFactorWidth, scaleFactorHeight)
@@ -63,6 +66,8 @@ def startBaseLogin(language):
     pygame.display.set_caption("Eagle Defender - Login")
 
     questionCounter = 0
+    colorActive = pygame.Color('#BD2927')
+    inputQ1Color = inputQ2Color = colorInactive = pygame.Color('#FFD6D5')
 
     """
     input: text, Language code
@@ -80,19 +85,23 @@ def startBaseLogin(language):
             return text  # Return the original text in case of an error
 
     # Define a Next button rectangle
-    nextButtonRect = pygame.Rect(centerX - inputBoxWidth // 0.405, centerY + 343, 300, 50)
+    nextButtonRect = pygame.Rect(220*scaleFactorWidth, 883*scaleFactorHeight, 300*scaleFactorWidth, 50*scaleFactorHeight)
+    print(f'{centerX - inputBoxWidth // 0.405} / {centerY + 343}')
     nextButtonText = ""
 
-    backButtonRect = pygame.Rect(centerX - inputBoxWidth // 0.405, centerY + 470, 300, 50)
+    backButtonRect = pygame.Rect(220*scaleFactorWidth, 1010*scaleFactorHeight, 300*scaleFactorWidth, 50*scaleFactorHeight)
+    print(f'{centerX - inputBoxWidth // 0.405} / {centerY + 470}')
+
     backButtonText = ""
 
     # Position the input boxes at the center
-    inputBoxUsername = pygame.Rect(centerX - inputBoxWidth // 0.405, centerY + 120, inputBoxWidth,
-                                   inputBoxHeight)
-    inputBoxPassword = pygame.Rect(centerX - inputBoxWidth // 0.405, centerY + 270, inputBoxWidth,
-                                   inputBoxHeight)
+    inputBoxUsername = pygame.Rect(220*scaleFactorWidth, 660*scaleFactorHeight, inputBoxWidth*scaleFactorWidth,
+                                   inputBoxHeight*scaleFactorHeight)
+    print(f'{centerX - inputBoxWidth // 0.405} / {centerY + 120}')
+    inputBoxPassword = pygame.Rect(220*scaleFactorWidth, 810*scaleFactorHeight, inputBoxWidth*scaleFactorWidth,
+                                   inputBoxHeight*scaleFactorHeight)
+    print(f'{centerX - inputBoxWidth // 0.405} / {centerY + 270}')
 
-    colorUsername = colorPassword = pygame.Color('#FFD6D5')
     font = pygame.font.Font(None, 32)
     textUsername = ''
     textPassword = ''
@@ -107,18 +116,25 @@ def startBaseLogin(language):
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
+                inputQ1Color = colorInactive
+                inputQ2Color = colorInactive
                 # Check if username or password input boxes were clicked
                 if inputBoxUsername.collidepoint(event.pos):
+                    inputQ1Color = colorActive
+                    inputQ2Color = colorInactive
                     activeUsername = not activeUsername
                 else:
                     activeUsername = False
                 if inputBoxPassword.collidepoint(event.pos):
                     activePassword = not activePassword
+                    inputQ1Color = colorInactive
+                    inputQ2Color = colorActive
                 else:
                     activePassword = False
 
                 # Check if the Next button was clicked
                 if nextButtonRect.collidepoint(event.pos):
+                    buttonSoundEffect()
                     try:
                         if questionCounter > 1:
                             startQuestionLogin(textUsername, language)
@@ -129,7 +145,7 @@ def startBaseLogin(language):
                             errorMessage = translate_text("Contraseña Incorrecta", target_language)
                             tkMessageBox.showerror("Error", errorMessage)
                         else:
-                            startCustomSettings(textUsername, language)
+                            menu.principalMenu(textUsername,language)
                     except(FileNotFoundError):
                         errorMessage = translate_text("Usuario no encontrado", target_language)
                         tkMessageBox.showerror("Error", errorMessage)
@@ -138,6 +154,7 @@ def startBaseLogin(language):
                         tkMessageBox.showerror("Error", errorMessage)
 
                 if backButtonRect.collidepoint(event.pos):
+                    buttonSoundEffect()
                     try:
                         startGame2()
                     except():
@@ -165,6 +182,7 @@ def startBaseLogin(language):
         # Clear the screen
         window.fill((0, 0, 0))
 
+
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeight - newHeight) // 2))
 
@@ -175,15 +193,15 @@ def startBaseLogin(language):
         # pygame.draw.rect(window, (0,128,255), backButtonRect, 0)
 
         # Draw the border around the input boxes
-        pygame.draw.rect(window, '#FFD6D5', inputBoxUsername, 2)
-        pygame.draw.rect(window, '#FFD6D5', inputBoxPassword, 2)
+        pygame.draw.rect(window, inputQ1Color, inputBoxUsername, 2)
+        pygame.draw.rect(window, inputQ2Color, inputBoxPassword, 2)
         pygame.display.flip()
         clock.tick(30)
 
         # Render the text input fields
-        txtSurfaceUsername = font.render(textUsername, True, colorUsername)
-        txtSurfacePassword = font.render("*" * len(textPassword), True, colorPassword)
-        txtSurfaceConfirmPassword = font.render("*" * len(textConfirmPassword), True, colorPassword)
+        txtSurfaceUsername = font.render(textUsername, True, colorInactive)
+        txtSurfacePassword = font.render("*" * len(textPassword), True, colorInactive)
+        txtSurfaceConfirmPassword = font.render("*" * len(textConfirmPassword), True, colorInactive)
 
         window.blit(txtSurfaceUsername, (inputBoxUsername.x + 5, inputBoxUsername.y + 5))
         window.blit(txtSurfacePassword, (inputBoxPassword.x + 5, inputBoxPassword.y + 5))
@@ -215,8 +233,8 @@ def startGame2():
     # Set screen resolution
     screenInfo = pygame.display.Info()
     screenWidth = screenInfo.current_w
-    screenHeight = screenInfo.current_h
-    window = pygame.display.set_mode((screenWidth, screenHeight))
+    screenHeigth = screenInfo.current_h
+    window = pygame.display.set_mode((screenWidth, screenHeigth))
 
     # Load your image
     backgroundSpanish = pygame.image.load('visuals/imágenesEspañol/2.png')
@@ -224,18 +242,20 @@ def startGame2():
     backgroundFrench = pygame.image.load('visuals/imágenesFrancés/22.png')
 
     # Get the image's original dimensions
-    originalWidth, originalHeigth = backgroundSpanish.get_size()
+    original_width, original_height = backgroundSpanish.get_size()
 
     # Calculate the scaling factors to fit the image to the screen
-    scaleFactorWidth = screenWidth / originalWidth
-    scaleFactorHeigth = screenHeight / originalHeigth
+    scaleFactorWidth = screenWidth / original_width
+    scaleFactorHeight = screenHeigth / original_height
+
+    print(f'{scaleFactorWidth} / {scaleFactorHeight}')
 
     # Choose the minimum scaling factor to maintain aspect ratio
-    minScaleFactor = min(scaleFactorWidth, scaleFactorHeigth)
+    minScaleFactor = min(scaleFactorWidth, scaleFactorHeight)
 
     # Scale the image while maintaining aspect ratio
-    newWidth = int(originalWidth * minScaleFactor)
-    newHeigth = int(originalHeigth * minScaleFactor)
+    newWidth = int(original_width * minScaleFactor)
+    newHeigth = int(original_height * minScaleFactor)
 
     scaledImage1 = pygame.transform.scale(backgroundSpanish, (newWidth, newHeigth))
     scaledImage2 = pygame.transform.scale(backgroundEnglish, (newWidth, newHeigth))
@@ -243,14 +263,26 @@ def startGame2():
     scaledImage = [scaledImage1, scaledImage2, scaledImage3]
 
     # Rectangles for every button in this window
-    faceRect = pygame.Rect(150, 690, 465, 40)
-    userRect = pygame.Rect(155, 820, 460, 40)
-    registerRect = pygame.Rect(150, 950, 465, 40)
-    languageRect = pygame.Rect(1692, 935, 212, 113)
+    # Update the positions and sizes of pygame.Rect objects
+    #                               x                      y                         ancho                    largo
+    faceRect = pygame.Rect(150 * scaleFactorWidth, 690 * scaleFactorHeight, 465 * scaleFactorWidth,
+                           40 * scaleFactorHeight)
+    userRect = pygame.Rect(155 * scaleFactorWidth, 820 * scaleFactorHeight, 460 * scaleFactorWidth,
+                           40 * scaleFactorHeight)
+
+    registerRect = pygame.Rect(150 * scaleFactorWidth, 950 * scaleFactorHeight, 465 * scaleFactorWidth,
+                               40 * scaleFactorHeight)
+    languageRect = pygame.Rect(1692 * scaleFactorWidth, 935 * scaleFactorHeight, 212 * scaleFactorWidth,
+                               113 * scaleFactorHeight)
+
+    print(f'{150 * scaleFactorWidth} / {690 * scaleFactorHeight} / {465 * scaleFactorWidth} / {40 * scaleFactorHeight}')
 
     clock = pygame.time.Clock()
 
     mainWindow = True
+
+    camera = cv2.VideoCapture(0)
+    face_cascade = cv2.CascadeClassifier('visuals/faceRecognition/haarcascade_frontalface_default.xml')
 
     """
     Input: text, target language code
@@ -267,150 +299,13 @@ def startGame2():
             print("Translation error:", e)
             return text
 
-    def facialLogin():
-        global window2, userVerification
-        cap = cv2.VideoCapture(0)  # Choose the camera for face detection
-        while (True):
-            ret, frame = cap.read()  # Read the video
-            cv2.imshow('Login Facial', frame)  # Display the video on screen
-            if cv2.waitKey(1) == 32:  # Break the video when the "spaee" key is pressed
-                break
-        userLoginFace = userVerification  # Save the photo with a different name to avoid overwriting
-        datapath = os.getcwd() + "\Data"
-        personPath = datapath + "\\" + userLoginFace + "\\Images"
-        rostroPath = datapath + "\\" + userLoginFace + "\\Images" + "\\face"
-        # lista_archivos = os.listdir(personPath)
-        cv2.imwrite(rostroPath + "LOG.jpg",
-                    frame)  # Save the last video frame as an image and assign the username as the name
-        cap.release()  # Close the video capture
-        cv2.destroyAllWindows()
-
-        # Input: an image and a list
-        # Description: Function to save the face
-        # Output: Data of the img and a confirmation that´s saved
-        def logFace(img, result_list):
-            data = pyplot.imread(img)
-            for i in range(len(result_list)):
-                x1, y1, width, heigth = result_list[i]['box']
-                x2, y2 = x1 + width, y1 + heigth
-                pyplot.subplot(1, len(result_list), i + 1)
-                pyplot.axis('off')
-                cara_reg = data[y1:y2, x1:x2]
-                cara_reg = cv2.resize(cara_reg, (150, 200), interpolation=cv2.INTER_CUBIC)  # Save the image as 150x200
-                return pyplot.imshow(data[y1:y2, x1:x2])
-            pyplot.show()
-
-        img = rostroPath + "LOG.jpg"
-        pixels = pyplot.imread(img)
-        detector = MTCNN()
-        faces = detector.detect_faces(pixels)
-        logFace(img, faces)
-
-        # Input: two different images
-        # Description: Function to compare faces
-        # Output: A percentage of how the two faces are alike
-        def orbSim(img1, img2):
-            global window2
-            orb = cv2.ORB_create()  # Create the comparison object
-
-            kpa, descrA = orb.detectAndCompute(img1, None)  # Create descriptor 1 and extract key points
-            kpb, descrB = orb.detectAndCompute(img2, None)  # eate descriptor 2 and extract key points
-            comp = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)  # Create a brute force matcher
-
-            matches = comp.match(descrA, descrB)  # Apply the matcher to the descriptors
-
-            similarRegions = [i for i in matches if
-                                  i.distance < 70]  # Extract similar regions based on key points
-            if len(matches) == 0:
-                return 0
-            return len(similarRegions) / len(matches)  # Return the similarity percentage
-
-        imFiles = os.listdir(personPath)  # Import the list of files using the os library
-        print(os.listdir(personPath))
-
-        if "face.jpg" in imFiles:  # Compare the files with the one we are interested in
-
-            FaceImgReg = cv2.imread(rostroPath + ".jpg", 0)  # Import the registered face
-            print(rostroPath)  # Import the registered face
-
-            FaceImgLog = cv2.imread(rostroPath + "LOG.jpg", 0)  # Import the login face
-
-            similitud = orbSim(FaceImgReg, FaceImgLog)
-            if similitud >= 0.90:
-                window2.destroy()
-                print("Bienvenido al sistema usuario: ", userLoginFace)
-                print("Compatibilidad con la foto del registro: ", similitud)
-                startCustomSettings(userLoginFace, language[changeLanguage])
-            else:
-                print("Rostro incorrecto, Cerifique su usuario")
-                print("Compatibilidad con la foto del registro: ", similitud)
-                message = translateText("Incompatibilidad de rostros", language[changeLanguage])
-                tkMessageBox.showerror("Error", message)
-        else:
-            window2.destroy()
-            print("Foto no encontrada")
-            errorMessage = translateText("Usuario no encontrado", language[changeLanguage])
-            tkMessageBox.showerror("Error", errorMessage)
-
-    def login():
-        global userVerification, window2
-
-        def getUsername():
-            global userVerification
-            userVerification = entry.get()
-            print(userVerification)
-            facialLogin()
-
-        window2 = Tk()
-        window2.title("Login")
-        window2.config(bg="#1f1f1f")
-        screenWidth = window2.winfo_screenwidth()
-        screenHeight = window2.winfo_screenheight()
-        x = (screenWidth - 300) // 2
-        y = (screenHeight - 200) // 2
-        window2.geometry(f"{300}x{200}+{x}+{y}")
-
-        window2.overrideredirect(True)
-
-        userVerification = StringVar()
-
-        userText = ""
-        cameraText = ""
-
-        if language[changeLanguage] == "es":
-            userText = "Usuario"
-            cameraText = "Activar cámara"
-            exitText = "Go back"
-
-        if language[changeLanguage] == "en":
-            userText = "Username"
-            cameraText = "Enable camera"
-            exitText = "Regresar"
-
-        Label(window2, text="", bg="#1f1f1f").pack()
-        Label(window2, text=userText, fg="#ff8280", bg="#1f1f1f", font=("Bauhaus 93", 14)).pack()
-        Label(window2, text="", bg="#1f1f1f").pack()
-
-        entry = Entry(window2, fg="#ff8280", bg="#1f1f1f", font=("Bauhaus 93", 14))
-        entry.pack()
-        Label(window2, text="\n", bg="#1f1f1f").pack()
-
-        getUsernameButton = Button(window2, bg="#1f1f1f", fg="#ff8280", text=cameraText, font=("Bauhaus 93", 14),
-                                   width=15, height=1, command=getUsername)
-        getUsernameButton.pack()
-
-        destroyButton = Button(window2, bg="#1f1f1f", fg="#ff8280", text=exitText, font=("Bauhaus 93", 14), width=15,
-                               height=1, command=lambda: [window2.destroy()])
-        destroyButton.pack()
-
-        window2.mainloop()
-
     changeLanguage = 0
     language = ["es", "en", "fr"]
 
     running = True
+    detecting_face = True  # Flag to enable face detection
+
     while running:
-        window.fill((0, 0, 0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -419,6 +314,7 @@ def startGame2():
                 # Check if the colors configuration button is pressed
                 if mainWindow:
                     if languageRect.collidepoint(event.pos):
+                        buttonSoundEffect()
                         if changeLanguage == 2:
                             changeLanguage = 0
                             print(language[changeLanguage])
@@ -428,24 +324,147 @@ def startGame2():
 
                     if changeLanguage != 2:
                         if faceRect.collidepoint(event.pos):
-                            login()
+                            buttonSoundEffect()
+
+                            camera.release()
+                            # login()
 
                         if userRect.collidepoint(event.pos):
+                            buttonSoundEffect()
+
+                            camera.release()
                             startBaseLogin(language[changeLanguage])
 
                         if registerRect.collidepoint(event.pos):
+                            buttonSoundEffect()
+
+                            camera.release()
                             startRegistrationWindow(language[changeLanguage])
+
+                        detecting_face = True
 
             # It enters the if when the button of color settings is pressed
 
         # Blit the scaled image onto the screen
-        window.blit(scaledImage[changeLanguage], ((screenWidth - newWidth) // 2, (screenHeight - newHeigth) // 2))
+        window.blit(scaledImage[changeLanguage], ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
+
+        # pygame.draw.rect(window, (0, 128, 255), faceRect, 0)
+        # pygame.draw.rect(window, (0, 128, 255), userRect, 0)
+        # pygame.draw.rect(window, (0, 128, 255), registerRect, 0)
+        # pygame.draw.rect(window, (0, 128, 255), languageRect, 0)
+
+        def find_matching_user(detected_face, reference_dir, distance_threshold=0.3):
+            min_distance = float("inf")
+            matching_user = None
+            matching_image_path = None
+            models = [
+                "VGG-Face",
+                "Facenet",
+                "Facenet512",
+                "OpenFace",
+                "DeepFace",
+                "DeepID",
+                "ArcFace",
+                "Dlib",
+                "SFace",
+            ]
+
+            for root, dirs, files in os.walk(reference_dir):
+                for filename in files:
+                    if filename.endswith('.jpg'):
+                        reference_image_path = os.path.join(root, filename)
+                        print(f'Intento: - - - - - -')
+                        print(f'Processando: {reference_image_path}')
+
+                        try:
+                            result = DeepFace.verify(img1_path=detected_face, img2_path=reference_image_path,
+                                                     model_name=models[0], enforce_detection=False)
+                            distance = result['distance']
+                            print(
+                                f'Distancia: {distance} // Distancia Minima: {min_distance} // ThreshHold: {distance_threshold} // Confidence: {1 - min_distance}')
+
+                            if distance < min_distance and distance < distance_threshold:
+                                min_distance = distance
+                                matching_user = os.path.basename(os.path.dirname(reference_image_path))
+                                matching_image_path = reference_image_path
+
+                        except Exception as e:
+                            print(f"An error occurred: {e}")
+
+            return matching_user, matching_image_path, min_distance
+
+        # Specify the root directory where user directories are located
+        root_directory = 'Data'
+
+        # Iterate through all user directories
+        for username in os.listdir(root_directory):
+            user_directory = os.path.join(root_directory, username, 'Images')
+
+            # Check if the user directory exists and contains image files
+            if os.path.exists(user_directory) and os.path.isdir(user_directory):
+                for image_filename in os.listdir(user_directory):
+                    if image_filename.endswith('.jpg'):
+                        image_path = os.path.join(user_directory, image_filename)
+                        # Load the user's image
+                        user_image = cv2.imread(image_path)
+
+        # Retrieve the camera frame
+        ret, frame = camera.read()
+        pygame.display.update()
+        if not ret:
+            break
+
+        # Process and display the camera frame as needed
+        faceImage = None
+        if detecting_face:
+            # Detect and display faces
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
+
+            for (x, y, w, h) in faces:
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+                # Extract and save the detected face as 'faceReference.jpg'
+                faceImage = frame[y:y + h, x:x + w]
+                cv2.imwrite('visuals/faceRecognition/faceReference.jpg', faceImage)
+
+                # Compare the detected face to reference images
+                detected_face = 'visuals/faceRecognition/faceReference.jpg'  # The path to the detected face image
+                matching_user, matching_image_path, min_distance = find_matching_user(detected_face, root_directory)
+                confidence = 1 - min_distance
+
+                if min_distance != float("inf") and confidence >= 0.88:
+                    print("--------------------------------------------------------------------------------")
+                    print(f"Matching user: {matching_image_path}")
+                    print(f"Minimum Distance: {min_distance}")
+                    print(f"Confidence: {confidence:.2f}")
+
+                    cv2.putText(frame, f"User: {matching_user}", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                                (0, 255, 0), 2)
+                    correctUser = matching_image_path.split("\\")
+                    print(f'{correctUser[1]}')
+                    menu.principalMenu(correctUser[1], language[changeLanguage])
+
+                else:
+                    cv2.putText(frame, "Unknown", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+
+            # Display the frame in the Pygame window
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            pygame_frame = pygame.surfarray.make_surface(frame)
+            pygame_frame = pygame.transform.scale(pygame_frame,
+                                                  (300 * scaleFactorWidth, 300 * scaleFactorHeight))  # Resize frame
+            angle = 270  # Angle in degrees, adjust as needed
+            rotated_frame = pygame.transform.rotate(pygame_frame, angle)
+            window.blit(rotated_frame, (1500 * scaleFactorWidth, 300 * scaleFactorHeight))  # Set the desired position
+
+        pygame.display.update()
 
         pygame.display.flip()
         clock.tick(30)
 
-    # Quit pygame
+    # After the loop, release camera resources and quit pygame
+    camera.release()
+    cv2.destroyAllWindows()
     pygame.quit()
-    sys.exit()
 
 # startBaseLogin("en")

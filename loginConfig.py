@@ -1,6 +1,7 @@
 import os
 
-questions = ["¿En cuál país le gustaria vivir?", "¿Cuál es su libro favorito?", "¿Cuál es su animal favorito?", "¿Cuál es su juego de mesa favorito?", "¿Cuál es su pelicula favorita?"]
+questions = ["¿En cuál país le gustaria vivir?", "¿Cuál es su libro favorito?", "¿Cuál es su animal favorito?",
+                     "¿Cuál es su deporte favorito?", "¿Cuál es su color favorito?"]
 
 """
    input: text, Language code
@@ -17,7 +18,7 @@ def baseLogin(userInfo, passwordInfo):
     infoPath = personPath + "\\information.txt"
     lista_archivos = os.listdir(personPath)
     if 'information.txt' in lista_archivos:
-        archivo2 = open(infoPath, "r")
+        archivo2 = open(infoPath, "r", encoding='utf-8')
         verification = archivo2.read().splitlines()
         print(verification)
         print(passwordInfo)
@@ -41,7 +42,7 @@ def questionsLogin(Q1, Q2, user):
     infoPath = personPath + "\\information.txt"
     lista_archivos = os.listdir(personPath)
     if 'information.txt' in lista_archivos:
-        archivo2 = open(infoPath, "r")
+        archivo2 = open(infoPath, "r", encoding='utf-8')
         verification = archivo2.read().splitlines()
         if Q1 in verification and Q2 in verification:
             print("Change your password")
@@ -61,7 +62,7 @@ def registerConfiguration(user):
     datapath = os.getcwd() + "\Data"
     personPath = datapath + "\\" + user
     configPath = personPath + "\\configuration.txt"
-    archivo = open(configPath, "w")
+    archivo = open(configPath, "w", encoding='utf-8')
     archivo.write("." + "\n")
     archivo.write("." + "\n")
     archivo.write("." + "\n")
@@ -78,11 +79,11 @@ def configColorPalet(colorPalet, user):
     configPath = personPath + "\\configuration.txt"
     lista_archivos = os.listdir(personPath)
     if 'configuration.txt' in lista_archivos:
-        archivo2 = open(configPath, "r")
+        archivo2 = open(configPath, "r", encoding='utf-8')
         verification = archivo2.read().splitlines()
         verification[0] = colorPalet
         archivo2.close()
-        archivo = open(configPath, "w")
+        archivo = open(configPath, "w", encoding='utf-8')
         for x in verification:
             archivo.write(x+"\n")
         archivo.close()
@@ -98,11 +99,11 @@ def configChangeSelectedSong(selectedSong, user):
     configPath = personPath + "\\configuration.txt"
     lista_archivos = os.listdir(personPath)
     if 'configuration.txt' in lista_archivos:
-        archivo2 = open(configPath, "r")
+        archivo2 = open(configPath, "r", encoding='utf-8')
         verification = archivo2.read().splitlines()
         verification[1] = selectedSong
         archivo2.close()
-        archivo = open(configPath, "w")
+        archivo = open(configPath, "w", encoding='utf-8')
         for x in verification:
             archivo.write(x+"\n")
         archivo.close()
@@ -119,11 +120,11 @@ def configSpecialEffect(specialEffect, user):
     configPath = personPath + "\\configuration.txt"
     lista_archivos = os.listdir(personPath)
     if 'configuration.txt' in lista_archivos:
-        archivo2 = open(configPath, "r")
+        archivo2 = open(configPath, "r", encoding='utf-8')
         verification = archivo2.read().splitlines()
         verification[2] = specialEffect
         archivo2.close()
-        archivo = open(configPath, "w")
+        archivo = open(configPath, "w", encoding='utf-8')
         for x in verification:
             archivo.write(x+"\n")
         archivo.close()
