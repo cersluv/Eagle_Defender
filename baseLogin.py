@@ -15,7 +15,6 @@ import loginConfig
 import menu
 from musicHandler import musicPlayer, buttonSoundEffect
 from questionLogin import startQuestionLogin
-from customSettings import startCustomSettings
 from registrationWindow import startRegistrationWindow
 
 
@@ -75,7 +74,7 @@ def startBaseLogin(language):
     outputs: translated language
     """
 
-    def translate_text(text, target_language):
+    def translateText(text, target_language):
         translator = Translator()
         try:
             translated = translator.translate(text, dest=target_language)
@@ -142,15 +141,15 @@ def startBaseLogin(language):
                         elif not loginConfig.baseLogin(textUsername, textPassword):
                             # Passwords do not match, display a pop-up error message
                             questionCounter += 1
-                            errorMessage = translate_text("Contraseña Incorrecta", target_language)
+                            errorMessage = translateText("Contraseña Incorrecta", target_language)
                             tkMessageBox.showerror("Error", errorMessage)
                         else:
                             menu.principalMenu(textUsername,language)
                     except(FileNotFoundError):
-                        errorMessage = translate_text("Usuario no encontrado", target_language)
+                        errorMessage = translateText("Usuario no encontrado", target_language)
                         tkMessageBox.showerror("Error", errorMessage)
                     except():
-                        errorMessage = translate_text("Error no reconocido, vuelva a intentarlo", target_language)
+                        errorMessage = translateText("Error no reconocido, vuelva a intentarlo", target_language)
                         tkMessageBox.showerror("Error", errorMessage)
 
                 if backButtonRect.collidepoint(event.pos):
@@ -158,7 +157,7 @@ def startBaseLogin(language):
                     try:
                         startGame2()
                     except():
-                        errorMessage = translate_text("Error no reconocido, vuelva a intentarlo", target_language)
+                        errorMessage = translateText("Error no reconocido, vuelva a intentarlo", target_language)
                         tkMessageBox.showerror("Error", errorMessage)
 
             if event.type == pygame.KEYDOWN:

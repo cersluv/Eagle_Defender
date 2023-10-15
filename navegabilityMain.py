@@ -120,11 +120,6 @@ while running:
                         print(language[changeLanguage])
 
                 if changeLanguage != 2:
-                    if faceRect.collidepoint(event.pos):
-                        buttonSoundEffect()
-
-                        camera.release()
-                        # login()
 
                     if userRect.collidepoint(event.pos):
                         buttonSoundEffect()

@@ -8,5 +8,6 @@ def musicPlayer():
 
 def buttonSoundEffect():
     sound_effect = mixer.Sound("soundEffects/collideButtonSound.mp3")  # Replace with the path to your sound effect file
+    sound_effect.set_volume(1)
     sound_effect.play()
 
