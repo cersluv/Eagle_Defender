@@ -2,12 +2,19 @@ import pygame
 import sys
 import math
 
+global power
+power = 2
+
+
+skinGoblin = "5"
+skinProjectile = "1"
+
 pygame.init()
 
 # Constants
 goblinSpeed = 5
 projectileSpeed = 10
-projectileSize = 20
+projectileSize = 45
 projectileColor = (255, 0, 0)
 screenWidth, screenHeight = pygame.display.Info().current_w, pygame.display.Info().current_h
 
@@ -16,12 +23,40 @@ screen = pygame.display.set_mode((screenWidth, screenHeight), pygame.FULLSCREEN)
 pygame.display.set_caption("Goblin and Projectile")
 
 # Load the goblin image
-goblinImage = pygame.image.load("visuals/goblin.png")
-goblinImage = pygame.transform.scale(goblinImage, (100, 100))
+if skinGoblin == "1":
+    goblinImage = pygame.image.load("visuals/goblin/redGob.png")
+if skinGoblin == "2":
+    goblinImage = pygame.image.load("visuals/goblin/purpleGob.png")
+if skinGoblin == "3":
+    goblinImage = pygame.image.load("visuals/goblin/blueGob.png")
+if skinGoblin == "4":
+    goblinImage = pygame.image.load("visuals/goblin/pinkGob.png")
+if skinGoblin == "5":
+    goblinImage = pygame.image.load("visuals/goblin/greenGob.png")
+
+goblinImage = pygame.transform.scale(goblinImage, (130, 130))
 
 # Load the projectile image
-projectileImage = pygame.image.load("visuals/projectile.png")
-projectileImage = pygame.transform.scale(projectileImage, (projectileSize, projectileSize))
+if skinProjectile == "1":
+    waterImage = pygame.image.load("visuals/projectile/w1.png")
+    fireImage = pygame.image.load("visuals/projectile/f1.png")
+    dynamiteImage = pygame.image.load("visuals/projectile/d1.png")
+
+    waterImage = pygame.transform.scale(waterImage, (projectileSize, projectileSize))
+    waterImage = pygame.transform.rotate(waterImage, 25)
+    dynamiteImage = pygame.transform.scale(dynamiteImage, (projectileSize + 10, projectileSize + 10))
+
+if skinProjectile == "2":
+    waterImage = pygame.image.load("visuals/projectile/w2.png")
+    fireImage = pygame.image.load("visuals/projectile/f2.png")
+    dynamiteImage = pygame.image.load("visuals/projectile/d2.png")
+
+    waterImage = pygame.transform.scale(waterImage, (projectileSize + 20, projectileSize + 10))
+    dynamiteImage = pygame.transform.scale(dynamiteImage, (projectileSize -10, projectileSize))
+
+fireImage = pygame.transform.scale(fireImage, (projectileSize + 40, projectileSize))
+
+
 
 # Colors
 white = (255, 255, 255)
@@ -48,7 +83,14 @@ class Goblin:
 
 class Projectile:
     def __init__(self, x, y, angle):
-        self.rect = projectileImage.get_rect()
+        global power
+
+        if power == 1:
+            self.rect = waterImage.get_rect()
+        if power == 2:
+            self.rect = fireImage.get_rect()
+        if power == 3:
+            self.rect = dynamiteImage.get_rect()
         self.rect.center = (x, y)
         self.angle = angle
         self.velocity = -projectileSpeed  # Shoot to the left
@@ -66,7 +108,12 @@ class Projectile:
 
 
     def draw(self):
-        screen.blit(projectileImage, self.rect)
+        if power == 1:
+            screen.blit(waterImage, self.rect)
+        if power == 2:
+            screen.blit(fireImage, self.rect)
+        if power == 3:
+            screen.blit(dynamiteImage, self.rect)
 
 goblin = Goblin(screenWidth - 120, screenHeight // 2)
 projectile = None
