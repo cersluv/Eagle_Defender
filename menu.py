@@ -3,7 +3,7 @@ import sys
 import os
 from googletrans import Translator
 #from customSettings import startCustomSettings, startCustomSettingsSecond
-from loginConfig import configColorPalet, configSpecialEffect, configChangeSelectedSong
+from loginConfig import configColorPalet, configChangeSelectedSong, configSpecialEffectProjectile, configSpecialEffectEagleSkin, configSpecialEffectGoblinSkin, configSpecialEffectSounds
 from musicHandler import buttonSoundEffect
 
 
@@ -276,6 +276,152 @@ def songsWindow(user,language,palette):
     pygame.quit()
     sys.exit()
 
+def effectsWindow(user, language, palette):
+    pygame.init()
+    # Constants
+    width, height = 800, 600
+    white = (255, 255, 255)
+    font = pygame.font.Font(None, 30)
+
+    # Set screen resolution
+    screenInfo = pygame.display.Info()
+    screenWidth = screenInfo.current_w
+    screenHeigth = screenInfo.current_h
+    window = pygame.display.set_mode((screenWidth, screenHeigth))
+
+    # Get the center of the screen
+    centerX = screenWidth // 2
+    centerY = screenHeigth // 2
+
+    # Set the width and height for the input boxes
+    input_box_width = 300
+    input_box_height = 32
+
+    # Load your image
+    if language == "es":
+        backgroundColors = pygame.image.load('visuals/imágenesEspañol/seleccion.png')
+    if language == "en":
+        backgroundColors = pygame.image.load('visuals/imágenesInglés/seleccion.png')
+
+    # Get the image's original dimensions
+    originalWidth, originalHeigth = backgroundColors.get_size()
+
+    # Calculate the scaling factors to fit the image to the screen
+    scaleFactorWidth = screenWidth / originalWidth
+    scaleFactorHeigth = screenHeigth / originalHeigth
+
+    # Choose the minimum scaling factor to maintain aspect ratio
+    minScaleFactor = min(scaleFactorWidth, scaleFactorHeigth)
+
+    # Scale the image while maintaining aspect ratio
+    newWidth = int(originalWidth * minScaleFactor)
+    newHeigth = int(originalHeigth * minScaleFactor)
+    scaledImage = pygame.transform.scale(backgroundColors, (newWidth, newHeigth))
+
+    animation1 = pygame.Rect(220 * scaleFactorWidth, 455 * scaleFactorHeigth, 430 * scaleFactorWidth,
+                           170 * scaleFactorHeigth)
+    animation2 = pygame.Rect(220 * scaleFactorWidth, 760 * scaleFactorHeigth, 430 * scaleFactorWidth,
+                             170 * scaleFactorHeigth)
+    eagle1 = pygame.Rect(900 * scaleFactorWidth, 472 * scaleFactorHeigth, 143 * scaleFactorWidth,
+                             140 * scaleFactorHeigth)
+    eagle2 = pygame.Rect(1063 * scaleFactorWidth, 472 * scaleFactorHeigth, 143 * scaleFactorWidth,
+                             140 * scaleFactorHeigth)
+    eagle3 = pygame.Rect(900 * scaleFactorWidth, 625 * scaleFactorHeigth, 143 * scaleFactorWidth,
+                             145 * scaleFactorHeigth)
+    eagle4 = pygame.Rect(1063 * scaleFactorWidth, 625 * scaleFactorHeigth, 143 * scaleFactorWidth,
+                             145 * scaleFactorHeigth)
+    skin1 = pygame.Rect(1515 * scaleFactorWidth, 468 * scaleFactorHeigth, 143 * scaleFactorWidth,
+                             140 * scaleFactorHeigth)
+    skin2 = pygame.Rect(1677 * scaleFactorWidth, 468 * scaleFactorHeigth, 143 * scaleFactorWidth,
+                             140 * scaleFactorHeigth)
+    skin3 = pygame.Rect(1515 * scaleFactorWidth, 625 * scaleFactorHeigth, 143 * scaleFactorWidth,
+                             145 * scaleFactorHeigth)
+    skin4 = pygame.Rect(1677 * scaleFactorWidth, 625 * scaleFactorHeigth, 143 * scaleFactorWidth,
+                             145 * scaleFactorHeigth)
+    skin5 = pygame.Rect(1515 * scaleFactorWidth, 790 * scaleFactorHeigth, 143 * scaleFactorWidth,
+                             135 * scaleFactorHeigth)
+    ready = pygame.Rect(860 * scaleFactorWidth, 960 * scaleFactorHeigth, 200 * scaleFactorWidth,
+                        80 * scaleFactorHeigth)
+
+    """
+        Input: None
+        Summary: Draws the rectangles to put the name of every song
+        Output: None
+        """
+
+    def drawRect():
+        pygame.draw.rect(window, (0, 128, 255), animation1, 0)
+        pygame.draw.rect(window, (0, 128, 255), animation2, 0)
+        pygame.draw.rect(window, (0, 128, 255), eagle1, 0)
+        pygame.draw.rect(window, (0, 128, 255), eagle2, 0)
+        pygame.draw.rect(window, (0, 128, 255), eagle3, 0)
+        pygame.draw.rect(window, (0, 128, 255), eagle4, 0)
+        pygame.draw.rect(window, (0, 128, 255), skin1, 0)
+        pygame.draw.rect(window, (0, 128, 255), skin2, 0)
+        pygame.draw.rect(window, (0, 128, 255), skin3, 0)
+        pygame.draw.rect(window, (0, 128, 255), skin4, 0)
+        pygame.draw.rect(window, (0, 128, 255), skin5, 0)
+        pygame.draw.rect(window, (0, 128, 255), ready, 0)
+
+    running = True
+    while running:
+        window.fill((0, 0, 0))
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # Check if the colors configuration button is pressed
+                if animation1.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    configSpecialEffectProjectile("1", user)
+                if animation2.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    configSpecialEffectProjectile("2", user)
+                if eagle1.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    configSpecialEffectEagleSkin("eagle1", user)
+                if eagle2.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    configSpecialEffectEagleSkin("eagle2", user)
+                if eagle3.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    configSpecialEffectEagleSkin("eagle3", user)
+                if eagle4.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    configSpecialEffectEagleSkin("eagle4", user)
+                if skin1.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    configSpecialEffectGoblinSkin("goblin1", user)
+                if skin2.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    configSpecialEffectGoblinSkin("goblin2", user)
+                if skin3.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    configSpecialEffectGoblinSkin("goblin3", user)
+                if skin4.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    configSpecialEffectGoblinSkin("goblin4", user)
+                if skin5.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    configSpecialEffectGoblinSkin("goblin5", user)
+                if ready.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    customsSettingsWindow(user, language, palette)
+
+
+        # Blit the scaled image onto the screen
+        window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
+        #drawRect()
+
+        pygame.display.flip()
+
+        # Quit pygame
+    pygame.quit()
+    sys.exit()
+
+
 def customsSettingsWindow(user, language, palette):
     # Constants
     width, height = 800, 600
@@ -391,6 +537,7 @@ def customsSettingsWindow(user, language, palette):
 
                     if textureRect.collidepoint(event.pos):
                         buttonSoundEffect()
+                        effectsWindow(user, language, palette)
 
                     if menuButton.collidepoint(event.pos):
                         buttonSoundEffect()
@@ -713,4 +860,4 @@ def principalMenu(user, language):
     sys.exit()
 
 
-#principalMenu("Felipe", "en")
+principalMenu("Felipe", "en")

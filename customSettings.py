@@ -333,6 +333,7 @@ def startCustomSettings(user, language):
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
 
+
         if draw:
             drawRect()
             drawText(songList[0], centerX - 180, centerY - 55)

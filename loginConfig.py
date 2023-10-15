@@ -67,6 +67,10 @@ def registerConfiguration(user):
     archivo.write("." + "\n")
     archivo.write("." + "\n")
     archivo.write("." + "\n")
+    archivo.write("." + "\n")
+    archivo.write("." + "\n")
+    archivo.write("." + "\n")
+
     archivo.close()
 
 
@@ -111,10 +115,10 @@ def configChangeSelectedSong(selectedSong, user):
         print("user not found")
 
 
-# Input      : The selected song and the user
+# Input      : The selected effect and the user
 # Description: The funtion to update the special effect
 # Output     : The updated file
-def configSpecialEffect(specialEffect, user):
+def configSpecialEffectProjectile(specialEffect, user):
     datapath = os.getcwd() + "\Data"
     personPath = datapath + "\\" + user
     configPath = personPath + "\\configuration.txt"
@@ -123,6 +127,61 @@ def configSpecialEffect(specialEffect, user):
         archivo2 = open(configPath, "r", encoding='utf-8')
         verification = archivo2.read().splitlines()
         verification[2] = specialEffect
+        archivo2.close()
+        archivo = open(configPath, "w", encoding='utf-8')
+        for x in verification:
+            archivo.write(x+"\n")
+        archivo.close()
+    else:
+        print("user not found")
+
+
+# Input      : The selected effect and the user
+# Description: The funtion to update the special effect
+# Output     : The updated file
+def configSpecialEffectEagleSkin(specialEffect, user):
+    datapath = os.getcwd() + "\Data"
+    personPath = datapath + "\\" + user
+    configPath = personPath + "\\configuration.txt"
+    lista_archivos = os.listdir(personPath)
+    if 'configuration.txt' in lista_archivos:
+        archivo2 = open(configPath, "r", encoding='utf-8')
+        verification = archivo2.read().splitlines()
+        verification[3] = specialEffect
+        archivo2.close()
+        archivo = open(configPath, "w", encoding='utf-8')
+        for x in verification:
+            archivo.write(x+"\n")
+        archivo.close()
+    else:
+        print("user not found")
+
+def configSpecialEffectGoblinSkin(specialEffect, user):
+    datapath = os.getcwd() + "\Data"
+    personPath = datapath + "\\" + user
+    configPath = personPath + "\\configuration.txt"
+    lista_archivos = os.listdir(personPath)
+    if 'configuration.txt' in lista_archivos:
+        archivo2 = open(configPath, "r", encoding='utf-8')
+        verification = archivo2.read().splitlines()
+        verification[4] = specialEffect
+        archivo2.close()
+        archivo = open(configPath, "w", encoding='utf-8')
+        for x in verification:
+            archivo.write(x+"\n")
+        archivo.close()
+    else:
+        print("user not found")
+
+def configSpecialEffectSounds(specialEffect, user):
+    datapath = os.getcwd() + "\Data"
+    personPath = datapath + "\\" + user
+    configPath = personPath + "\\configuration.txt"
+    lista_archivos = os.listdir(personPath)
+    if 'configuration.txt' in lista_archivos:
+        archivo2 = open(configPath, "r", encoding='utf-8')
+        verification = archivo2.read().splitlines()
+        verification[5] = specialEffect
         archivo2.close()
         archivo = open(configPath, "w", encoding='utf-8')
         for x in verification:
