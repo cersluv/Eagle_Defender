@@ -235,6 +235,12 @@ def startGame():
                     power = 3
 
         keys = pygame.key.get_pressed()
+        if keys[pygame.K_1]:
+            power = 1
+        if keys[pygame.K_2]:
+            power = 2
+        if keys[pygame.K_3]:
+            power = 3
         if keys[pygame.K_UP]:
             goblin.move(0, -goblinSpeed)
         if keys[pygame.K_DOWN]:
@@ -328,6 +334,12 @@ def startGame():
         dynamitetext_rect = dynamiteText.get_rect()
         dynamitetext_rect.topleft = (1290 * scaleFactorWidth, 1022 *  scaleFactorHeight)
 
+        buttonText1_rect = font.render("[1]",True, white).get_rect()
+        buttonText1_rect.topleft = (1000 * scaleFactorWidth, 933 *  scaleFactorHeight)
+        buttonText2_rect = font.render("[2]", True, white).get_rect()
+        buttonText2_rect.topleft = (1147 * scaleFactorWidth, 933 * scaleFactorHeight)
+        buttonText3_rect = font.render("[3]", True, white).get_rect()
+        buttonText3_rect.topleft = (1290 * scaleFactorWidth, 933 * scaleFactorHeight)
 
 
         screen.blit(angle_text, angle_text_rect)
@@ -336,9 +348,13 @@ def startGame():
         screen.blit(waterText,watertext_rect)
         screen.blit(fireText, firetext_rect)
         screen.blit(dynamiteText, dynamitetext_rect)
+        screen.blit(font.render("[1]",True, white),buttonText1_rect)
+        screen.blit(font.render("[2]",True, white), buttonText2_rect)
+        screen.blit(font.render("[3]",True, white), buttonText3_rect)
 
         pygame.display.flip()
         clock.tick(30)
 
     pygame.quit()
     sys.exit()
+

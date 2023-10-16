@@ -6,6 +6,7 @@ from googletrans import Translator
 from loginConfig import configColorPalet, configChangeSelectedSong, configSpecialEffectProjectile, configSpecialEffectEagleSkin, configSpecialEffectGoblinSkin, configSpecialEffectSounds
 from musicHandler import buttonSoundEffect
 from localMultiplayer import setVariables
+from loginSecondUser import newLogin
 
 
 
@@ -827,7 +828,7 @@ def principalMenu(user, language):
                     print("Solo")
                 if playLocalMulti.collidepoint(event.pos):
                     buttonSoundEffect()
-                    setVariables(user, "Dylan", language,1)
+                    newLogin(user,language)
                 if playOnline.collidepoint(event.pos):
                     buttonSoundEffect()
                     print("Online")
@@ -875,4 +876,4 @@ def principalMenu(user, language):
     sys.exit()
 
 
-principalMenu("Felipe", "en")
+#principalMenu("Felipe", "en")

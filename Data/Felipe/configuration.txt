@@ -1,6 +1,6 @@
-Palette 5
+Palette 3
 Heat Waves (Official Video)
 1
 eagle2
-goblin2
+goblin5
 .
