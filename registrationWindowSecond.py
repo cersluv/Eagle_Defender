@@ -222,7 +222,11 @@ def downloadYtVideo(yt, selected_title):
         textUsername = tempFile.readline()
 
     cleanTextUsername = textUsername.rstrip('\n')
-
+    selected_title = selected_title.rstrip('/')
+    selected_title = selected_title.rstrip('\\')
+    selected_title = selected_title.rstrip('-')
+    selected_title = selected_title.rstrip('_')
+    selected_title = selected_title.rstrip('|')
     outputPath = f"Data/{cleanTextUsername}/Music/"
     os.makedirs(os.path.dirname(outputPath), exist_ok=True)
     audio_stream = yt.streams.filter(only_audio=True).first()

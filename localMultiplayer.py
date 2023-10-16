@@ -240,9 +240,11 @@ def startGame():
             goblin.move(0, goblinSpeed)
 
         if keys[pygame.K_LEFT]:
-            goblin.rotate(-2)
-        if keys[pygame.K_RIGHT]:
             goblin.rotate(2)
+        if keys[pygame.K_RIGHT]:
+            goblin.rotate(-2)
+
+
 
         if keys[pygame.K_SPACE]:
             if waterProjectile is None and power == 1:
@@ -263,7 +265,7 @@ def startGame():
 
         screen.fill((0, 0, 0))
 
-        screen.blit(scaledAtackerImage, (960, 0))
+        screen.blit(scaledAtackerImage, (960*scaleFactorWidth, 0))
         screen.blit(scaledDefenderImage, (0, 0))
 
         if len(trajectoryPointsWater) >= 2:
@@ -351,3 +353,6 @@ def startGame():
     pygame.quit()
     sys.exit()
 
+# LO QUE SE LLAMA CUANDO SE GANA
+# setVariables("Cers2", "Felipe", "es")
+# setVariables("Felipe", "Cers2", "es")

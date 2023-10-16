@@ -740,8 +740,7 @@ def principalMenu(user, language):
             backgroundMainMenu = pygame.image.load('visuals/menu/36.png')
         if palette == "Palette 5":
             backgroundMainMenu = pygame.image.load('visuals/menu/40.png')
-        else:
-            backgroundMainMenu = pygame.image.load('visuals/menu/24.png')
+
 
     except:
         backgroundMainMenu = pygame.image.load('visuals/menu/28.png')
