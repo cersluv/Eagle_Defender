@@ -11,6 +11,7 @@ from googletrans import Translator
 from matplotlib import pyplot
 from mtcnn import MTCNN
 
+import coinFlip
 import loginConfig
 import menu
 from musicHandler import musicPlayer, buttonSoundEffect
@@ -18,7 +19,7 @@ from questionLogin import startQuestionLogin
 from registrationWindow import startRegistrationWindow
 
 
-def startBaseLogin(language):
+def startBaseLogin(language, secondUserBool, firstUser):
     # Initialize pygame
     pygame.init()
 
@@ -84,21 +85,23 @@ def startBaseLogin(language):
             return text  # Return the original text in case of an error
 
     # Define a Next button rectangle
-    nextButtonRect = pygame.Rect(220*scaleFactorWidth, 883*scaleFactorHeight, 300*scaleFactorWidth, 50*scaleFactorHeight)
+    nextButtonRect = pygame.Rect(220 * scaleFactorWidth, 883 * scaleFactorHeight, 300 * scaleFactorWidth,
+                                 50 * scaleFactorHeight)
     print(f'{centerX - inputBoxWidth // 0.405} / {centerY + 343}')
     nextButtonText = ""
 
-    backButtonRect = pygame.Rect(220*scaleFactorWidth, 1010*scaleFactorHeight, 300*scaleFactorWidth, 50*scaleFactorHeight)
+    backButtonRect = pygame.Rect(220 * scaleFactorWidth, 1010 * scaleFactorHeight, 300 * scaleFactorWidth,
+                                 50 * scaleFactorHeight)
     print(f'{centerX - inputBoxWidth // 0.405} / {centerY + 470}')
 
     backButtonText = ""
 
     # Position the input boxes at the center
-    inputBoxUsername = pygame.Rect(220*scaleFactorWidth, 660*scaleFactorHeight, inputBoxWidth*scaleFactorWidth,
-                                   inputBoxHeight*scaleFactorHeight)
+    inputBoxUsername = pygame.Rect(220 * scaleFactorWidth, 660 * scaleFactorHeight, inputBoxWidth * scaleFactorWidth,
+                                   inputBoxHeight * scaleFactorHeight)
     print(f'{centerX - inputBoxWidth // 0.405} / {centerY + 120}')
-    inputBoxPassword = pygame.Rect(220*scaleFactorWidth, 810*scaleFactorHeight, inputBoxWidth*scaleFactorWidth,
-                                   inputBoxHeight*scaleFactorHeight)
+    inputBoxPassword = pygame.Rect(220 * scaleFactorWidth, 810 * scaleFactorHeight, inputBoxWidth * scaleFactorWidth,
+                                   inputBoxHeight * scaleFactorHeight)
     print(f'{centerX - inputBoxWidth // 0.405} / {centerY + 270}')
 
     font = pygame.font.Font(None, 32)
@@ -136,15 +139,18 @@ def startBaseLogin(language):
                     buttonSoundEffect()
                     try:
                         if questionCounter > 1:
-                            startQuestionLogin(textUsername, language)
-
+                            startQuestionLogin(textUsername, language, secondUserBool, firstUser)
                         elif not loginConfig.baseLogin(textUsername, textPassword):
                             # Passwords do not match, display a pop-up error message
                             questionCounter += 1
                             errorMessage = translateText("Contraseña Incorrecta", target_language)
                             tkMessageBox.showerror("Error", errorMessage)
                         else:
-                            menu.principalMenu(textUsername,language)
+                            if not secondUserBool:
+                                menu.principalMenu(textUsername, language)
+                            else:
+                                coinFlip.startCoinFlip(firstUser, textUsername, language)
+
                     except(FileNotFoundError):
                         errorMessage = translateText("Usuario no encontrado", target_language)
                         tkMessageBox.showerror("Error", errorMessage)
@@ -155,7 +161,7 @@ def startBaseLogin(language):
                 if backButtonRect.collidepoint(event.pos):
                     buttonSoundEffect()
                     try:
-                        startGame2()
+                        startGame2(False, None)
                     except():
                         errorMessage = translateText("Error no reconocido, vuelva a intentarlo", target_language)
                         tkMessageBox.showerror("Error", errorMessage)
@@ -180,7 +186,6 @@ def startBaseLogin(language):
 
         # Clear the screen
         window.fill((0, 0, 0))
-
 
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeight - newHeight) // 2))
@@ -213,7 +218,7 @@ def startBaseLogin(language):
     sys.exit()
 
 
-def startGame2():
+def startGame2(secondUserBool, firstUser):
     pygame.init()
 
     # Constants
@@ -332,7 +337,7 @@ def startGame2():
                             buttonSoundEffect()
 
                             camera.release()
-                            startBaseLogin(language[changeLanguage])
+                            startBaseLogin(language[changeLanguage], secondUserBool, firstUser)
 
                         if registerRect.collidepoint(event.pos):
                             buttonSoundEffect()
@@ -442,7 +447,10 @@ def startGame2():
                                 (0, 255, 0), 2)
                     correctUser = matching_image_path.split("\\")
                     print(f'{correctUser[1]}')
-                    menu.principalMenu(correctUser[1], language[changeLanguage])
+                    if not secondUserBool:
+                        menu.principalMenu(correctUser[1], language[changeLanguage])
+                    else:
+                        coinFlip.startCoinFlip(firstUser, correctUser[1], language[changeLanguage])
 
                 else:
                     cv2.putText(frame, "Unknown", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)

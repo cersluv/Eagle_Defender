@@ -58,17 +58,16 @@ def questionsLogin(Q1, Q2, user):
 # Input      : The color palet, the selected song, special effect and the user
 # Description: The funtion to register and create the configuration file
 # Output     : The created and updated file
-def registerConfiguration(user):
+def registerConfiguration(user, Music):
     datapath = os.getcwd() + "\Data"
     personPath = datapath + "\\" + user
     configPath = personPath + "\\configuration.txt"
     archivo = open(configPath, "w", encoding='utf-8')
-    archivo.write("." + "\n")
-    archivo.write("." + "\n")
-    archivo.write("." + "\n")
-    archivo.write("." + "\n")
-    archivo.write("." + "\n")
-    archivo.write("." + "\n")
+    archivo.write("Palette 3" + "\n")
+    archivo.write(str(Music) + "\n")
+    archivo.write("1" + "\n")
+    archivo.write("eagle1" + "\n")
+    archivo.write("goblin1" + "\n")
     archivo.write("." + "\n")
 
     archivo.close()

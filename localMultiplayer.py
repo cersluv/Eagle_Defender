@@ -7,7 +7,7 @@ global power, skinGoblin, skinProjectile, paletteAtacker, eagleSkin, boxSkin, pa
 
 power = 1
 
-def setVariables(firstUser, secondUser, language, firstPlayer):
+def setVariables(firstUser, secondUser, language):
     global skinGoblin, skinProjectile, paletteAtacker, eagleSkin, boxSkin, paletteDefender
     try:
         datapath = os.getcwd() + "\Data"
@@ -28,22 +28,15 @@ def setVariables(firstUser, secondUser, language, firstPlayer):
         print("error")
         firstAttributes = None
         secondAttributes = None
-    if firstPlayer == 1:
-        skinGoblin = firstAttributes[4]
-        skinProjectile = firstAttributes[2]
-        paletteAtacker = firstAttributes[0]
 
-        eagleSkin = secondAttributes[3]
-        boxSkin = secondAttributes[2]
-        paletteDefender = secondAttributes[0]
-    else:
-        skinGoblin = secondAttributes[4]
-        skinProjectile = secondAttributes[2]
-        paletteAtacker = secondAttributes[0]
+    skinGoblin = firstAttributes[4]
+    skinProjectile = firstAttributes[2]
+    paletteAtacker = firstAttributes[0]
 
-        eagleSkin = firstAttributes[3]
-        boxSkin = firstAttributes[2]
-        paletteDefender = firstAttributes[0]
+    eagleSkin = secondAttributes[3]
+    boxSkin = secondAttributes[2]
+    paletteDefender = secondAttributes[0]
+
     startGame()
 
 def startGame():

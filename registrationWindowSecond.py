@@ -21,6 +21,8 @@ songCount = 0
 boolImageRec = True
 boolImageTake = False
 
+songSelected = None
+
 dirSong1 = ""
 dirSong2 = ""
 dirSong3 = ""
@@ -87,7 +89,7 @@ def translateText(text, targetLanguage):
 
 
 def onClick(event):
-    global boolImageRec, boolImageTake
+    global boolImageRec, boolImageTake, songSelected
     with open("Data/tempUser.txt", "r", encoding='utf-8') as tempFile1:
         textUsername = tempFile1.readline()
         language = tempFile1.readline()
@@ -114,8 +116,8 @@ def onClick(event):
                 if not boolImageRec:
                     print("Click detected within the specified region!")
                     saveInformation()
-                    registerConfiguration(cleanTextUsername)
-                    startGame2()
+                    registerConfiguration(cleanTextUsername, songSelected)
+                    startGame2(False, None)
                 else:
                     error_message = translateText("Es necesario seleccionar una opción de biométrica", targetLanguage1)
                     tkMessageBox.showerror("Error", error_message)
@@ -140,6 +142,7 @@ def onClick(event):
 
 def update_suggestions():
     global suggestions
+    suggestions = []
     songaName = songEntry.get()
     buttonSoundEffect()
     if songaName:
@@ -156,7 +159,7 @@ def update_suggestions():
 
 
 def downloadAudio():
-    global songCount, suggestions
+    global songCount, suggestions, songSelected
     print("Downloading audio")
     buttonSoundEffect()
     selectecIndex = suggestionListbox.curselection()
@@ -182,6 +185,7 @@ def downloadAudio():
                         downloadThread.start()
                         message = translateText("Primera canción descargada", targetLanguage1)
                         statusLabel.config(text=message)
+                        songSelected = str(selectedTitle)
 
                     elif songCount == 1:
                         songCount += 1
@@ -268,6 +272,7 @@ def takePhoto():
         cameraLabel.image = frame_tk
 
         window.update()
+
 # Create the main window
 window = tk.Tk()
 window.title("YouTube Audio Downloader")

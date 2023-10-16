@@ -3,10 +3,9 @@ import sys
 import os
 from googletrans import Translator
 
-#from loginConfig import configColorPalet, configSpecialEffect, configChangeSelectedSong
-#from customSettingsSecond import startCustomSettingsSecond
-#from menu import principalMenu
-
+# from loginConfig import configColorPalet, configSpecialEffect, configChangeSelectedSong
+# from customSettingsSecond import startCustomSettingsSecond
+# from menu import principalMenu
 
 
 """
@@ -15,9 +14,10 @@ summary: It starts the custom color settings window
 output: None
 """
 
+
 def startCustomSettingsSecond(user, language):
     pygame.init()
-# Constants
+    # Constants
     width, height = 800, 600
     white = (255, 255, 255)
     font = pygame.font.Font(None, 30)
@@ -73,13 +73,13 @@ def startCustomSettingsSecond(user, language):
         Summary: Draws the rectangles to put the name of every song
         Output: None
         """
+
     def drawRect():
         pygame.draw.rect(window, (0, 128, 255), palette1, 0)
         pygame.draw.rect(window, (80, 128, 255), palette2, 0)
         pygame.draw.rect(window, (150, 128, 255), palette3, 0)
         pygame.draw.rect(window, (0, 128, 255), palette4, 0)
         pygame.draw.rect(window, (0, 128, 255), palette5, 0)
-
 
     running = True
     while running:
@@ -92,17 +92,17 @@ def startCustomSettingsSecond(user, language):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # Check if the colors configuration button is pressed
 
-                    # Check which of the palettes is pressed
+                # Check which of the palettes is pressed
                 if palette1.collidepoint(event.pos):
-                    #configColorPalet("Palette 1", user)
+                    # configColorPalet("Palette 1", user)
                     running = False
                     try:
-                        startCustomSettings(user,language)
+                        startCustomSettings(user, language)
                     except():
                         print("error")
 
                 if palette2.collidepoint(event.pos):
-                    #configColorPalet("Palette 2", user)
+                    # configColorPalet("Palette 2", user)
                     running = False
                     try:
                         startCustomSettings(user, language)
@@ -110,7 +110,7 @@ def startCustomSettingsSecond(user, language):
                         print("error")
 
                 if palette3.collidepoint(event.pos):
-                    #configColorPalet("Palette 3", user)
+                    # configColorPalet("Palette 3", user)
                     running = False
                     try:
                         startCustomSettings(user, language)
@@ -118,7 +118,7 @@ def startCustomSettingsSecond(user, language):
                         print("error")
 
                 if palette4.collidepoint(event.pos):
-                    #configColorPalet("Palette 4", user)
+                    # configColorPalet("Palette 4", user)
                     running = False
                     try:
                         startCustomSettings(user, language)
@@ -126,7 +126,7 @@ def startCustomSettingsSecond(user, language):
                         print("error")
 
                 if palette5.collidepoint(event.pos):
-                    #configColorPalet("Palette 5", user)
+                    # configColorPalet("Palette 5", user)
                     running = False
                     try:
                         startCustomSettings(user, language)
@@ -135,13 +135,14 @@ def startCustomSettingsSecond(user, language):
 
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
-        #drawRect()
+        # drawRect()
 
         pygame.display.flip()
 
         # Quit pygame
     pygame.quit()
     sys.exit()
+
 
 def startCustomSettings(user, language):
     datapath = os.getcwd() + "\Data"
@@ -235,7 +236,7 @@ def startCustomSettings(user, language):
                         50 * scaleFactorHeigth)
 
     readyButton = pygame.Rect(860 * scaleFactorWidth, 960 * scaleFactorHeigth, 200 * scaleFactorWidth,
-                        80 * scaleFactorHeigth)
+                              80 * scaleFactorHeigth)
 
     """
     Input: None
@@ -244,11 +245,11 @@ def startCustomSettings(user, language):
     """
 
     def drawRect():
-        #pygame.draw.rect(window, (0, 128, 255), palette1, 0)
-        #pygame.draw.rect(window, (80, 128, 255), palette2, 0)
-        #pygame.draw.rect(window, (150, 128, 255), palette3, 0)
-        #pygame.draw.rect(window, (0, 128, 255), palette4, 0)
-        #pygame.draw.rect(window, (0, 128, 255), palette5, 0)
+        # pygame.draw.rect(window, (0, 128, 255), palette1, 0)
+        # pygame.draw.rect(window, (80, 128, 255), palette2, 0)
+        # pygame.draw.rect(window, (150, 128, 255), palette3, 0)
+        # pygame.draw.rect(window, (0, 128, 255), palette4, 0)
+        # pygame.draw.rect(window, (0, 128, 255), palette5, 0)
 
         pygame.draw.rect(window, (255, 255, 255), song1, 0)
         pygame.draw.rect(window, (0, 0, 0), fill1, 0)
@@ -257,7 +258,7 @@ def startCustomSettings(user, language):
         pygame.draw.rect(window, (255, 255, 255), song3, 0)
         pygame.draw.rect(window, (0, 0, 0), fill3, 0)
 
-        #pygame.draw.rect(window, (0, 128, 255), readyButton, 0)
+        # pygame.draw.rect(window, (0, 128, 255), readyButton, 0)
 
     """
     input: text (str), x coord (int), y coord (int)
@@ -288,12 +289,11 @@ def startCustomSettings(user, language):
                 # Check if the colors configuration button is pressed
                 if configurationsWindow:
 
-
                     if colorsRect.collidepoint(event.pos):
-                        startCustomSettingsSecond(user,language)
-                        #scaledImage = pygame.transform.scale(backgroundColors, (newWidth, newHeigth))
-                        #colorsWindow = True
-                        #configurationsWindow = False
+                        startCustomSettingsSecond(user, language)
+                        # scaledImage = pygame.transform.scale(backgroundColors, (newWidth, newHeigth))
+                        # colorsWindow = True
+                        # configurationsWindow = False
 
                     if effectsRect.collidepoint(event.pos):
                         pass
@@ -314,25 +314,24 @@ def startCustomSettings(user, language):
                         musicWindow = False
                         configurationsWindow = True
                         draw = False
-                        #configChangeSelectedSong(songList[0], user)
+                        # configChangeSelectedSong(songList[0], user)
                         scaledImage = pygame.transform.scale(backgroundSettings, (newWidth, newHeigth))
                     if song2.collidepoint(event.pos):
                         musicWindow = False
                         configurationsWindow = True
                         draw = False
-                        #configChangeSelectedSong(songList[1], user)
+                        # configChangeSelectedSong(songList[1], user)
 
                         scaledImage = pygame.transform.scale(backgroundSettings, (newWidth, newHeigth))
                     if song3.collidepoint(event.pos):
                         musicWindow = False
                         configurationsWindow = True
                         draw = False
-                        #configChangeSelectedSong(songList[2], user)
+                        # configChangeSelectedSong(songList[2], user)
                         scaledImage = pygame.transform.scale(backgroundSettings, (newWidth, newHeigth))
 
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
-
 
         if draw:
             drawRect()
@@ -347,5 +346,4 @@ def startCustomSettings(user, language):
     pygame.quit()
     sys.exit()
 
-
-#startCustomSettings("Felipe", "es")
+# startCustomSettings("Felipe", "es")

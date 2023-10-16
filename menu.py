@@ -2,14 +2,12 @@ import pygame
 import sys
 import os
 from googletrans import Translator
-#from customSettings import startCustomSettings, startCustomSettingsSecond
-from loginConfig import configColorPalet, configChangeSelectedSong, configSpecialEffectProjectile, configSpecialEffectEagleSkin, configSpecialEffectGoblinSkin, configSpecialEffectSounds
+
+import baseLogin
+# from customSettings import startCustomSettings, startCustomSettingsSecond
+from loginConfig import configColorPalet, configChangeSelectedSong, configSpecialEffectProjectile, \
+    configSpecialEffectEagleSkin, configSpecialEffectGoblinSkin, configSpecialEffectSounds
 from musicHandler import buttonSoundEffect
-from localMultiplayer import setVariables
-from loginSecondUser import newLogin
-
-
-
 
 
 def translateText(text, targetLanguage):
@@ -27,6 +25,8 @@ input: user (str), language (str)
 summary: It starts the custom color settings window
 output: None
 """
+
+
 def colorsWindow(user, language, palette):
     pygame.init()
     # Constants
@@ -79,7 +79,6 @@ def colorsWindow(user, language, palette):
                            285 * scaleFactorHeigth)
     palette5 = pygame.Rect(1067 * scaleFactorWidth, 655 * scaleFactorHeigth, 400 * scaleFactorWidth,
                            285 * scaleFactorHeigth)
-
 
     """
         Input: None
@@ -153,7 +152,7 @@ def colorsWindow(user, language, palette):
 
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
-        #drawRect()
+        # drawRect()
 
         pygame.display.flip()
 
@@ -161,7 +160,8 @@ def colorsWindow(user, language, palette):
     pygame.quit()
     sys.exit()
 
-def songsWindow(user,language,palette):
+
+def songsWindow(user, language, palette):
     datapath = os.getcwd() + "\Data"
     personPath = datapath + "\\" + user
     musicPath = personPath + "\Music"
@@ -229,11 +229,13 @@ def songsWindow(user,language,palette):
         Summary: Draws the rectangles to put the name of every song
         Output: None
         """
+
     def drawText(text, x, y):
         renderedText = font.render(text, True, (255, 255, 255))
         window.blit(renderedText, (x, y))
 
     clock = pygame.time.Clock()
+
     def drawRect():
         pygame.draw.rect(window, (255, 255, 255), song1, 0)
         pygame.draw.rect(window, (0, 0, 0), fill1, 0)
@@ -266,10 +268,8 @@ def songsWindow(user,language,palette):
                     configChangeSelectedSong(songList[2], user)
                     customsSettingsWindow(user, language, palette)
 
-
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
-
 
         drawRect()
         drawText(songList[0], centerX - 180, centerY - 55)
@@ -281,6 +281,7 @@ def songsWindow(user,language,palette):
         # Quit pygame
     pygame.quit()
     sys.exit()
+
 
 def effectsWindow(user, language, palette):
     pygame.init()
@@ -325,27 +326,27 @@ def effectsWindow(user, language, palette):
     scaledImage = pygame.transform.scale(backgroundColors, (newWidth, newHeigth))
 
     animation1 = pygame.Rect(220 * scaleFactorWidth, 455 * scaleFactorHeigth, 430 * scaleFactorWidth,
-                           170 * scaleFactorHeigth)
+                             170 * scaleFactorHeigth)
     animation2 = pygame.Rect(220 * scaleFactorWidth, 760 * scaleFactorHeigth, 430 * scaleFactorWidth,
                              170 * scaleFactorHeigth)
     eagle1 = pygame.Rect(900 * scaleFactorWidth, 472 * scaleFactorHeigth, 143 * scaleFactorWidth,
-                             140 * scaleFactorHeigth)
+                         140 * scaleFactorHeigth)
     eagle2 = pygame.Rect(1063 * scaleFactorWidth, 472 * scaleFactorHeigth, 143 * scaleFactorWidth,
-                             140 * scaleFactorHeigth)
+                         140 * scaleFactorHeigth)
     eagle3 = pygame.Rect(900 * scaleFactorWidth, 625 * scaleFactorHeigth, 143 * scaleFactorWidth,
-                             145 * scaleFactorHeigth)
+                         145 * scaleFactorHeigth)
     eagle4 = pygame.Rect(1063 * scaleFactorWidth, 625 * scaleFactorHeigth, 143 * scaleFactorWidth,
-                             145 * scaleFactorHeigth)
+                         145 * scaleFactorHeigth)
     skin1 = pygame.Rect(1515 * scaleFactorWidth, 468 * scaleFactorHeigth, 143 * scaleFactorWidth,
-                             140 * scaleFactorHeigth)
+                        140 * scaleFactorHeigth)
     skin2 = pygame.Rect(1677 * scaleFactorWidth, 468 * scaleFactorHeigth, 143 * scaleFactorWidth,
-                             140 * scaleFactorHeigth)
+                        140 * scaleFactorHeigth)
     skin3 = pygame.Rect(1515 * scaleFactorWidth, 625 * scaleFactorHeigth, 143 * scaleFactorWidth,
-                             145 * scaleFactorHeigth)
+                        145 * scaleFactorHeigth)
     skin4 = pygame.Rect(1677 * scaleFactorWidth, 625 * scaleFactorHeigth, 143 * scaleFactorWidth,
-                             145 * scaleFactorHeigth)
+                        145 * scaleFactorHeigth)
     skin5 = pygame.Rect(1515 * scaleFactorWidth, 790 * scaleFactorHeigth, 143 * scaleFactorWidth,
-                             135 * scaleFactorHeigth)
+                        135 * scaleFactorHeigth)
     ready = pygame.Rect(860 * scaleFactorWidth, 960 * scaleFactorHeigth, 200 * scaleFactorWidth,
                         80 * scaleFactorHeigth)
 
@@ -416,10 +417,9 @@ def effectsWindow(user, language, palette):
                     buttonSoundEffect()
                     customsSettingsWindow(user, language, palette)
 
-
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
-        #drawRect()
+        # drawRect()
 
         pygame.display.flip()
 
@@ -459,7 +459,6 @@ def customsSettingsWindow(user, language, palette):
     if palette == "Palette 5":
         backgroundSettings = pygame.image.load('visuals/menu/41.png')
 
-
     # Get the image's original dimensions
     originalWidth, originalHeigth = backgroundSettings.get_size()
 
@@ -485,25 +484,23 @@ def customsSettingsWindow(user, language, palette):
     textureRect = pygame.Rect(880 * scaleFactorWidth, 570 * scaleFactorHeigth, 590 * scaleFactorWidth,
                               145 * scaleFactorHeigth)
 
-
-
     menuButton = pygame.Rect(100 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
                              75 * scaleFactorHeigth)
     bestButton = pygame.Rect(640 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
-                          75 * scaleFactorHeigth)
+                             75 * scaleFactorHeigth)
     helpButton = pygame.Rect(910 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
-                                       75 * scaleFactorHeigth)
-
+                             75 * scaleFactorHeigth)
 
     """
     input: text (str), x coord (int), y coord (int)
     summary: Renders and displays text on the screen
     outputs: None
     """
+
     def drawText(text, x, y, size):
         font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size)
         renderedText = font.render(text, True, (255, 255, 255))
-        window.blit(renderedText, (x*scaleFactorWidth, y*scaleFactorHeigth))
+        window.blit(renderedText, (x * scaleFactorWidth, y * scaleFactorHeigth))
 
     clock = pygame.time.Clock()
 
@@ -516,8 +513,6 @@ def customsSettingsWindow(user, language, palette):
         pygame.draw.rect(window, (255, 255, 255), musicRect, 0)
         pygame.draw.rect(window, (255, 255, 255), textureRect, 0)
         pygame.draw.rect(window, (255, 255, 255), menuButton, 0)
-
-
 
     running = True
     while running:
@@ -539,7 +534,7 @@ def customsSettingsWindow(user, language, palette):
 
                     if musicRect.collidepoint(event.pos):
                         buttonSoundEffect()
-                        songsWindow(user,language,palette)
+                        songsWindow(user, language, palette)
 
                     if textureRect.collidepoint(event.pos):
                         buttonSoundEffect()
@@ -547,19 +542,18 @@ def customsSettingsWindow(user, language, palette):
 
                     if menuButton.collidepoint(event.pos):
                         buttonSoundEffect()
-                        principalMenu(user,language)
+                        principalMenu(user, language)
 
                     if bestButton.collidepoint(event.pos):
                         buttonSoundEffect()
-                        bestWindow(user,language,palette)
+                        bestWindow(user, language, palette)
 
                     if helpButton.collidepoint(event.pos):
                         buttonSoundEffect()
 
-
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
-        #drawRect()
+        # drawRect()
         if language == "es":
             drawText("Jugar", 165, 245, 35)
             drawText("Configuración", 385, 235, 25)
@@ -569,7 +563,7 @@ def customsSettingsWindow(user, language, palette):
             drawText("Ayuda", 970, 245, 35)
 
             drawText("Selección de colores", 135, 440, 40)
-            drawText("Música", 300, 610, 40 )
+            drawText("Música", 300, 610, 40)
             drawText("Efectos de sonido", 940, 440, 40)
             drawText("Texturas", 1065, 610, 40)
 
@@ -592,7 +586,8 @@ def customsSettingsWindow(user, language, palette):
     pygame.quit()
     sys.exit()
 
-def bestWindow(user,language, palette):
+
+def bestWindow(user, language, palette):
     # Constants
     width, height = 800, 600
     white = (255, 255, 255)
@@ -645,7 +640,7 @@ def bestWindow(user,language, palette):
     configurationsButton = pygame.Rect(370 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
                                        75 * scaleFactorHeigth)
     bestButton = pygame.Rect(640 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
-                          75 * scaleFactorHeigth)
+                             75 * scaleFactorHeigth)
     helpButton = pygame.Rect(910 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
                              75 * scaleFactorHeigth)
 
@@ -658,7 +653,7 @@ def bestWindow(user,language, palette):
     def drawText(text, x, y, size):
         font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size)
         renderedText = font.render(text, True, (255, 255, 255))
-        window.blit(renderedText, (x*scaleFactorWidth, y*scaleFactorHeigth))
+        window.blit(renderedText, (x * scaleFactorWidth, y * scaleFactorHeigth))
 
     clock = pygame.time.Clock()
 
@@ -676,7 +671,7 @@ def bestWindow(user,language, palette):
                     principalMenu(user, language)
                 if configurationsButton.collidepoint(event.pos):
                     buttonSoundEffect()
-                    customsSettingsWindow(user,language,palette)
+                    customsSettingsWindow(user, language, palette)
                 if helpButton.collidepoint(event.pos):
                     buttonSoundEffect()
 
@@ -704,12 +699,12 @@ def bestWindow(user,language, palette):
     pygame.quit()
     sys.exit()
 
+
 def principalMenu(user, language):
     pygame.init()
-# Constants
+    # Constants
     width, height = 800, 600
     white = (255, 255, 255)
-
 
     # Set screen resolution
     screenInfo = pygame.display.Info()
@@ -745,7 +740,8 @@ def principalMenu(user, language):
             backgroundMainMenu = pygame.image.load('visuals/menu/36.png')
         if palette == "Palette 5":
             backgroundMainMenu = pygame.image.load('visuals/menu/40.png')
-
+        else:
+            backgroundMainMenu = pygame.image.load('visuals/menu/24.png')
 
     except:
         backgroundMainMenu = pygame.image.load('visuals/menu/28.png')
@@ -767,31 +763,32 @@ def principalMenu(user, language):
     scaledImage = pygame.transform.scale(backgroundMainMenu, (newWidth, newHeigth))
 
     menuButton = pygame.Rect(100 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
-                           75 * scaleFactorHeigth)
+                             75 * scaleFactorHeigth)
     configurationsButton = pygame.Rect(370 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
-                          75 * scaleFactorHeigth)
+                                       75 * scaleFactorHeigth)
     bestButton = pygame.Rect(640 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
-                          75 * scaleFactorHeigth)
+                             75 * scaleFactorHeigth)
     helpButton = pygame.Rect(910 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
-                          75 * scaleFactorHeigth)
+                             75 * scaleFactorHeigth)
     playLocalSolo = pygame.Rect(105 * scaleFactorWidth, 395 * scaleFactorHeigth, 620 * scaleFactorWidth,
-                          580 * scaleFactorHeigth)
+                                580 * scaleFactorHeigth)
     playLocalMulti = pygame.Rect(740 * scaleFactorWidth, 398 * scaleFactorHeigth, 620 * scaleFactorWidth,
-                          275 * scaleFactorHeigth)
+                                 275 * scaleFactorHeigth)
     playOnline = pygame.Rect(740 * scaleFactorWidth, 690 * scaleFactorHeigth, 620 * scaleFactorWidth,
-                          275 * scaleFactorHeigth)
+                             275 * scaleFactorHeigth)
 
     """
         Input: None
         Summary: Draws the rectangles to put the name of every song
         Output: None
         """
+
     def drawRect():
         pass
-        #pygame.draw.rect(window, (0, 128, 255), colorsButton, 0)
-        #pygame.draw.rect(window, (0, 100, 255), button2, 0)
-        #pygame.draw.rect(window, (0, 174, 255), button3, 0)
-        #pygame.draw.rect(window, (0, 233, 255), button4, 0)
+        # pygame.draw.rect(window, (0, 128, 255), colorsButton, 0)
+        # pygame.draw.rect(window, (0, 100, 255), button2, 0)
+        # pygame.draw.rect(window, (0, 174, 255), button3, 0)
+        # pygame.draw.rect(window, (0, 233, 255), button4, 0)
         pygame.draw.rect(window, (0, 63, 255), playLocalSolo, 0)
         pygame.draw.rect(window, (0, 128, 255), playLocalMulti, 0)
         pygame.draw.rect(window, (0, 128, 255), playOnline, 0)
@@ -799,7 +796,7 @@ def principalMenu(user, language):
     def drawText(text, x, y, size):
         font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size)
         renderedText = font.render(text, True, (255, 255, 255))
-        window.blit(renderedText, (x*scaleFactorWidth, y*scaleFactorHeigth))
+        window.blit(renderedText, (x * scaleFactorWidth, y * scaleFactorHeigth))
 
     running = True
     while running:
@@ -813,14 +810,14 @@ def principalMenu(user, language):
                 # Check if the colors configuration button is pressed
                 if menuButton.collidepoint(event.pos):
                     buttonSoundEffect()
-                    principalMenu(user,language)
+                    principalMenu(user, language)
                 # Check which of the palettes is pressed
                 if configurationsButton.collidepoint(event.pos):
                     buttonSoundEffect()
                     customsSettingsWindow(user, language, palette)
                 if bestButton.collidepoint(event.pos):
                     buttonSoundEffect()
-                    bestWindow(user,language,palette)
+                    bestWindow(user, language, palette)
                 if helpButton.collidepoint(event.pos):
                     buttonSoundEffect()
                 if playLocalSolo.collidepoint(event.pos):
@@ -828,16 +825,14 @@ def principalMenu(user, language):
                     print("Solo")
                 if playLocalMulti.collidepoint(event.pos):
                     buttonSoundEffect()
-                    newLogin(user,language)
+                    baseLogin.startGame2(True, user)
                 if playOnline.collidepoint(event.pos):
                     buttonSoundEffect()
                     print("Online")
 
-
-
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
-        #drawRect()
+        # drawRect()
         if language == "es":
             drawText("Jugar", 165, 245, 35)
             drawText("Configuración", 385, 235, 25)
@@ -875,5 +870,6 @@ def principalMenu(user, language):
     pygame.quit()
     sys.exit()
 
+# principalMenu("Felipe", "en")
 
-#principalMenu("Felipe", "en")
+

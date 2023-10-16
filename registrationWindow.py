@@ -354,7 +354,7 @@ def startRegistrationWindow(targetLanguage):
 
         #pygame.draw.rect(window, (0, 128, 255), subButtonRect, 0)
 
-        pygame.draw.rect(window, (0, 128, 255), uploadImageRect, 0)
+        #pygame.draw.rect(window, (0, 128, 255), uploadImageRect, 0)
 
         updateImagePreview()
 

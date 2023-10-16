@@ -1,12 +1,16 @@
 import os
 import random
 import pygame
+import localMultiplayer
 
 # input       : The 2 users that are going to play and the lenguage
 # output      : The coin flip Window
 # descritpion : A window used to see who´s going to attack first
 
 def startCoinFlip(user1, user2, lenguage):
+    print(f'Primer Jugador : {user1}')
+    print(f'Segundo Jugador : {user2}')
+    print(f'Lenguaje : {lenguage}')
     winnerText = []
     if lenguage == "en":
         winnerText = [user1 +" Attacks", user2+" Attacks", "Continue"]
@@ -94,9 +98,11 @@ def startCoinFlip(user1, user2, lenguage):
                     if button3_rect.collidepoint(mouse_pos) or button4_rect.collidepoint(mouse_pos):
                         if n == randomNumber:
                             print("Jugador 1 ataca") #se llama a la función con jugador 1 atacando
+                            localMultiplayer.setVariables(user1, user2, lenguage)
                             running = False
                         else:
                             print("Jugador 2 ataca") #se llama a la función con jugador 2 atacando
+                            localMultiplayer.setVariables(user2, user1, lenguage)
                             running = False
 
         screen.fill((0, 0, 0))
