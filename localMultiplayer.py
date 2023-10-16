@@ -8,7 +8,7 @@ power = 1
 
 skinGoblin = "4"
 skinProjectile = "1"
-paletteAtacker = "Palette 5"
+paletteAtacker = "Palette 3"
 paletteDefender = "Palette 5"
 
 pygame.init()
