@@ -23,9 +23,19 @@ angulo = 0
 speed = 0.3
 x = 0
 y = 0
-woodCounter = 0
 rotate = pygame.transform.rotate(barrera.imagen, angulo)
 rotation = 5
+barrera_positions = []
+placing_barrier = False
+counterWood = 0
+counterStone = 0
+counterSteel = 0
+wood = True
+stone = False
+steel = False
+increment_wood = False
+increment_Stone = False
+increment_Steel = False
 
 while True:
     for evento in pygame.event.get():
@@ -33,7 +43,7 @@ while True:
             pygame.quit()
             sys.exit()
        
-        #Evento de rotacion, movimiento y cambio de barrera
+        #Evento de rotacion, movimiento, cambio de barrera y posicionamiento 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_q]:
             angulo += rotation
@@ -65,7 +75,35 @@ while True:
             x -=10 
         if keys[pygame.K_d]:
             x +=10 
-        
+        if keys[pygame.K_r]:
+            if wood:
+                if counterWood < 10:
+                    placing_barrier = True
+                    barrera_positions.append((x, y, angulo, barrera.imagen))
+                    if not increment_wood:
+                        counterWood += 1
+                        increment_wood = True
+                    else:
+                        increment_wood = False
+            elif stone:
+                if counterStone < 10:
+                    placing_barrier = True
+                    barrera_positions.append((x, y, angulo, barrera.imagen))
+                    if not increment_Stone:
+                        counterStone += 1
+                        increment_Stone = True
+                    else:
+                        increment_Stone = False
+            elif steel:
+                if counterSteel < 10:
+                    placing_barrier = True
+                    barrera_positions.append((x, y, angulo, barrera.imagen))
+                    if not increment_Steel:
+                        counterSteel += 1
+                        increment_Steel = True
+                    else:
+                        increment_Steel = False
+                
     # Dibuja la imagen en la ventana
     screen.fill(bgColor)
     rotate = pygame.transform.rotate(barrera.imagen, angulo)
@@ -73,4 +111,11 @@ while True:
     clock.tick(FPS)
     # Dibuja la imagen rotada en la ventana
     screen.blit(rotate, rect_rotate)
+
+    #Coloca la imagen donde el jugador la quiere
+    for pos_x, pos_y, pos_angulo, pos_imagen in barrera_positions:
+        rotated_barrier = pygame.transform.rotate(pos_imagen, pos_angulo)
+        barrier_rect = rotated_barrier.get_rect(center=(width // 2 + pos_x, height // 2 + pos_y))
+        screen.blit(rotated_barrier, barrier_rect)
+        
     pygame.display.update()
