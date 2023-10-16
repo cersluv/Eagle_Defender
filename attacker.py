@@ -8,7 +8,7 @@ power = 1
 
 skinGoblin = "4"
 skinProjectile = "1"
-paletteAtacker = "Palette 3"
+paletteAtacker = "Palette 5"
 paletteDefender = "Palette 5"
 
 pygame.init()
@@ -18,6 +18,11 @@ goblinSpeed = 5
 projectileSpeed = 10
 projectileSize = 45
 projectileColor = (255, 0, 0)
+
+waterProjectile = None
+fireProjectile = None
+dynamiteProjectile = None
+
 screenWidth, screenHeight = pygame.display.Info().current_w, pygame.display.Info().current_h
 
 # Initialize the display
@@ -147,17 +152,19 @@ class Projectile:
         self.rect.y = self.startY - (self.initialVerticalVelocity * self.time - 0.5 * self.gravity * (self.time ** 2)) * self.scaleFactor
 
 
-    def draw(self):
-        if power == 1:
+    def draw(self, type):
+        if type == "water":
             screen.blit(waterImage, self.rect)
-        if power == 2:
+        if type == "fire":
             screen.blit(fireImage, self.rect)
-        if power == 3:
+        if type == "dynamite":
             screen.blit(dynamiteImage, self.rect)
 
 goblin = Goblin(screenWidth - 120, screenHeight // 2)
 projectile = None
-trajectoryPoints = []
+trajectoryPointsWater = []
+trajectoryPointsFire = []
+trajectoryPointsDynamite = []
 
 power1Rect = pygame.Rect(990 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
 power2Rect = pygame.Rect(1135 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
@@ -194,25 +201,51 @@ while running:
         goblin.rotate(2)
 
     if keys[pygame.K_SPACE]:
-        if trajectoryPoints:
-            trajectoryPoints.clear()
-        if projectile is None:
-            projectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
+        if waterProjectile is None and power == 1:
+            waterProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
+            trajectoryPointsWater.clear()
+
+        if fireProjectile is None and power == 2:
+            fireProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
+            trajectoryPointsFire.clear()
+
+        if dynamiteProjectile is None and power == 3:
+            dynamiteProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
+            trajectoryPointsDynamite.clear()
+
 
     screen.fill((0, 0, 0))
 
     screen.blit(scaledAtackerImage, (960, 0))
     screen.blit(scaledDefenderImage, (0, 0))
 
-    if len(trajectoryPoints) >= 2:
-        pygame.draw.lines(screen, white, False, trajectoryPoints, 2)
+    if len(trajectoryPointsWater) >= 2:
+        pygame.draw.lines(screen, "#aeddeb", False, trajectoryPointsWater, 2)
+    if len(trajectoryPointsFire) >= 2:
+        pygame.draw.lines(screen, "#ffa947", False, trajectoryPointsFire, 2)
+    if len(trajectoryPointsDynamite) >= 2:
+        pygame.draw.lines(screen, "#5c432c", False, trajectoryPointsDynamite, 2)
 
-    if projectile is not None:
-        trajectoryPoints.append(projectile.rect.center)
-        projectile.move()
-        projectile.draw()
-        if projectile.rect.x < 0 or projectile.rect.y > screenHeight:
-            projectile = None
+    if waterProjectile is not None:
+        trajectoryPointsWater.append(waterProjectile.rect.center)
+        waterProjectile.move()
+        waterProjectile.draw("water")
+        if waterProjectile.rect.x < 0 or waterProjectile.rect.y > screenHeight:
+            waterProjectile = None
+
+    if fireProjectile is not None:
+        trajectoryPointsFire.append(fireProjectile.rect.center)
+        fireProjectile.move()
+        fireProjectile.draw("fire")
+        if fireProjectile.rect.x < 0 or fireProjectile.rect.y > screenHeight:
+            fireProjectile = None
+
+    if dynamiteProjectile is not None:
+        trajectoryPointsDynamite.append(dynamiteProjectile.rect.center)
+        dynamiteProjectile.move()
+        dynamiteProjectile.draw("dynamite")
+        if dynamiteProjectile.rect.x < 0 or dynamiteProjectile.rect.y > screenHeight:
+            dynamiteProjectile = None
 
 
     goblin.draw()
@@ -229,13 +262,13 @@ while running:
     # Display angle, x, and y values
     angle_text = font.render(f"Angle: {goblin.angle} degrees", True, white)
     angle_text_rect = angle_text.get_rect()
-    angle_text_rect.topleft = (20, 20)
+    angle_text_rect.topleft = (1700, 20)
     x_text = font.render(f"X: {goblin.rect.x:.2f}", True, white)
     x_text_rect = x_text.get_rect()
-    x_text_rect.topleft = (20, 60)
+    x_text_rect.topleft = (1700, 60)
     y_text = font.render(f"Y: {goblin.rect.y:.2f}", True, white)
     y_text_rect = y_text.get_rect()
-    y_text_rect.topleft = (20, 100)
+    y_text_rect.topleft = (1700, 100)
 
 
 
