@@ -3,11 +3,13 @@ import sys
 import math
 
 global power
-power = 2
+power = 1
 
 
-skinGoblin = "5"
+skinGoblin = "4"
 skinProjectile = "1"
+paletteAtacker = "Palette 3"
+paletteDefender = "Palette 5"
 
 pygame.init()
 
@@ -22,6 +24,8 @@ screenWidth, screenHeight = pygame.display.Info().current_w, pygame.display.Info
 screen = pygame.display.set_mode((screenWidth, screenHeight), pygame.FULLSCREEN)
 pygame.display.set_caption("Goblin and Projectile")
 
+
+
 # Load the goblin image
 if skinGoblin == "1":
     goblinImage = pygame.image.load("visuals/goblin/redGob.png")
@@ -34,7 +38,7 @@ if skinGoblin == "4":
 if skinGoblin == "5":
     goblinImage = pygame.image.load("visuals/goblin/greenGob.png")
 
-goblinImage = pygame.transform.scale(goblinImage, (130, 130))
+goblinImage = pygame.transform.scale(goblinImage, (150, 150))
 
 # Load the projectile image
 if skinProjectile == "1":
@@ -56,7 +60,43 @@ if skinProjectile == "2":
 
 fireImage = pygame.transform.scale(fireImage, (projectileSize + 40, projectileSize))
 
+if paletteAtacker == "Palette 1":
+    atackerGameplay = pygame.image.load("visuals/gameWindows/3.png")
+if paletteDefender == "Palette 1":
+    defenderGameplay = pygame.image.load("visuals/gameWindows/8.png")
+if paletteAtacker == "Palette 2":
+    atackerGameplay = pygame.image.load("visuals/gameWindows/4.png")
+if paletteDefender == "Palette 2":
+    defenderGameplay = pygame.image.load("visuals/gameWindows/9.png")
+if paletteAtacker == "Palette 3":
+    atackerGameplay = pygame.image.load("visuals/gameWindows/5.png")
+if paletteDefender == "Palette 3":
+    defenderGameplay = pygame.image.load("visuals/gameWindows/10.png")
+if paletteAtacker == "Palette 4":
+    atackerGameplay = pygame.image.load("visuals/gameWindows/6.png")
+if paletteDefender == "Palette 4":
+    defenderGameplay = pygame.image.load("visuals/gameWindows/11.png")
+if paletteAtacker == "Palette 5":
+    atackerGameplay = pygame.image.load("visuals/gameWindows/7.png")
+if paletteDefender == "Palette 5":
+    defenderGameplay = pygame.image.load("visuals/gameWindows/12.png")
 
+# Get the image's original dimensions
+originalWidth, originalHeigth = pygame.image.load("visuals/gameWindows/aaa.png").get_size()
+
+# Calculate the scaling factors to fit the image to the screen
+scaleFactorWidth = screenWidth / originalWidth
+scaleFactorHeight = screenHeight / originalHeigth
+
+# Choose the minimum scaling factor to maintain aspect ratio
+minScaleFactor = min(scaleFactorWidth, scaleFactorHeight)
+
+# Scale the image while maintaining aspect ratio
+newWidth = int(originalWidth * minScaleFactor)
+newHeigth = int(originalHeigth * minScaleFactor)
+
+scaledAtackerImage = pygame.transform.scale(atackerGameplay, (newWidth/2, newHeigth))
+scaledDefenderImage = pygame.transform.scale(defenderGameplay, (newWidth/2, newHeigth))
 
 # Colors
 white = (255, 255, 255)
@@ -119,6 +159,11 @@ goblin = Goblin(screenWidth - 120, screenHeight // 2)
 projectile = None
 trajectoryPoints = []
 
+power1Rect = pygame.Rect(990 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
+power2Rect = pygame.Rect(1135 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
+power3Rect = pygame.Rect(1280 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
+
+
 running = True
 clock = pygame.time.Clock()
 
@@ -129,9 +174,15 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if power1Rect.collidepoint(event.pos):
+                power = 1
+            if power2Rect.collidepoint(event.pos):
+                power = 2
+            if power3Rect.collidepoint(event.pos):
+                power = 3
 
     keys = pygame.key.get_pressed()
-
     if keys[pygame.K_UP]:
         goblin.move(0, -goblinSpeed)
     if keys[pygame.K_DOWN]:
@@ -150,6 +201,9 @@ while running:
 
     screen.fill((0, 0, 0))
 
+    screen.blit(scaledAtackerImage, (960, 0))
+    screen.blit(scaledDefenderImage, (0, 0))
+
     if len(trajectoryPoints) >= 2:
         pygame.draw.lines(screen, white, False, trajectoryPoints, 2)
 
@@ -160,7 +214,17 @@ while running:
         if projectile.rect.x < 0 or projectile.rect.y > screenHeight:
             projectile = None
 
+
     goblin.draw()
+    powers1 = pygame.draw.rect(screen, "#2e2f30", power1Rect, 0)
+    screen.blit(pygame.transform.scale(waterImage, (120 * scaleFactorWidth, 80 * scaleFactorHeight)), (1000 * scaleFactorWidth, 950* scaleFactorHeight))
+    powers2 = pygame.draw.rect(screen, "#1a1b1c", power2Rect, 0)
+    screen.blit(pygame.transform.scale(fireImage, (120 * scaleFactorWidth, 60 * scaleFactorHeight)), (1155 * scaleFactorWidth, 955* scaleFactorHeight))
+    powers3 = pygame.draw.rect(screen, "#2e2f30", power3Rect, 0)
+    screen.blit(pygame.transform.scale(dynamiteImage, (80 * scaleFactorWidth, 80* scaleFactorHeight)), (1310 * scaleFactorWidth, 950* scaleFactorHeight))
+
+
+
 
     # Display angle, x, and y values
     angle_text = font.render(f"Angle: {goblin.angle} degrees", True, white)
@@ -172,6 +236,8 @@ while running:
     y_text = font.render(f"Y: {goblin.rect.y:.2f}", True, white)
     y_text_rect = y_text.get_rect()
     y_text_rect.topleft = (20, 100)
+
+
 
     screen.blit(angle_text, angle_text_rect)
     screen.blit(x_text, x_text_rect)
