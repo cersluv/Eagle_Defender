@@ -14,7 +14,7 @@ from mtcnn import MTCNN
 import coinFlip
 import loginConfig
 import menu
-from musicHandler import musicPlayer, buttonSoundEffect
+from musicHandler import musicPlayer, buttonSoundEffect, playMusicUser
 from questionLogin import startQuestionLogin
 from registrationWindow import startRegistrationWindow
 
@@ -147,6 +147,7 @@ def startBaseLogin(language, secondUserBool, firstUser):
                             tkMessageBox.showerror("Error", errorMessage)
                         else:
                             if not secondUserBool:
+                                playMusicUser(textUsername)
                                 menu.principalMenu(textUsername, language)
                             else:
                                 coinFlip.startCoinFlip(firstUser, textUsername, language)
@@ -449,6 +450,7 @@ def startGame2(secondUserBool, firstUser):
                     print(f'{correctUser[1]}')
                     if not secondUserBool:
                         menu.principalMenu(correctUser[1], language[changeLanguage])
+                        playMusicUser(correctUser[1])
                     else:
                         coinFlip.startCoinFlip(firstUser, correctUser[1], language[changeLanguage])
 

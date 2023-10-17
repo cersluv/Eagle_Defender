@@ -8,7 +8,7 @@ import coinFlip
 import menu
 from baseLogin import startBaseLogin
 from registrationWindow import startRegistrationWindow
-from musicHandler import musicPlayer, buttonSoundEffect
+from musicHandler import musicPlayer, buttonSoundEffect, playMusicUser
 import pygame.transform
 
 def navegabilityMain(secondUserBool, firstUser):
@@ -236,6 +236,7 @@ def navegabilityMain(secondUserBool, firstUser):
                     print(f'{correctUser[1]}')
                     if not secondUserBool:
                         menu.principalMenu(correctUser[1], language[changeLanguage])
+                        playMusicUser(correctUser[1])
                     else:
                         coinFlip.startCoinFlip(firstUser, correctUser[1], language[changeLanguage])
 

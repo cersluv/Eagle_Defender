@@ -230,7 +230,7 @@ def downloadYtVideo(yt, selected_title):
     outputPath = f"Data/{cleanTextUsername}/Music/"
     os.makedirs(os.path.dirname(outputPath), exist_ok=True)
     audio_stream = yt.streams.filter(only_audio=True).first()
-    audio_stream.download(output_path=outputPath, filename=f"{selected_title}.mp3")
+    audio_stream.download(output_path=outputPath)
 
 
 def takePhoto():

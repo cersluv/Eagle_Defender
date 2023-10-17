@@ -9,7 +9,7 @@ from localMultiplayer import setVariables
 
 import loginConfig
 import menu
-from musicHandler import buttonSoundEffect
+from musicHandler import buttonSoundEffect, playMusicUser
 
 
 def getRandomQuestions(questions, numQuestions=2):
@@ -145,6 +145,7 @@ def startQuestionLogin(user, language, secondUserBool, firstUser):
                         else:
                             if not secondUserBool:
                                 menu.principalMenu(user, language)
+                                playMusicUser(user)
                             else:
                                 coinFlip.startCoinFlip(firstUser, user, language)
                     except():

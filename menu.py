@@ -483,7 +483,8 @@ def customsSettingsWindow(user, language, palette):
                             145 * scaleFactorHeigth)
     textureRect = pygame.Rect(880 * scaleFactorWidth, 570 * scaleFactorHeigth, 590 * scaleFactorWidth,
                               145 * scaleFactorHeigth)
-
+    configurationsButton = pygame.Rect(370 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
+                                       75 * scaleFactorHeigth)
     menuButton = pygame.Rect(100 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
                              75 * scaleFactorHeigth)
     bestButton = pygame.Rect(640 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
@@ -544,12 +545,31 @@ def customsSettingsWindow(user, language, palette):
                         buttonSoundEffect()
                         principalMenu(user, language)
 
+                    if configurationsButton.collidepoint(event.pos):
+                        buttonSoundEffect()
+                        customsSettingsWindow(user,language,palette)
+
                     if bestButton.collidepoint(event.pos):
                         buttonSoundEffect()
                         bestWindow(user, language, palette)
 
                     if helpButton.collidepoint(event.pos):
                         buttonSoundEffect()
+                        if palette == "Palette 1":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/27.png'),
+                                                                 (newWidth, newHeigth))
+                        if palette == "Palette 2":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/31.png'),
+                                                                 (newWidth, newHeigth))
+                        if palette == "Palette 3":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/35.png'),
+                                                                 (newWidth, newHeigth))
+                        if palette == "Palette 4":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/39.png'),
+                                                                 (newWidth, newHeigth))
+                        if palette == "Palette 5":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/43.png'),
+                                                                 (newWidth, newHeigth))
 
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
@@ -643,7 +663,6 @@ def bestWindow(user, language, palette):
                              75 * scaleFactorHeigth)
     helpButton = pygame.Rect(910 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
                              75 * scaleFactorHeigth)
-
     """
     input: text (str), x coord (int), y coord (int)
     summary: Renders and displays text on the screen
@@ -672,8 +691,26 @@ def bestWindow(user, language, palette):
                 if configurationsButton.collidepoint(event.pos):
                     buttonSoundEffect()
                     customsSettingsWindow(user, language, palette)
+                if bestButton.collidepoint(event.pos):
+                    buttonSoundEffect()
+                    bestWindow(user,language, palette)
                 if helpButton.collidepoint(event.pos):
                     buttonSoundEffect()
+                    if palette == "Palette 1":
+                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/27.png'),
+                                                             (newWidth, newHeigth))
+                    if palette == "Palette 2":
+                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/31.png'),
+                                                             (newWidth, newHeigth))
+                    if palette == "Palette 3":
+                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/35.png'),
+                                                             (newWidth, newHeigth))
+                    if palette == "Palette 4":
+                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/39.png'),
+                                                             (newWidth, newHeigth))
+                    if palette == "Palette 5":
+                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/43.png'),
+                                                             (newWidth, newHeigth))
 
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
@@ -776,6 +813,7 @@ def principalMenu(user, language):
     playOnline = pygame.Rect(740 * scaleFactorWidth, 690 * scaleFactorHeigth, 620 * scaleFactorWidth,
                              275 * scaleFactorHeigth)
 
+    main = True
     """
         Input: None
         Summary: Draws the rectangles to put the name of every song
@@ -819,6 +857,17 @@ def principalMenu(user, language):
                     bestWindow(user, language, palette)
                 if helpButton.collidepoint(event.pos):
                     buttonSoundEffect()
+                    main = False
+                    if palette == "Palette 1":
+                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/27.png'), (newWidth, newHeigth))
+                    if palette == "Palette 2":
+                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/31.png'), (newWidth, newHeigth))
+                    if palette == "Palette 3":
+                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/35.png'), (newWidth, newHeigth))
+                    if palette == "Palette 4":
+                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/39.png'), (newWidth, newHeigth))
+                    if palette == "Palette 5":
+                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/43.png'), (newWidth, newHeigth))
                 if playLocalSolo.collidepoint(event.pos):
                     buttonSoundEffect()
                     print("Solo")
@@ -839,14 +888,14 @@ def principalMenu(user, language):
             drawText("Mejores", 710, 235, 25)
             drawText("puntuaciones", 660, 270, 25)
             drawText("Ayuda", 970, 245, 35)
+            if main:
+                drawText("Modo", 500, 840, 60)
+                drawText("solitario", 355, 895, 60)
 
-            drawText("Modo", 500, 840, 60)
-            drawText("solitario", 355, 895, 60)
+                drawText("Multijugador", 755, 400, 40)
+                drawText("local", 755, 440, 40)
 
-            drawText("Multijugador", 755, 400, 40)
-            drawText("local", 755, 440, 40)
-
-            drawText("En línea", 755, 700, 40)
+                drawText("En línea", 755, 700, 40)
 
         if language == "en":
             drawText("Play", 180, 245, 35)
@@ -855,20 +904,20 @@ def principalMenu(user, language):
             drawText("Best", 740, 235, 25)
             drawText("Scores", 715, 270, 25)
             drawText("Help", 1000, 245, 35)
+            if main:
+                drawText("Solo", 530, 840, 60)
+                drawText("mode", 515, 895, 60)
 
-            drawText("Solo", 530, 840, 60)
-            drawText("mode", 515, 895, 60)
+                drawText("Local", 755, 400, 40)
+                drawText("multiplayer", 755, 440, 40)
 
-            drawText("Local", 755, 400, 40)
-            drawText("multiplayer", 755, 440, 40)
-
-            drawText("Online", 755, 700, 40)
+                drawText("Online", 755, 700, 40)
         pygame.display.flip()
 
         # Quit pygame
     pygame.quit()
     sys.exit()
 
-# principalMenu("Felipe", "en")
+#principalMenu("Felipe", "en")
 
 
