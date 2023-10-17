@@ -32,8 +32,9 @@ def playMusicUser(user):
 
     input_file = "Data/Sebas/Music/Hola (Remix).mp4"
     media = vlc_instance.media_new(input_file)
+    output_file = "output_file.mp3"
 
-    options = ":sout=#transcode{vcodec=none,acodec=mp3,ab=192,channels=2,samplerate=44100}:std{mux=mp3,dst=output_file.mp3}"
+    options = f"--sout='#transcode{{acodec=mp3,ab=192,channels=2,samplerate=44100}}:std{{access=file,mux=raw,dst={output_file}}}'"
 
 
     media.add_option(options)
