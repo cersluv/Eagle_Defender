@@ -7,7 +7,8 @@ import baseLogin
 # from customSettings import startCustomSettings, startCustomSettingsSecond
 from loginConfig import configColorPalet, configChangeSelectedSong, configSpecialEffectProjectile, \
     configSpecialEffectEagleSkin, configSpecialEffectGoblinSkin, configSpecialEffectSounds
-from musicHandler import buttonSoundEffect
+from musicHandler import buttonSoundEffect, playMusicUser
+from HoFConfig import getMatrixScores
 
 
 def translateText(text, targetLanguage):
@@ -256,16 +257,19 @@ def songsWindow(user, language, palette):
                 if song1.collidepoint(event.pos):
                     buttonSoundEffect()
                     configChangeSelectedSong(songList[0], user)
+                    playMusicUser(user)
                     customsSettingsWindow(user, language, palette)
 
                 if song2.collidepoint(event.pos):
                     buttonSoundEffect()
                     configChangeSelectedSong(songList[1], user)
+                    playMusicUser(user)
                     customsSettingsWindow(user, language, palette)
 
                 if song3.collidepoint(event.pos):
                     buttonSoundEffect()
                     configChangeSelectedSong(songList[2], user)
+                    playMusicUser(user)
                     customsSettingsWindow(user, language, palette)
 
         # Blit the scaled image onto the screen
@@ -492,6 +496,8 @@ def customsSettingsWindow(user, language, palette):
     helpButton = pygame.Rect(910 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
                              75 * scaleFactorHeigth)
 
+
+    main = True
     """
     input: text (str), x coord (int), y coord (int)
     summary: Renders and displays text on the screen
@@ -499,7 +505,7 @@ def customsSettingsWindow(user, language, palette):
     """
 
     def drawText(text, x, y, size):
-        font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size)
+        font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size * int(scaleFactorWidth))
         renderedText = font.render(text, True, (255, 255, 255))
         window.blit(renderedText, (x * scaleFactorWidth, y * scaleFactorHeigth))
 
@@ -554,22 +560,43 @@ def customsSettingsWindow(user, language, palette):
                         bestWindow(user, language, palette)
 
                     if helpButton.collidepoint(event.pos):
+                        main = False
                         buttonSoundEffect()
                         if palette == "Palette 1":
-                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/27.png'),
-                                                                 (newWidth, newHeigth))
+                            if language == "es":
+                                scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp1.png'),
+                                                                     (newWidth, newHeigth))
+                            else:
+                                scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp1.png'),
+                                                                     (newWidth, newHeigth))
                         if palette == "Palette 2":
-                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/31.png'),
-                                                                 (newWidth, newHeigth))
+                            if language == "es":
+                                scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp2.png'),
+                                                                     (newWidth, newHeigth))
+                            else:
+                                scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp2.png'),
+                                                                     (newWidth, newHeigth))
                         if palette == "Palette 3":
-                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/35.png'),
-                                                                 (newWidth, newHeigth))
+                            if language == "es":
+                                scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp3.png'),
+                                                                     (newWidth, newHeigth))
+                            else:
+                                scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp3.png'),
+                                                                     (newWidth, newHeigth))
                         if palette == "Palette 4":
-                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/39.png'),
-                                                                 (newWidth, newHeigth))
+                            if language == "es":
+                                scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp4.png'),
+                                                                     (newWidth, newHeigth))
+                            else:
+                                scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp4.png'),
+                                                                     (newWidth, newHeigth))
                         if palette == "Palette 5":
-                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/43.png'),
-                                                                 (newWidth, newHeigth))
+                            if language == "es":
+                                scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp5.png'),
+                                                                     (newWidth, newHeigth))
+                            else:
+                                scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp5.png'),
+                                                                     (newWidth, newHeigth))
 
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
@@ -581,11 +608,11 @@ def customsSettingsWindow(user, language, palette):
             drawText("Mejores", 710, 235, 25)
             drawText("puntuaciones", 660, 270, 25)
             drawText("Ayuda", 970, 245, 35)
-
-            drawText("Selección de colores", 135, 440, 40)
-            drawText("Música", 300, 610, 40)
-            drawText("Efectos de sonido", 940, 440, 40)
-            drawText("Texturas", 1065, 610, 40)
+            if main:
+                drawText("Selección de colores", 135, 440, 40)
+                drawText("Música", 300, 610, 40)
+                drawText("Efectos de sonido", 940, 440, 40)
+                drawText("Texturas", 1065, 610, 40)
 
         if language == "en":
             drawText("Play", 180, 245, 35)
@@ -594,11 +621,11 @@ def customsSettingsWindow(user, language, palette):
             drawText("Best", 740, 235, 25)
             drawText("Scores", 715, 270, 25)
             drawText("Help", 1000, 245, 35)
-
-            drawText("Color picker", 235, 440, 40)
-            drawText("Music", 320, 610, 40)
-            drawText("Sound effects", 1000, 440, 40)
-            drawText("Textures", 1065, 610, 40)
+            if main:
+                drawText("Color picker", 235, 440, 40)
+                drawText("Music", 320, 610, 40)
+                drawText("Sound effects", 1000, 440, 40)
+                drawText("Textures", 1065, 610, 40)
         pygame.display.flip()
         clock.tick(30)
 
@@ -663,6 +690,8 @@ def bestWindow(user, language, palette):
                              75 * scaleFactorHeigth)
     helpButton = pygame.Rect(910 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
                              75 * scaleFactorHeigth)
+    main = True
+
     """
     input: text (str), x coord (int), y coord (int)
     summary: Renders and displays text on the screen
@@ -670,7 +699,7 @@ def bestWindow(user, language, palette):
     """
 
     def drawText(text, x, y, size):
-        font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size)
+        font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size * int(scaleFactorWidth))
         renderedText = font.render(text, True, (255, 255, 255))
         window.blit(renderedText, (x * scaleFactorWidth, y * scaleFactorHeigth))
 
@@ -696,24 +725,36 @@ def bestWindow(user, language, palette):
                     bestWindow(user,language, palette)
                 if helpButton.collidepoint(event.pos):
                     buttonSoundEffect()
+                    main = False
                     if palette == "Palette 1":
-                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/27.png'),
-                                                             (newWidth, newHeigth))
+                        if language == "es":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp1.png'), (newWidth, newHeigth))
+                        else:
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp1.png'), (newWidth, newHeigth))
                     if palette == "Palette 2":
-                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/31.png'),
-                                                             (newWidth, newHeigth))
+                        if language == "es":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp2.png'),(newWidth, newHeigth))
+                        else:
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp2.png'),(newWidth, newHeigth))
                     if palette == "Palette 3":
-                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/35.png'),
-                                                             (newWidth, newHeigth))
+                        if language == "es":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp3.png'),(newWidth, newHeigth))
+                        else:
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp3.png'),(newWidth, newHeigth))
                     if palette == "Palette 4":
-                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/39.png'),
-                                                             (newWidth, newHeigth))
+                        if language == "es":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp4.png'), (newWidth, newHeigth))
+                        else:
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp4.png'), (newWidth, newHeigth))
                     if palette == "Palette 5":
-                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/43.png'),
-                                                             (newWidth, newHeigth))
+                        if language == "es":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp5.png'), (newWidth, newHeigth))
+                        else:
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp5.png'), (newWidth, newHeigth))
 
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
+        HoFMatrix = getMatrixScores()
         if language == "es":
             drawText("Jugar", 165, 245, 35)
             drawText("Configuración", 385, 235, 25)
@@ -722,6 +763,32 @@ def bestWindow(user, language, palette):
             drawText("puntuaciones", 660, 270, 25)
             drawText("Ayuda", 970, 245, 35)
 
+            if main:
+                drawText("Usuario", centerX * 0.20, centerY * 0.75, 55)
+                drawText("Pts.", centerX * 0.65, centerY * 0.75, 55)
+
+                drawText("1. ", centerX * 0.13, centerY - centerY / 8, 45)
+                drawText(HoFMatrix[0][0], centerX * 0.22, centerY - centerY / 8, 45)
+                drawText(HoFMatrix[0][1], centerX * 0.65, centerY - centerY / 8, 45)
+
+                drawText("2. ", centerX * 0.13, centerY + centerY / 16, 45)
+                drawText(HoFMatrix[1][0], centerX * 0.22, centerY + centerY / 16, 45)
+                drawText(HoFMatrix[1][1], centerX * 0.65, centerY + centerY / 16, 45)
+
+                drawText("3. ", centerX * 0.13, centerY * 1.25, 45)
+                drawText(HoFMatrix[2][0], centerX * 0.22, centerY * 1.25, 45)
+                drawText(HoFMatrix[2][1], centerX * 0.65, centerY * 1.25, 45)
+
+                drawText("4. ", centerX * 0.13, centerY * 1.45, 45)
+                drawText(HoFMatrix[3][0], centerX * 0.22, centerY * 1.45, 45)
+                drawText(HoFMatrix[3][1], centerX * 0.65, centerY * 1.45, 45)
+
+                drawText("5. ", centerX * 0.13, centerY * 1.65, 45)
+                drawText(HoFMatrix[4][0], centerX * 0.22, centerY * 1.65, 45)
+                drawText(HoFMatrix[4][1], centerX * 0.65, centerY * 1.65, 45)
+
+
+
         if language == "en":
             drawText("Play", 180, 245, 35)
             drawText("Personalized", 400, 235, 25)
@@ -729,6 +796,24 @@ def bestWindow(user, language, palette):
             drawText("Best", 740, 235, 25)
             drawText("Scores", 715, 270, 25)
             drawText("Help", 1000, 245, 35)
+            if main:
+                drawText("Username", centerX * 0.20, centerY * 0.75, 55)
+                drawText("Score", centerX * 0.60, centerY * 0.75, 55)
+                drawText("1. ", centerX * 0.13, centerY - centerY / 8, 45)
+                drawText(HoFMatrix[0][0], centerX * 0.22, centerY - centerY / 8, 45)
+                drawText(HoFMatrix[0][1], centerX * 0.65, centerY - centerY / 8, 45)
+                drawText("2. ", centerX * 0.13, centerY + centerY / 16, 45)
+                drawText(HoFMatrix[1][0], centerX * 0.22, centerY + centerY / 16, 45)
+                drawText(HoFMatrix[1][1], centerX * 0.65, centerY + centerY / 16, 45)
+                drawText("3. ", centerX * 0.13, centerY * 1.25, 45)
+                drawText(HoFMatrix[2][0], centerX * 0.22, centerY * 1.25, 45)
+                drawText(HoFMatrix[2][1], centerX * 0.65, centerY * 1.25, 45)
+                drawText("4. ", centerX * 0.13, centerY * 1.45, 45)
+                drawText(HoFMatrix[3][0], centerX * 0.22, centerY * 1.45, 45)
+                drawText(HoFMatrix[3][1], centerX * 0.65, centerY * 1.45, 45)
+                drawText("5. ", centerX * 0.13, centerY * 1.65, 45)
+                drawText(HoFMatrix[4][0], centerX * 0.22, centerY * 1.65, 45)
+                drawText(HoFMatrix[4][1], centerX * 0.65, centerY * 1.65, 45)
         pygame.display.flip()
         clock.tick(30)
 
@@ -831,7 +916,7 @@ def principalMenu(user, language):
         pygame.draw.rect(window, (0, 128, 255), playOnline, 0)
 
     def drawText(text, x, y, size):
-        font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size)
+        font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size * int(scaleFactorWidth))
         renderedText = font.render(text, True, (255, 255, 255))
         window.blit(renderedText, (x * scaleFactorWidth, y * scaleFactorHeigth))
 
@@ -842,6 +927,7 @@ def principalMenu(user, language):
 
             if event.type == pygame.QUIT:
                 pygame.quit()
+                sys.exit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # Check if the colors configuration button is pressed
@@ -859,15 +945,31 @@ def principalMenu(user, language):
                     buttonSoundEffect()
                     main = False
                     if palette == "Palette 1":
-                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/27.png'), (newWidth, newHeigth))
+                        if language == "es":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp1.png'), (newWidth, newHeigth))
+                        else:
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp1.png'), (newWidth, newHeigth))
                     if palette == "Palette 2":
-                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/31.png'), (newWidth, newHeigth))
+                        if language == "es":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp2.png'),(newWidth, newHeigth))
+                        else:
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp2.png'),(newWidth, newHeigth))
                     if palette == "Palette 3":
-                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/35.png'), (newWidth, newHeigth))
+                        if language == "es":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp3.png'),(newWidth, newHeigth))
+                        else:
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp3.png'),(newWidth, newHeigth))
                     if palette == "Palette 4":
-                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/39.png'), (newWidth, newHeigth))
+                        if language == "es":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp4.png'), (newWidth, newHeigth))
+                        else:
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp4.png'), (newWidth, newHeigth))
                     if palette == "Palette 5":
-                        scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/43.png'), (newWidth, newHeigth))
+                        if language == "es":
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EsHelp5.png'), (newWidth, newHeigth))
+                        else:
+                            scaledImage = pygame.transform.scale(pygame.image.load('visuals/menu/EnHelp5.png'), (newWidth, newHeigth))
+
                 if playLocalSolo.collidepoint(event.pos):
                     buttonSoundEffect()
                     print("Solo")
@@ -882,12 +984,12 @@ def principalMenu(user, language):
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
         # drawRect()
         if language == "es":
-            drawText("Jugar", 165, 245, 35)
-            drawText("Configuración", 385, 235, 25)
-            drawText("personalizada", 390, 270, 25)
-            drawText("Mejores", 710, 235, 25)
-            drawText("puntuaciones", 660, 270, 25)
-            drawText("Ayuda", 970, 245, 35)
+            drawText("Jugar", 165 * scaleFactorWidth, 245 * scaleFactorHeigth, 35)
+            drawText("Configuración", 385 * scaleFactorWidth, 235 * scaleFactorHeigth, 25)
+            drawText("personalizada", 390 * scaleFactorWidth, 270 * scaleFactorHeigth, 25)
+            drawText("Mejores", 710 * scaleFactorWidth, 235 * scaleFactorHeigth, 25)
+            drawText("puntuaciones", 660 * scaleFactorWidth, 270 * scaleFactorHeigth, 25)
+            drawText("Ayuda", 970 * scaleFactorWidth, 245 * scaleFactorHeigth, 35)
             if main:
                 drawText("Modo", 500, 840, 60)
                 drawText("solitario", 355, 895, 60)
@@ -918,6 +1020,6 @@ def principalMenu(user, language):
     pygame.quit()
     sys.exit()
 
-#principalMenu("Felipe", "en")
+#principalMenu("DryGoz", "en")
 
 

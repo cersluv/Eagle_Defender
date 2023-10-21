@@ -267,6 +267,8 @@ def startGame():
 
         screen.blit(scaledAtackerImage, (960*scaleFactorWidth, 0))
         screen.blit(scaledDefenderImage, (0, 0))
+        #rectangulo1 = pygame.Rect(100, 230, 270, 475)
+        #rectangulo = pygame.draw.rect(screen, "#FF241F", rectangulo1, 0)
 
         if len(trajectoryPointsWater) >= 2:
             pygame.draw.lines(screen, "#aeddeb", False, trajectoryPointsWater, 2)
@@ -279,6 +281,8 @@ def startGame():
             trajectoryPointsWater.append(waterProjectile.rect.center)
             waterProjectile.move()
             waterProjectile.draw("water")
+            #if rectangulo1.collidepoint(waterProjectile.rect.x, waterProjectile.rect.y):
+             #   print("Chocaron")
             if waterProjectile.rect.x < 0 or waterProjectile.rect.y > screenHeight:
                 waterProjectile = None
 
@@ -337,6 +341,10 @@ def startGame():
         buttonText3_rect.topleft = (1290 * scaleFactorWidth, 933 * scaleFactorHeight)
 
 
+
+
+
+
         screen.blit(angle_text, angle_text_rect)
         screen.blit(x_text, x_text_rect)
         screen.blit(y_text, y_text_rect)
@@ -355,4 +363,4 @@ def startGame():
 
 # LO QUE SE LLAMA CUANDO SE GANA
 # setVariables("Cers2", "Felipe", "es")
-# setVariables("Felipe", "Cers2", "es")
+#setVariables("Felipe", "DryGoz", "es")

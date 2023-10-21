@@ -9,9 +9,13 @@ asafb = fb.GraphAPI(accessToken)
 #input      : The username and the profile picture from his data
 #description: This funtion creates a publication on the feed of eagle defender
 #output     : void
-def postTextToPage(user):
-    user = "¡Felcidades "+ user + "! Por llegar al salón de la fama :D"
-    url = f'https://graph.facebook.com/v18.0/{pageID}/feed?message={user}&access_token={accessToken}'
+def postTextToPage(user1, user2, time, language):
+    if language == "es":
+        msg = "El jugador " +user1+ " a vencido a " + user2 + " con un tiempo de "+time
+    if language == "en":
+        msg = "The Player " +user1+ " has beaten " + user2 + " with a time of "+time
+
+    url = f'https://graph.facebook.com/v18.0/{pageID}/feed?message={msg}&access_token={accessToken}'
     try:
         r = requests.post(url)
         r.raise_for_status()
@@ -33,7 +37,7 @@ def postTextToPage(user):
 #description: This funtion creates a publication on the feed of eagle defender
 #output     : void
 def postImageToPage(user, profilePic):
-    user = "¡Felcidades "+ user + "! Por llegar al salón de la fama :D"
+    user = "¡"+user + " a sido registrado en Eagle Defender! ¡Bienvenido!"
     try:
         asafb.put_photo(open(profilePic, "rb"), message=user)
     except requests.exceptions.HTTPError as errh:
@@ -45,4 +49,4 @@ def postImageToPage(user, profilePic):
     except requests.exceptions.RequestException as err:
         print("Error de solicitud:", err)
 
-#postImageToPage("Tzalil", "C:\\Users\\crseg\\OneDrive\\Escritorio\\Tzalil.png") Usage example
+#postImageToPage("Tzalil", "C:\\Users\\crseg\\OneDrive\\Escritorio\\Tzalil.png") Usage examplele

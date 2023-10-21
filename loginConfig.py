@@ -64,7 +64,7 @@ def registerConfiguration(user, Music):
     configPath = personPath + "\\configuration.txt"
     archivo = open(configPath, "w", encoding='utf-8')
     archivo.write("Palette 3" + "\n")
-    archivo.write(str(Music) + "\n")
+    archivo.write(str(Music) + ".txt" + "\n")
     archivo.write("1" + "\n")
     archivo.write("eagle1" + "\n")
     archivo.write("goblin1" + "\n")

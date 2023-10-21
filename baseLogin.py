@@ -16,6 +16,7 @@ from questionLogin import startQuestionLogin
 from registrationWindow import startRegistrationWindow
 
 
+
 def startBaseLogin(language, secondUserBool, firstUser):
     # Initialize pygame
     pygame.init()

@@ -38,9 +38,9 @@ def playMusicUser(user):
     text = file.read()
     configurationList = text.split("\n")
     song = configurationList[1]
-    songPath = "Data/" + user + "/Music/" + song + ".txt"
+    songPath = "Data/" + user + "/Music/" + song
     print(songPath)
-
+    mixer.music.stop()
     with open(songPath, "r", encoding="utf-8") as songFile:
         uriSelectedSong = songFile.readline()
         print(f'Canción con URI; {uriSelectedSong} reproducida')
@@ -55,9 +55,8 @@ def getMusicFeatures(user):
     text = file.read()
     configurationList = text.split("\n")
     song = configurationList[1]
-    songPath = "Data/" + user + "/Music/" + song + ".txt"
+    songPath = "Data/" + user + "/Music/" + song
     print(songPath)
-
     with open(songPath, "r", encoding="utf-8") as songFile:
         uriSelectedSong = songFile.readline()
         print(f'Canción con URI; {uriSelectedSong} reproducida')
@@ -214,6 +213,6 @@ def otros():
     '''
 
 
-#playMusicUser("Sebas")
+#playMusicUser("DryGoz")
 #popularity, danceability, acoustics, tempo = getMusicFeatures("Sebas")
 #print(f'Popularidad: {popularity} \nBaleabilidad: {danceability} \nAcusticos: {acoustics} \nTempo: {tempo}')
