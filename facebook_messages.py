@@ -11,9 +11,11 @@ asafb = fb.GraphAPI(accessToken)
 #output     : void
 def postTextToPage(user1, user2, time, language):
     if language == "es":
-        msg = "El jugador " +user1+ " a vencido a " + user2 + " con un tiempo de "+time
+        msg = "El jugador " + user1 + " a vencido a " + user2 + " con un tiempo de " + str(
+            time) + " y a ingresado al salón de la fama"
     if language == "en":
-        msg = "The Player " +user1+ " has beaten " + user2 + " with a time of "+time
+        msg = "The Player " + user1 + " has beaten " + user2 + " with a time of " + str(
+            time) + " and has entered the hall of fame"
 
     url = f'https://graph.facebook.com/v18.0/{pageID}/feed?message={msg}&access_token={accessToken}'
     try:
