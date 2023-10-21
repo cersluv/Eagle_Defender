@@ -16,7 +16,9 @@ eagle = Eagle("eagle.png")
 
 #Variables
 bgColor = (1,150, 70)
-barrera_rect = barrera.imagen.get_rect()
+x = 0
+y = 0
+barrera_rect = barrera.imagen.get_rect(topleft=(x, y))
 barrera_rect.center = (width//2,height//2)
 xEagle = 0
 yEagle = 0
@@ -24,8 +26,6 @@ eagle_rect = eagle.imagen.get_rect(topleft=(xEagle, yEagle))
 eagle_rect.center = (width//2,height//2)
 angulo = 0
 speed = 0.3
-x = 0
-y = 0
 rotate = pygame.transform.rotate(barrera.imagen, angulo)
 rotation = 5
 barrera_positions = []
@@ -42,6 +42,7 @@ eagleFlag = True
 increment_wood = False
 increment_Stone = False
 increment_Steel = False
+
 
 while True:
     for evento in pygame.event.get():
@@ -138,14 +139,23 @@ while True:
         screen.blit(rotate, rect_rotate)
 
     # Coloca las imágenes donde el jugador las quiere
-    for pos_x, pos_y, pos_imagen in eagle_positions:
-        eagle_rect = pos_imagen.get_rect(topleft=(pos_x, pos_y))
-        screen.blit(pos_imagen, eagle_rect)
-    
+    for pos_x, pos_y, imagen in eagle_positions:
+        rect = imagen.get_rect(topleft=(pos_x, pos_y))
+        screen.blit(imagen, rect)
+        if rect_rotate.colliderect(rect):
+            placing_barrier = False
+        else:
+            placing_barrier = True
+
+
+    # Coloca las imágenes donde el jugador las quiere
     for pos_x, pos_y, pos_angulo, pos_imagen in barrera_positions:
         rotated_barrier = pygame.transform.rotate(pos_imagen, pos_angulo)
         barrier_rect = rotated_barrier.get_rect(center=(width // 2 + pos_x, height // 2 + pos_y))
         screen.blit(rotated_barrier, barrier_rect)
+        
+    print(placing_barrier)
 
     clock.tick(FPS)
     pygame.display.update()
+
