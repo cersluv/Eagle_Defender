@@ -184,6 +184,7 @@ def startRegistrationWindow(targetLanguage):
     def saveInformation(currentPosition):
         mainDir = f"Data/{textUsername}/"
         os.makedirs(os.path.dirname(f"{mainDir}Images/"), exist_ok=True)
+        os.makedirs(os.path.dirname(f"{mainDir}Music/"), exist_ok=True)
         filePath = "Data/" + textUsername + "/information.txt"
         with open(filePath, "w", encoding='utf-8') as file:
             file.write(textPassword + "\n")

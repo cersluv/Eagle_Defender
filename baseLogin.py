@@ -1,5 +1,4 @@
 import os
-from tkinter import *
 
 import cv2
 import pygame
@@ -8,8 +7,6 @@ import tkinter.messagebox as tkMessageBox
 
 from deepface import DeepFace
 from googletrans import Translator
-from matplotlib import pyplot
-from mtcnn import MTCNN
 
 import coinFlip
 import loginConfig

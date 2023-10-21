@@ -1,12 +1,17 @@
-import threading
+import base64
+import json
 import tkinter as tk
 import tkinter.messagebox as tkMessageBox
+
+import spotipy
 from PIL import Image, ImageTk
 from pytube import YouTube
 import os
 import cv2
-import requests
 from googletrans import Translator
+from requests import post, get
+from spotipy import util
+
 from loginConfig import registerConfiguration
 from baseLogin import startGame2
 from musicHandler import buttonSoundEffect, musicPlayer
@@ -20,7 +25,6 @@ suggestions = []
 songCount = 0
 boolImageRec = True
 boolImageTake = False
-
 songSelected = None
 
 dirSong1 = ""
@@ -29,23 +33,15 @@ dirSong3 = ""
 
 statusLabel = None  # Initialize statusLabel as a global variable
 
+clientID = '64ee53d497f64c5496151c40105f2413'
+clientSecret = '33f3edb05f024c8b929cec2c15284d51'
+redirectURI = 'http://localhost:8888/callback'
+username = '12151711299'
 
-def searchYoutube(apiKey, query, max_results):
-    global suggestions
-    search_url = f"https://www.googleapis.com/youtube/v3/search?key={apiKey}&q={query}&maxResults={max_results}&type=video"
-    try:
-        response = requests.get(search_url)
-        response.raise_for_status()
-        data = response.json()
-        if 'items' in data:
-            for item in data['items']:
-                video_id = item['id']['videoId']
-                video_url = f"https://www.youtube.com/watch?v={video_id}"
-                suggestions.append(video_url)
-            return suggestions
-    except Exception as e:
-        print("Error:", e)
-    return None
+scope = 'user-library-read user-modify-playback-state'
+token = util.prompt_for_user_token(username, scope, clientID, clientSecret, redirectURI)
+sp = spotipy.Spotify(auth=token)
+
 
 def saveInformation():
     with open("Data/tempUser.txt", "r", encoding='utf-8') as tempFile:
@@ -143,94 +139,116 @@ def onClick(event):
 def update_suggestions():
     global suggestions
     suggestions = []
-    songaName = songEntry.get()
+    songName = songEntry.get()
     buttonSoundEffect()
-    if songaName:
-        suggestions = searchYoutube('AIzaSyDj1am7jSbTOzU9VS6xqOMmVr1lqzpxGZs', songaName, 5)
-        if suggestions:
-            suggestionListbox.delete(0, tk.END)
-            for url in suggestions:
-                yt = YouTube(url)
-                title = yt.title
-                suggestionListbox.insert(tk.END, title)
+    suggestionListbox.delete(0, tk.END)
+
+    # Initialize lists to store original songs and other results
+    original_songs = []
+
+    if songName:
+        results = sp.search(q=songName, type='track',
+                            limit=10)  # You can adjust the limit as needed = sp.search(q=songName, type='track')
+        # Iterate through the search results
+        for track in results['tracks']['items']:
+            if 'cover' not in track['name'].lower() and 'remix' not in track['name'].lower() and 'live' not in track[
+                'name'].lower():
+                original_songs.append(track)
+
+        # Print the original songs followed by other results
+        print("Original Songs:")
+        for song in original_songs:
+            print(song)
+
+        if original_songs:
+            for i, track in enumerate(original_songs):
+                print(f"{i + 1}. {track['name']} by {', '.join(artist['name'] for artist in track['artists'])}")
+                title = track['name']
+                artist = track['artists'][0]['name']
+                suggestionListbox.insert(tk.END, f"{title} by {artist}")
+                suggestions.append(track['uri'])
         else:
             suggestionListbox.delete(0, tk.END)
             suggestionListbox.insert(tk.END, "No suggestions found.")
+    else:
+        suggestionListbox.delete(0, tk.END)
 
 
 def downloadAudio():
     global songCount, suggestions, songSelected
-    print("Downloading audio")
     buttonSoundEffect()
     selectecIndex = suggestionListbox.curselection()
     with open("Data/tempUser.txt", "r", encoding='utf-8') as tempFile1:
-        for i in range(2):
-            language = tempFile1.readline()
+        textUsername = tempFile1.readline()
+        language = tempFile1.readline()
     targetLanguage1 = language.rstrip('\n')
+    cleanTextUsername = textUsername.rstrip('\n')
 
-    print(suggestions)
     if selectecIndex:
         selectedTitle = suggestionListbox.get(selectecIndex)
-        print("pasó 1")
-        for url in suggestions:
-            print("pasó 2")
-            yt = YouTube(url)
-            if yt.title == selectedTitle:
-                try:
-                    print(songCount)
-                    if songCount == 0:
-                        songCount += 1
-                        song1.config(text=selectedTitle)
-                        downloadThread = threading.Thread(target=downloadYtVideo, args=(yt, selectedTitle))
-                        downloadThread.start()
-                        message = translateText("Primera canción descargada", targetLanguage1)
-                        statusLabel.config(text=message)
-                        songSelected = str(selectedTitle)
+        songSelected = selectedTitle
+        if songCount == 0:
+            songCount += 1
+            song1.config(text=selectedTitle)
+            message = translateText("Primera canción descargada", targetLanguage1)
 
-                    elif songCount == 1:
-                        songCount += 1
-                        song2.config(text=selectedTitle)
-                        downloadThread = threading.Thread(target=downloadYtVideo, args=(yt, selectedTitle))
-                        downloadThread.start()
-                        message = translateText("Segunda canción descargada", targetLanguage1)
-                        statusLabel.config(text=message)
+            selectecIndex = [int(index) for index in selectecIndex]
+            index = 0
+            for index in selectecIndex:
+                print("Selected item:", suggestionListbox.get(index))
 
-                    elif songCount == 2:
-                        songCount += 1
-                        song3.config(text=selectedTitle)
-                        downloadThread = threading.Thread(target=downloadYtVideo, args=(yt, selectedTitle))
-                        downloadThread.start()
-                        message = translateText("Tercera canción descargada", targetLanguage1)
-                        statusLabel.config(text=message)
-                        # os.remove("Data/tempUser.txt")
+            uri = str(suggestions[index])
 
-                    else:
-                        message = translateText("No se aceptan más canciones", targetLanguage1)
-                        statusLabel.config(text=message)
+            filePath = "Data/" + cleanTextUsername + "/Music/" + str(suggestionListbox.get(index) + ".txt")
+            with open(filePath, "w", encoding='utf-8') as file:
+                file.write(uri)
 
-                except Exception as e:
-                    statusLabel.config(text="Error: " + str(e))
-                break
-    else:
-        message = translateText("Please select a suggestion", targetLanguage1)
+        elif songCount == 1:
+            songCount += 1
+            song2.config(text=selectedTitle)
+            message = translateText("Segunda canción descargada", targetLanguage1)
+
+            selectecIndex = [int(index) for index in selectecIndex]
+            index = 0
+            for index in selectecIndex:
+                print("Selected item:", suggestionListbox.get(index))
+
+            uri = str(suggestions[index])
+
+            filePath = "Data/" + cleanTextUsername + "/Music/" + str(suggestionListbox.get(index) + ".txt")
+            with open(filePath, "w", encoding='utf-8') as file:
+                file.write(uri)
+
+        elif songCount == 2:
+            songCount += 1
+            song3.config(text=selectedTitle)
+            message = translateText("Tercera canción descargada", targetLanguage1)
+            # os.remove("Data/tempUser.txt")
+
+            selectecIndex = [int(index) for index in selectecIndex]
+            index = 0
+            for index in selectecIndex:
+                print("Selected item:", suggestionListbox.get(index))
+
+            uri = str(suggestions[index])
+
+            filePath = "Data/" + cleanTextUsername + "/Music/" + str(suggestionListbox.get(index) + ".txt")
+            with open(filePath, "w", encoding='utf-8') as file:
+                file.write(uri)
+
+        else:
+            message = translateText("No se aceptan más canciones", targetLanguage1)
+
         statusLabel.config(text=message)
 
 
-def downloadYtVideo(yt, selected_title):
-    global dirSong1, dirSong2, dirSong3
-    with open("Data/tempUser.txt", "r", encoding='utf-8') as tempFile:
-        textUsername = tempFile.readline()
-
-    cleanTextUsername = textUsername.rstrip('\n')
-    selected_title = selected_title.rstrip('/')
-    selected_title = selected_title.rstrip('\\')
-    selected_title = selected_title.rstrip('-')
-    selected_title = selected_title.rstrip('_')
-    selected_title = selected_title.rstrip('|')
-    outputPath = f"Data/{cleanTextUsername}/Music/"
-    os.makedirs(os.path.dirname(outputPath), exist_ok=True)
-    audio_stream = yt.streams.filter(only_audio=True).first()
-    audio_stream.download(output_path=outputPath)
+def playSpotifySong(selected_title, selected_uri):
+    buttonSoundEffect()
+    if selected_uri:
+        sp.start_playback(uris=[selected_uri])
+        print(f"Playing: {selected_title}")
+    else:
+        print("No URI found for the selected song")
 
 
 def takePhoto():
@@ -270,26 +288,27 @@ def takePhoto():
         # Update the tkinter label with the current frame
         cameraLabel = tk.Label(window)
         cameraLabel.place(x=int(250 * scaleFactorWidth), y=int(735 * scaleFactorHeight))
-        cameraLabel.config(width=int(330 * scaleFactorWidth), height=int(250 * scaleFactorHeight), bg="SystemButtonFace")
+        cameraLabel.config(width=int(330 * scaleFactorWidth), height=int(250 * scaleFactorHeight),
+                           bg="SystemButtonFace")
 
         cameraLabel.config(image=frame_tk)
         cameraLabel.image = frame_tk
 
         window.update()
 
+
 # Create the main window
 window = tk.Tk()
 window.title("YouTube Audio Downloader")
 window.attributes("-fullscreen", True)
+
+musicPlayer()
 
 with open("Data/tempUser.txt", "r", encoding='utf-8') as tempFile:
     textUsername = tempFile.readline()
     targetLanguage = tempFile.readline()
     cleanTextUsername = targetLanguage.rstrip('\n')
     time = tempFile.readline().rstrip('\n')
-
-
-musicPlayer()
 
 if cleanTextUsername == "es":
     backgroundImage = Image.open("visuals/imágenesEspañol/7.png")
@@ -325,7 +344,7 @@ frame = tk.Frame(window)
 frame.pack(padx=10 * scaleFactorWidth, pady=20 * scaleFactorHeight)
 frame.place(relx=0.10, rely=0.40, anchor=tk.CENTER)  # Center the frame
 frame.config(bg="#121212")
-frame.config(width=5*scaleFactorWidth, height=5*scaleFactorHeight)
+frame.config(width=5 * scaleFactorWidth, height=5 * scaleFactorHeight)
 
 label = tk.Label(frame, text="Enter Song Name:", bg="#121212", fg="#FF6C69", font=("Arial", 15))
 label.pack()
@@ -339,7 +358,8 @@ search_button = tk.Button(frame, text="Search", command=update_suggestions, bg="
 search_button.pack()
 search_button.config(borderwidth=int(8 * scaleFactorWidth))
 
-suggestionListbox = tk.Listbox(frame, width=int(40 * scaleFactorWidth), height=int(8*scaleFactorHeight), bg="#1f1f1f", font=("Arial", 10), fg="white")
+suggestionListbox = tk.Listbox(frame, width=int(40 * scaleFactorWidth), height=int(8 * scaleFactorHeight), bg="#1f1f1f",
+                               font=("Arial", 10), fg="white")
 suggestionListbox.config(borderwidth=0)
 suggestionListbox.pack()
 
