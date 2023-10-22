@@ -16,7 +16,7 @@ pygame.display.set_caption("Aguila en Pygame")
 # Variables
 blanco = (255, 255, 255)
 aguila = Aguila()
-barrera = Fence(300, 400, 1, 0)
+barrera = Fence(50, 50, 1, 0)
 aguila_Movement = True
 barrera_Movement = False
 placing_Barrier = True
@@ -50,15 +50,14 @@ while True:
             aguila_Movement = False
             barrera_Movement = True
 
-
     if barrera_Movement:
         # Cambio de barrera
         if teclas[pygame.K_1]:
-            barrera = Fence(300, 400, 1, 0)
+            barrera = Fence(50, 50, 1, 0)
         elif teclas[pygame.K_2]:
-            barrera = Fence(300, 400, 2, 0)
+            barrera = Fence(50, 50, 2, 0)
         elif teclas[pygame.K_3]:
-            barrera = Fence(300, 400, 3, 0)
+            barrera = Fence(50, 50, 3, 0)
 
         # Rotacion de las barreras
         if teclas[pygame.K_q]:
@@ -67,13 +66,13 @@ while True:
             barrera.rotar("E")
 
         # Movimiento de las barreras
-        if teclas[pygame.K_UP]:
+        if teclas[pygame.K_w]:
             barrera.mover(0, -barrera.velocidad)
-        if teclas[pygame.K_DOWN]:
+        if teclas[pygame.K_s]:
             barrera.mover(0, barrera.velocidad)
-        if teclas[pygame.K_LEFT]:
+        if teclas[pygame.K_a]:
             barrera.mover(-barrera.velocidad, 0)
-        if teclas[pygame.K_RIGHT]:
+        if teclas[pygame.K_d]:
             barrera.mover(barrera.velocidad, 0)
             
         if teclas[pygame.K_r] and not barrera.rect.colliderect(aguila.rect):
@@ -88,7 +87,7 @@ while True:
                         se_creo_nueva_barrera = True
             elif barrera.tipo == 2:
                 if len(barrerasTipo2) == 10:
-                    print("Se quedó sin piedra")
+                    print("Se quedó sin acero")
                 else:
                     if not se_creo_nueva_barrera:
                         print(barrera.rect.x, barrera.rect.y, barrera.tipo, barrera.angulo_rotacion)
@@ -97,7 +96,7 @@ while True:
                         se_creo_nueva_barrera = True
             elif barrera.tipo == 3:
                 if len(barrerasTipo3) == 10:
-                    print("Se quedó sin acero")
+                    print("Se quedó sin piedra")
                 else:
                     if not se_creo_nueva_barrera:
                         print(barrera.rect.x, barrera.rect.y, barrera.tipo, barrera.angulo_rotacion)
@@ -106,6 +105,7 @@ while True:
                         se_creo_nueva_barrera = True
         else:
             se_creo_nueva_barrera = False
+    
 
     ventana.fill(blanco)
     aguila.dibujar(ventana)
