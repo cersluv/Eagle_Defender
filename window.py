@@ -14,9 +14,17 @@ reloj = pygame.time.Clock()
 pygame.display.set_caption("Aguila en Pygame")
 
 # Variables
+
+rect_width, rect_height = 50, 50
+rect_x, rect_y = (ventana_ancho - rect_width) // 2, (ventana_alto - rect_height) // 2
+rect_speed = 5
+
+
+
+
 blanco = (255, 255, 255)
 aguila = Aguila()
-barrera = Fence(50, 50, 1, 0, 1)
+barrera = Fence(50, 50, 1, 0)
 aguila_Movement = True
 barrera_Movement = False
 placing_Barrier = True
@@ -34,6 +42,27 @@ while True:
             sys.exit()
 
     teclas = pygame.key.get_pressed()
+
+    if teclas[pygame.K_LEFT]:
+        rect_x -= rect_speed
+    if teclas[pygame.K_RIGHT]:
+        rect_x += rect_speed
+    if teclas[pygame.K_UP]:
+        rect_y -= rect_speed
+    if teclas[pygame.K_DOWN]:
+        rect_y += rect_speed
+
+    rect = pygame.Rect(rect_x, rect_y, rect_width, rect_height)
+
+
+
+
+
+
+
+
+
+
     if aguila_Movement:
         # Movimiento del aguila
         if teclas[pygame.K_a]:
@@ -53,11 +82,11 @@ while True:
     if barrera_Movement:
         # Cambio de barrera
         if teclas[pygame.K_1]:
-            barrera = Fence(50, 50, 1, 0, 1)
+            barrera = Fence(50, 50, 1, 0)
         elif teclas[pygame.K_2]:
-            barrera = Fence(50, 50, 2, 0, 1)
+            barrera = Fence(50, 50, 2, 0)
         elif teclas[pygame.K_3]:
-            barrera = Fence(50, 50, 3, 0, 1)
+            barrera = Fence(50, 50, 3, 0)
 
         # Rotacion de las barreras
         if teclas[pygame.K_q]:
@@ -81,9 +110,8 @@ while True:
                     print("Se quedó sin madera")
                 else:
                     if not se_creo_nueva_barrera:
-                        print(barrera.rect, barrera.tipo, barrera.angulo_rotacion)
-                        print(barrera.rect.x, barrera.rect.y)
-                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion, 1)
+                        print(barrera.rect.x, barrera.rect.y, barrera.tipo, barrera.angulo_rotacion)
+                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion)
                         barrerasTipo1.append(newBarrera)
                         se_creo_nueva_barrera = True
             elif barrera.tipo == 2:
@@ -91,9 +119,8 @@ while True:
                     print("Se quedó sin acero")
                 else:
                     if not se_creo_nueva_barrera:
-                        print(barrera.rect, barrera.tipo, barrera.angulo_rotacion)
-                        print(barrera.rect.x, barrera.rect.y)
-                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion, 1)
+                        print(barrera.rect.x, barrera.rect.y, barrera.tipo, barrera.angulo_rotacion)
+                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion)
                         barrerasTipo2.append(newBarrera)
                         se_creo_nueva_barrera = True
             elif barrera.tipo == 3:
@@ -101,9 +128,8 @@ while True:
                     print("Se quedó sin piedra")
                 else:
                     if not se_creo_nueva_barrera:
-                        print(barrera.rect, barrera.tipo, barrera.angulo_rotacion)
-
-                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion, 1)
+                        print(barrera.rect.x, barrera.rect.y, barrera.tipo, barrera.angulo_rotacion)
+                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion)
                         barrerasTipo3.append(newBarrera)
                         se_creo_nueva_barrera = True
         else:
@@ -111,15 +137,28 @@ while True:
     
 
     ventana.fill(blanco)
+
+    pygame.draw.rect(ventana, (0, 128, 255), (rect_x, rect_y, rect_width, rect_height))
+
+
     aguila.dibujar(ventana)
     if barrera_Movement:
         barrera.dibujar(ventana)
         for cantBarreras in barreras:
             for cantTipos in cantBarreras:
                 cantTipos.dibujar(ventana)
+            
+                #LOGICA COLLIDE Y DESTRUIR BARRERAS
+
+                if rect.colliderect(cantTipos.rect):
+                    if cantTipos.tipo == 1:
+                        cantTipos.vidaAgua = 0
+                        print(cantTipos.vidaAgua)
+                        if cantTipos.vidaAgua == 0:
+                            cantBarreras.remove(cantTipos)
+
+
 
     
     reloj.tick(60)
     pygame.display.update()
-
-
