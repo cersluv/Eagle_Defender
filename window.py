@@ -16,7 +16,7 @@ pygame.display.set_caption("Aguila en Pygame")
 # Variables
 blanco = (255, 255, 255)
 aguila = Aguila()
-barrera = Fence(50, 50, 1, 0)
+barrera = Fence(50, 50, 1, 0, 1)
 aguila_Movement = True
 barrera_Movement = False
 placing_Barrier = True
@@ -53,11 +53,11 @@ while True:
     if barrera_Movement:
         # Cambio de barrera
         if teclas[pygame.K_1]:
-            barrera = Fence(50, 50, 1, 0)
+            barrera = Fence(50, 50, 1, 0, 1)
         elif teclas[pygame.K_2]:
-            barrera = Fence(50, 50, 2, 0)
+            barrera = Fence(50, 50, 2, 0, 1)
         elif teclas[pygame.K_3]:
-            barrera = Fence(50, 50, 3, 0)
+            barrera = Fence(50, 50, 3, 0, 1)
 
         # Rotacion de las barreras
         if teclas[pygame.K_q]:
@@ -81,8 +81,9 @@ while True:
                     print("Se quedó sin madera")
                 else:
                     if not se_creo_nueva_barrera:
-                        print(barrera.rect.x, barrera.rect.y, barrera.tipo, barrera.angulo_rotacion)
-                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion)
+                        print(barrera.rect, barrera.tipo, barrera.angulo_rotacion)
+                        print(barrera.rect.x, barrera.rect.y)
+                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion, 1)
                         barrerasTipo1.append(newBarrera)
                         se_creo_nueva_barrera = True
             elif barrera.tipo == 2:
@@ -90,8 +91,9 @@ while True:
                     print("Se quedó sin acero")
                 else:
                     if not se_creo_nueva_barrera:
-                        print(barrera.rect.x, barrera.rect.y, barrera.tipo, barrera.angulo_rotacion)
-                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion)
+                        print(barrera.rect, barrera.tipo, barrera.angulo_rotacion)
+                        print(barrera.rect.x, barrera.rect.y)
+                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion, 1)
                         barrerasTipo2.append(newBarrera)
                         se_creo_nueva_barrera = True
             elif barrera.tipo == 3:
@@ -99,8 +101,9 @@ while True:
                     print("Se quedó sin piedra")
                 else:
                     if not se_creo_nueva_barrera:
-                        print(barrera.rect.x, barrera.rect.y, barrera.tipo, barrera.angulo_rotacion)
-                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion)
+                        print(barrera.rect, barrera.tipo, barrera.angulo_rotacion)
+
+                        newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo, barrera.angulo_rotacion, 1)
                         barrerasTipo3.append(newBarrera)
                         se_creo_nueva_barrera = True
         else:
@@ -114,6 +117,9 @@ while True:
         for cantBarreras in barreras:
             for cantTipos in cantBarreras:
                 cantTipos.dibujar(ventana)
+
     
     reloj.tick(60)
     pygame.display.update()
+
+

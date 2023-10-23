@@ -3,17 +3,24 @@ from eagle import Aguila
 aguila = Aguila()
 class Fence:
 
-    def __init__(self, x, y, tipo, angulo):
+    def __init__(self, x, y, tipo, angulo, personalization):
         self.x = x
         self.y = y
         self.tipo = tipo  # Tipo de barrera: 1, 2 o 3
         self.velocidad = 10
         self.angulo_rotacion = angulo
         self.inicializar_vida()
+        if personalization == 1:
+            wood = "fence.png"
+            steel = "steelF.png"
+            concrete = "stoneF.png"
+        if personalization == 2:
+            pass
+
         self.imagenes = [
-            pygame.image.load("fence.png"),
-            pygame.image.load("steelF.png"),
-            pygame.image.load("stoneF.png")
+            pygame.image.load(wood),
+            pygame.image.load(steel),
+            pygame.image.load(concrete)
         ]
         self.imagen_actual = self.imagenes[self.tipo - 1]
         self.rect = self.imagen_actual.get_rect(topleft=(x, y))
