@@ -2,6 +2,9 @@ import pygame
 import sys
 import os
 import math
+from eagle import Aguila
+from fence import Fence
+
 
 global power, skinGoblin, skinProjectile, paletteAtacker, eagleSkin, boxSkin, paletteDefender
 
@@ -54,15 +57,43 @@ def startGame():
     fireQuantity = 10
     dynamiteQuantity = 10
 
+    woodQuantity = 10
+    steelQuantity = 10
+    concreteQuantity = 10
+
     waterProjectile = None
     fireProjectile = None
     dynamiteProjectile = None
+
+    attackingPhase = True
 
     screenWidth, screenHeight = pygame.display.Info().current_w, pygame.display.Info().current_h
 
     # Initialize the display
     screen = pygame.display.set_mode((screenWidth, screenHeight), pygame.FULLSCREEN)
     pygame.display.set_caption("Goblin and Projectile")
+
+    # Get the image's original dimensions
+    originalWidth, originalHeigth = pygame.image.load("visuals/gameWindows/aaa.png").get_size()
+
+    # Calculate the scaling factors to fit the image to the screen
+    scaleFactorWidth = screenWidth / originalWidth
+    scaleFactorHeight = screenHeight / originalHeigth
+
+    # Choose the minimum scaling factor to maintain aspect ratio
+    minScaleFactor = min(scaleFactorWidth, scaleFactorHeight)
+
+    # Scale the image while maintaining aspect ratio
+    newWidth = int(originalWidth * minScaleFactor)
+    newHeigth = int(originalHeigth * minScaleFactor)
+
+
+
+    # Colors
+    white = (255, 255, 255)
+
+    # Font
+    font = pygame.font.Font(None, 36)
 
 
     # Load the goblin image
@@ -100,7 +131,31 @@ def startGame():
 
     fireImage = pygame.transform.scale(fireImage, (projectileSize + 40, projectileSize))
 
+    if boxSkin == "1":
+        woodSkin = pygame.image.load("visuals/boxes/madera1.png")
+        steelSkin = pygame.image.load("visuals/boxes/acero1.png")
+        concreteSkin = pygame.image.load("visuals/boxes/concreto1.png")
+        woodSkin = pygame.transform.scale(woodSkin, (80 * scaleFactorWidth, 80 * scaleFactorHeight))
+        steelSkin = pygame.transform.scale(steelSkin, (80 * scaleFactorWidth, 60 * scaleFactorHeight))
+        concreteSkin = pygame.transform.scale(concreteSkin, (80 * scaleFactorWidth, 70 * scaleFactorHeight))
+        boxes = 1
+    if boxSkin == "2":
+        woodSkin = pygame.image.load("visuals/boxes/madera2.png")
+        steelSkin = pygame.image.load("visuals/boxes/acero2.png")
+        concreteSkin = pygame.image.load("visuals/boxes/concreto2.png")
+        woodSkin = pygame.transform.scale(woodSkin, (80 * scaleFactorWidth, 80 * scaleFactorHeight))
+        steelSkin = pygame.transform.scale(steelSkin, (80 * scaleFactorWidth, 80 * scaleFactorHeight))
+        concreteSkin = pygame.transform.scale(concreteSkin, (100 * scaleFactorWidth, 80 * scaleFactorHeight))
+        boxes = 2
 
+    if eagleSkin == "eagle1":
+        skinEagle = 1
+    if eagleSkin == "eagle2":
+        skinEagle = 2
+    if eagleSkin == "eagle3":
+        skinEagle = 3
+    if eagleSkin == "eagle4":
+        skinEagle = 4
 
     if paletteAtacker == "Palette 1":
         atackerGameplay = pygame.image.load("visuals/gameWindows/3.png")
@@ -123,28 +178,8 @@ def startGame():
     if paletteDefender == "Palette 5":
         defenderGameplay = pygame.image.load("visuals/gameWindows/12.png")
 
-    # Get the image's original dimensions
-    originalWidth, originalHeigth = pygame.image.load("visuals/gameWindows/aaa.png").get_size()
-
-    # Calculate the scaling factors to fit the image to the screen
-    scaleFactorWidth = screenWidth / originalWidth
-    scaleFactorHeight = screenHeight / originalHeigth
-
-    # Choose the minimum scaling factor to maintain aspect ratio
-    minScaleFactor = min(scaleFactorWidth, scaleFactorHeight)
-
-    # Scale the image while maintaining aspect ratio
-    newWidth = int(originalWidth * minScaleFactor)
-    newHeigth = int(originalHeigth * minScaleFactor)
-
-    scaledAtackerImage = pygame.transform.scale(atackerGameplay, (newWidth/2, newHeigth))
-    scaledDefenderImage = pygame.transform.scale(defenderGameplay, (newWidth/2, newHeigth))
-
-    # Colors
-    white = (255, 255, 255)
-
-    # Font
-    font = pygame.font.Font(None, 36)
+    scaledAtackerImage = pygame.transform.scale(atackerGameplay, (newWidth / 2, newHeigth))
+    scaledDefenderImage = pygame.transform.scale(defenderGameplay, (newWidth / 2, newHeigth))
 
     class Goblin:
         def __init__(self, x, y):
@@ -197,6 +232,20 @@ def startGame():
             if type == "dynamite":
                 screen.blit(dynamiteImage, self.rect)
 
+    eagle = Aguila(skinEagle)
+    barrera = Fence(50, 50, 1, 0, boxes)
+    aguila_Movement = True
+    barrera_Movement = False
+    placing_Barrier = True
+    barrerasTipo1 = []
+    barrerasTipo2 = []
+    barrerasTipo3 = []
+    barreras = [barrerasTipo1, barrerasTipo2, barrerasTipo3]
+    se_creo_nueva_barrera = False
+
+    projectiles = []
+
+
     goblin = Goblin(screenWidth - 120, screenHeight // 2)
     projectile = None
     trajectoryPointsWater = []
@@ -206,6 +255,10 @@ def startGame():
     power1Rect = pygame.Rect(990 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
     power2Rect = pygame.Rect(1135 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
     power3Rect = pygame.Rect(1280 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
+
+    box1Rect = pygame.Rect(500 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
+    box2Rect = pygame.Rect(645 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
+    box3Rect = pygame.Rect(790 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
 
 
     clock = pygame.time.Clock()
@@ -228,39 +281,120 @@ def startGame():
                     power = 3
 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_1]:
-            power = 1
-        if keys[pygame.K_2]:
-            power = 2
-        if keys[pygame.K_3]:
-            power = 3
-        if keys[pygame.K_UP]:
-            goblin.move(0, -goblinSpeed)
-        if keys[pygame.K_DOWN]:
-            goblin.move(0, goblinSpeed)
 
-        if keys[pygame.K_LEFT]:
-            goblin.rotate(2)
-        if keys[pygame.K_RIGHT]:
-            goblin.rotate(-2)
+        if aguila_Movement:
+            # Movimiento del aguila
+            if keys[pygame.K_a]:
+                eagle.mover(-eagle.velocidad, 0)
+            if keys[pygame.K_d]:
+                eagle.mover(eagle.velocidad, 0)
+            if keys[pygame.K_w]:
+                eagle.mover(0, -eagle.velocidad)
+            if keys[pygame.K_s]:
+                eagle.mover(0, eagle.velocidad)
 
+            # Posicionamiento del aguila
+            if keys[pygame.K_f]:
+                aguila_Movement = False
+                barrera_Movement = True
 
+        if barrera_Movement:
+            # Cambio de barrera
+            if keys[pygame.K_1]:
+                barrera = Fence(50, 50, 1, 0, boxes)
+            elif keys[pygame.K_2]:
+                barrera = Fence(50, 50, 2, 0, boxes)
+            elif keys[pygame.K_3]:
+                barrera = Fence(50, 50, 3, 0, boxes)
 
-        if keys[pygame.K_SPACE]:
-            if waterProjectile is None and power == 1:
-                waterQuantity -= 1
-                waterProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
-                trajectoryPointsWater.clear()
+            # Rotacion de las barreras
+            if keys[pygame.K_q]:
+                barrera.rotar("Q")
+            elif keys[pygame.K_e]:
+                barrera.rotar("E")
 
-            if fireProjectile is None and power == 2:
-                fireQuantity -= 1
-                fireProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
-                trajectoryPointsFire.clear()
+            # Movimiento de las barreras
+            if keys[pygame.K_w]:
+                barrera.mover(0, -barrera.velocidad)
+            if keys[pygame.K_s]:
+                barrera.mover(0, barrera.velocidad)
+            if keys[pygame.K_a]:
+                barrera.mover(-barrera.velocidad, 0)
+            if keys[pygame.K_d]:
+                barrera.mover(barrera.velocidad, 0)
 
-            if dynamiteProjectile is None and power == 3:
-                dynamiteQuantity -= 1
-                dynamiteProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
-                trajectoryPointsDynamite.clear()
+            if keys[pygame.K_r] and not barrera.rect.colliderect(eagle.rect):
+                if barrera.tipo == 1:
+                    if len(barrerasTipo1) == 10:
+                        pass
+                    else:
+                        if not se_creo_nueva_barrera:
+                            newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo,
+                                               barrera.angulo_rotacion, boxes)
+                            barrerasTipo1.append(newBarrera)
+                            woodQuantity -= 1
+                            se_creo_nueva_barrera = True
+                elif barrera.tipo == 2:
+                    if len(barrerasTipo2) == 10:
+                        pass
+                    else:
+                        if not se_creo_nueva_barrera:
+                            newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo,
+                                               barrera.angulo_rotacion, boxes)
+                            barrerasTipo2.append(newBarrera)
+                            steelQuantity -= 1
+                            se_creo_nueva_barrera = True
+                elif barrera.tipo == 3:
+                    if len(barrerasTipo3) == 10:
+                        pass
+                    else:
+                        if not se_creo_nueva_barrera:
+                            newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo,
+                                               barrera.angulo_rotacion, boxes)
+                            barrerasTipo3.append(newBarrera)
+                            concreteQuantity -= 1
+                            se_creo_nueva_barrera = True
+            else:
+                se_creo_nueva_barrera = False
+
+        if attackingPhase:
+            if keys[pygame.K_8]:
+                power = 1
+            if keys[pygame.K_9]:
+                power = 2
+            if keys[pygame.K_0]:
+                power = 3
+            if keys[pygame.K_UP]:
+                goblin.move(0, -goblinSpeed)
+            if keys[pygame.K_DOWN]:
+                goblin.move(0, goblinSpeed)
+
+            if keys[pygame.K_LEFT]:
+                goblin.rotate(2)
+            if keys[pygame.K_RIGHT]:
+                goblin.rotate(-2)
+
+            if keys[pygame.K_SPACE]:
+                if waterProjectile is None and power == 1:
+                    waterQuantity -= 1
+                    waterProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
+                    list = [waterProjectile, "water"]
+                    projectiles.append(list)
+                    trajectoryPointsWater.clear()
+
+                if fireProjectile is None and power == 2:
+                    fireQuantity -= 1
+                    fireProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
+                    list = [fireProjectile, "fire"]
+                    projectiles.append(list)
+                    trajectoryPointsFire.clear()
+
+                if dynamiteProjectile is None and power == 3:
+                    dynamiteQuantity -= 1
+                    dynamiteProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
+                    list = [dynamiteProjectile, "dynamite"]
+                    projectiles.append(list)
+                    trajectoryPointsDynamite.clear()
 
 
         screen.fill((0, 0, 0))
@@ -309,6 +443,15 @@ def startGame():
         powers3 = pygame.draw.rect(screen, "#2e2f30", power3Rect, 0)
         screen.blit(pygame.transform.scale(dynamiteImage, (80 * scaleFactorWidth, 80* scaleFactorHeight)), (1310 * scaleFactorWidth, 950* scaleFactorHeight))
 
+        box1 = pygame.draw.rect(screen, "#2e2f30", box1Rect, 0)
+        screen.blit(pygame.transform.scale(woodSkin, (70 * scaleFactorWidth, 70 * scaleFactorHeight)), (535 * scaleFactorWidth, 955* scaleFactorHeight))
+        box2 = pygame.draw.rect(screen, "#1a1b1c", box2Rect, 0)
+        screen.blit(pygame.transform.scale(steelSkin, (80 * scaleFactorWidth, 60 * scaleFactorHeight)),(675 * scaleFactorWidth, 960 * scaleFactorHeight))
+        box3 = pygame.draw.rect(screen, "#2e2f30", box3Rect, 0)
+        if boxes == 1:
+            screen.blit(pygame.transform.scale(concreteSkin, (100 * scaleFactorWidth, 80 * scaleFactorHeight)),(810 * scaleFactorWidth, 950 * scaleFactorHeight))
+        if boxes == 2:
+            screen.blit(pygame.transform.scale(concreteSkin, (70 * scaleFactorWidth, 70 * scaleFactorHeight)),(825 * scaleFactorWidth, 955 * scaleFactorHeight))
 
 
 
@@ -333,16 +476,30 @@ def startGame():
         dynamitetext_rect = dynamiteText.get_rect()
         dynamitetext_rect.topleft = (1290 * scaleFactorWidth, 1022 *  scaleFactorHeight)
 
-        buttonText1_rect = font.render("[1]",True, white).get_rect()
+        buttonText1_rect = font.render("[8]",True, white).get_rect()
         buttonText1_rect.topleft = (1000 * scaleFactorWidth, 933 *  scaleFactorHeight)
-        buttonText2_rect = font.render("[2]", True, white).get_rect()
+        buttonText2_rect = font.render("[9]", True, white).get_rect()
         buttonText2_rect.topleft = (1147 * scaleFactorWidth, 933 * scaleFactorHeight)
-        buttonText3_rect = font.render("[3]", True, white).get_rect()
+        buttonText3_rect = font.render("[0]", True, white).get_rect()
         buttonText3_rect.topleft = (1290 * scaleFactorWidth, 933 * scaleFactorHeight)
 
 
+        woodText = font.render(f"x{woodQuantity}", True, white)
+        woodtext_rect = woodText.get_rect()
+        woodtext_rect.topleft = (510 * scaleFactorWidth, 1022 * scaleFactorHeight)
+        steelText = font.render(f"x{steelQuantity}", True, white)
+        steeltext_rect = steelText.get_rect()
+        steeltext_rect.topleft = (657 * scaleFactorWidth, 1022 * scaleFactorHeight)
+        concreteText = font.render(f"x{concreteQuantity}", True, white)
+        concretetext_rect = concreteText.get_rect()
+        concretetext_rect.topleft = (800 * scaleFactorWidth, 1022 * scaleFactorHeight)
 
-
+        buttonText4_rect = font.render("[1]", True, white).get_rect()
+        buttonText4_rect.topleft = (510 * scaleFactorWidth, 933 * scaleFactorHeight)
+        buttonText5_rect = font.render("[2]", True, white).get_rect()
+        buttonText5_rect.topleft = (657 * scaleFactorWidth, 933 * scaleFactorHeight)
+        buttonText6_rect = font.render("[3]", True, white).get_rect()
+        buttonText6_rect.topleft = (800 * scaleFactorWidth, 933 * scaleFactorHeight)
 
 
         screen.blit(angle_text, angle_text_rect)
@@ -351,9 +508,99 @@ def startGame():
         screen.blit(waterText,watertext_rect)
         screen.blit(fireText, firetext_rect)
         screen.blit(dynamiteText, dynamitetext_rect)
-        screen.blit(font.render("[1]",True, white),buttonText1_rect)
-        screen.blit(font.render("[2]",True, white), buttonText2_rect)
-        screen.blit(font.render("[3]",True, white), buttonText3_rect)
+        screen.blit(woodText,woodtext_rect)
+        screen.blit(steelText, steeltext_rect)
+        screen.blit(concreteText, concretetext_rect)
+        screen.blit(font.render("[8]",True, white),buttonText1_rect)
+        screen.blit(font.render("[9]",True, white), buttonText2_rect)
+        screen.blit(font.render("[0]",True, white), buttonText3_rect)
+        screen.blit(font.render("[1]", True, white), buttonText4_rect)
+        screen.blit(font.render("[2]", True, white), buttonText5_rect)
+        screen.blit(font.render("[3]", True, white), buttonText6_rect)
+
+
+
+        activeLives = False
+
+        eagle.dibujar(screen)
+        if barrera_Movement:
+            barrera.dibujar(screen)
+            for cantBarreras in barreras:
+                for cantTipos in cantBarreras:
+                    cantTipos.dibujar(screen)
+
+                    # LOGICA COLLIDE Y DESTRUIR BARRERAS
+                    for projectileNumber in projectiles:
+                        if projectileNumber[0].rect.colliderect(cantTipos.rect):
+                            if projectileNumber[1] == "water":
+                                if cantTipos.tipo == 1:
+                                    if not activeLives:
+                                        cantTipos.vidaAgua -= 1
+                                        activeLives = True
+                                        waterProjectile = None
+                                        if cantTipos.vidaAgua == 0:
+                                            cantBarreras.remove(cantTipos)
+
+                                if cantTipos.tipo == 2:
+                                    if not activeLives:
+                                        cantTipos.vidaAgua -= 1
+                                        activeLives = True
+                                        print(cantTipos.vidaAgua)
+                                        waterProjectile = None
+                                        if cantTipos.vidaAgua == 0:
+                                            cantBarreras.remove(cantTipos)
+                                if cantTipos.tipo == 3:
+                                    if not activeLives:
+                                        cantTipos.vidaAgua -= 1
+                                        activeLives = True
+                                        waterProjectile = None
+                                        if cantTipos.vidaAgua == 0:
+                                            cantBarreras.remove(cantTipos)
+                            if projectileNumber[1] == "fire":
+                                if cantTipos.tipo == 1:
+                                    if not activeLives:
+                                        cantTipos.vidaFuego -= 1
+                                        activeLives = True
+                                        fireProjectile = None
+                                        if cantTipos.vidaFuego == 0:
+                                            cantBarreras.remove(cantTipos)
+                                if cantTipos.tipo == 2:
+                                    if not activeLives:
+                                        cantTipos.vidaFuego -= 1
+                                        activeLives = True
+                                        fireProjectile = None
+                                        if cantTipos.vidaFuego == 0:
+                                            cantBarreras.remove(cantTipos)
+                                if cantTipos.tipo == 3:
+                                    if not activeLives:
+                                        cantTipos.vidaFuego -= 1
+                                        activeLives = True
+                                        fireProjectile = None
+                                        if cantTipos.vidaFuego == 0:
+                                            cantBarreras.remove(cantTipos)
+                            if projectileNumber[1] == "dynamite":
+                                if not activeLives:
+                                    if cantTipos.tipo == 1:
+                                        cantTipos.vidaBomba -= 1
+                                        dynamiteProjectile = None
+                                        if cantTipos.vidaBomba == 0:
+                                            cantBarreras.remove(cantTipos)
+                                if cantTipos.tipo == 2:
+                                    if not activeLives:
+                                        cantTipos.vidaBomba -= 1
+                                        activeLives = True
+                                        dynamiteProjectile = None
+                                        if cantTipos.vidaBomba == 0:
+                                            cantBarreras.remove(cantTipos)
+                                if cantTipos.tipo == 3:
+                                    if not activeLives:
+                                        cantTipos.vidaBomba -= 1
+                                        activeLives = True
+                                        dynamiteProjectile = None
+                                        if cantTipos.vidaBomba == 0:
+                                            cantBarreras.remove(cantTipos)
+
+
 
         pygame.display.flip()
         clock.tick(30)
@@ -363,4 +610,4 @@ def startGame():
 
 # LO QUE SE LLAMA CUANDO SE GANA
 # setVariables("Cers2", "Felipe", "es")
-#setVariables("Felipe", "DryGoz", "es")
+setVariables("Felipe", "DryGoz", "es")
