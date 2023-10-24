@@ -676,6 +676,8 @@ def startGame():
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
+
+        seconds = duration//1000
         def settleScoreAttacker(blocks, timeLeft):
             score = blocks * 0.5 + timeLeft * 0.5
             return score
@@ -683,17 +685,18 @@ def startGame():
         for projectileNumber in projectiles:
             if projectileNumber[0].rect.colliderect(eagle.rect):
                 winningTime = int(time.time() - timerStarter)
-
+                print("puntaje primero: " + str(points))
+                print("puntaje segundo: " + str(settleScoreAttacker(destroyedBlocks, seconds-winningTime)))
                 if winnerGlobal == None:
                     winningTime = int(time.time() - timerStarter)
-                    setVariables(secondPlayer, firstPlayer, lang, firstPlayer, settleScoreAttacker(destroyedBlocks, songSecondsDuration-winningTime), songSecondsDuration-winningTime, songSecondsDuration)
-                elif settleScoreAttacker(destroyedBlocks, songSecondsDuration-winningTime) < points:
+                    setVariables(secondPlayer, firstPlayer, lang, firstPlayer, settleScoreAttacker(destroyedBlocks, seconds-winningTime), seconds-winningTime, seconds)
+                elif settleScoreAttacker(destroyedBlocks, seconds-winningTime) < points:
                     winningTime = int(lastTime)
                     startWinnerWindow(secondPlayer, firstPlayer, points, lastTime, lang)
-                elif points < settleScoreAttacker(destroyedBlocks, songSecondsDuration-winningTime):
+                elif points < settleScoreAttacker(destroyedBlocks, seconds-winningTime):
                     winningTime = int(time.time() - timerStarter)
-                    startWinnerWindow(firstPlayer, secondPlayer, settleScoreAttacker(destroyedBlocks, songSecondsDuration-winningTime), songSecondsDuration-winningTime, lang)
-                elif points == settleScoreAttacker(destroyedBlocks, songSecondsDuration-winningTime):
+                    startWinnerWindow(firstPlayer, secondPlayer, settleScoreAttacker(destroyedBlocks, seconds-winningTime), seconds-winningTime, lang)
+                elif points == settleScoreAttacker(destroyedBlocks, seconds-winningTime):
                     winningTime = int(lastTime)
                     setVariables(secondPlayer, firstPlayer, lang, secondPlayer, points, lastSongDuration-winningTime, lastSongDuration)
 
@@ -725,4 +728,4 @@ def startGame():
     sys.exit()
 
 
-#setVariables("Felipe", "DryGoz", "es", None, 0, 0, 0)
+setVariables("Felipe", "Esteban", "es", None, 0, 0, 0)

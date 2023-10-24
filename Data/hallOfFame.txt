@@ -1,3 +1,5 @@
+Esteban 118.0
+Esteban 104.5
 Felipe 37.5
 Dylan 35.5
 carlos 32.0
