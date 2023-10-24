@@ -728,4 +728,4 @@ def startGame():
     sys.exit()
 
 
-setVariables("Felipe", "Esteban", "es", None, 0, 0, 0)
+#setVariables("Felipe", "Esteban", "es", None, 0, 0, 0)
