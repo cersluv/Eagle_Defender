@@ -66,6 +66,7 @@ def getMusicFeatures(user):
     popularity = trackInfo['popularity']
     audioFeatures = sp.audio_features(uriSelectedSong)
     danceability = audioFeatures[0]['danceability']
+    duration = audioFeatures[0]['duration_ms']
     acoustics = audioFeatures[0]['acousticness']
     tempo = audioFeatures[0]['tempo']
 
@@ -74,7 +75,7 @@ def getMusicFeatures(user):
     acoustics = round(acoustics * 100, 2)
     tempo = round(tempo, 2)
 
-    return popularity, danceability, acoustics, tempo
+    return popularity, danceability, acoustics, tempo, duration
 
 
 def otros():
@@ -213,6 +214,6 @@ def otros():
     '''
 
 
-#playMusicUser("DryGoz")
-#popularity, danceability, acoustics, tempo = getMusicFeatures("Sebas")
+#playMusicUser("Felipe")
+#popularity, danceability, acoustics, tempo, duration = getMusicFeatures("Felipe")
 #print(f'Popularidad: {popularity} \nBaleabilidad: {danceability} \nAcusticos: {acoustics} \nTempo: {tempo}')

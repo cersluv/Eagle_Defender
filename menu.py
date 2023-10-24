@@ -9,6 +9,7 @@ from loginConfig import configColorPalet, configChangeSelectedSong, configSpecia
     configSpecialEffectEagleSkin, configSpecialEffectGoblinSkin, configSpecialEffectSounds
 from musicHandler import buttonSoundEffect, playMusicUser
 from HoFConfig import getMatrixScores
+from soloPlayer import startSolo
 
 
 def translateText(text, targetLanguage):
@@ -276,9 +277,9 @@ def songsWindow(user, language, palette):
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
 
         drawRect()
-        drawText(songList[0], centerX - 180, centerY - 55)
-        drawText(songList[1], centerX - 180, centerY + 85)
-        drawText(songList[2], centerX - 180, centerY + 225)
+        drawText(songList[0].replace(".txt",""), centerX - 180, centerY - 55)
+        drawText(songList[1].replace(".txt",""), centerX - 180, centerY + 85)
+        drawText(songList[2].replace(".txt",""), centerX - 180, centerY + 225)
 
         pygame.display.flip()
 
@@ -365,7 +366,7 @@ def effectsWindow(user, language, palette):
         pygame.draw.rect(window, (0, 128, 255), animation2, 0)
         pygame.draw.rect(window, (0, 128, 255), eagle1, 0)
         pygame.draw.rect(window, (0, 128, 255), eagle2, 0)
-        pygame.draw.rect(window, (0, 128, 255), eagle3, 0)
+        pygame.draw.rect(window, (0, 128, 0), eagle3, 0)
         pygame.draw.rect(window, (0, 128, 255), eagle4, 0)
         pygame.draw.rect(window, (0, 128, 255), skin1, 0)
         pygame.draw.rect(window, (0, 128, 255), skin2, 0)
@@ -423,7 +424,7 @@ def effectsWindow(user, language, palette):
 
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
-        # drawRect()
+        #drawRect()
 
         pygame.display.flip()
 
@@ -496,6 +497,9 @@ def customsSettingsWindow(user, language, palette):
     helpButton = pygame.Rect(910 * scaleFactorWidth, 230 * scaleFactorHeigth, 270 * scaleFactorWidth,
                              75 * scaleFactorHeigth)
 
+    icon = pygame.image.load("Data/" + user + "/Images/icon.png")
+    icon = pygame.transform.scale(icon, (70,70))
+    iconRect = icon.get_rect()
 
     main = True
     """
@@ -600,6 +604,10 @@ def customsSettingsWindow(user, language, palette):
 
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
+
+        drawText(user, 1600, 60, 35)
+        window.blit(icon, (1750 * scaleFactorWidth,45 * scaleFactorHeigth))
+
         # drawRect()
         if language == "es":
             drawText("Jugar", 165, 245, 35)
@@ -692,6 +700,10 @@ def bestWindow(user, language, palette):
                              75 * scaleFactorHeigth)
     main = True
 
+    icon = pygame.image.load("Data/" + user + "/Images/icon.png")
+    icon = pygame.transform.scale(icon, (70,70))
+    iconRect = icon.get_rect()
+
     """
     input: text (str), x coord (int), y coord (int)
     summary: Renders and displays text on the screen
@@ -755,6 +767,10 @@ def bestWindow(user, language, palette):
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
         HoFMatrix = getMatrixScores()
+
+        drawText(user, 1600, 60, 35)
+        window.blit(icon, (1750 * scaleFactorWidth,45 * scaleFactorHeigth))
+
         if language == "es":
             drawText("Jugar", 165, 245, 35)
             drawText("Configuración", 385, 235, 25)
@@ -920,6 +936,11 @@ def principalMenu(user, language):
         renderedText = font.render(text, True, (255, 255, 255))
         window.blit(renderedText, (x * scaleFactorWidth, y * scaleFactorHeigth))
 
+    icon = pygame.image.load("Data/" + user + "/Images/icon.png")
+    icon = pygame.transform.scale(icon, (70,70))
+    iconRect = icon.get_rect()
+
+
     running = True
     while running:
         window.fill((0, 0, 0))
@@ -972,7 +993,7 @@ def principalMenu(user, language):
 
                 if playLocalSolo.collidepoint(event.pos):
                     buttonSoundEffect()
-                    print("Solo")
+                    startSolo(user,language)
                 if playLocalMulti.collidepoint(event.pos):
                     buttonSoundEffect()
                     baseLogin.startGame2(True, user)
@@ -982,6 +1003,12 @@ def principalMenu(user, language):
 
         # Blit the scaled image onto the screen
         window.blit(scaledImage, ((screenWidth - newWidth) // 2, (screenHeigth - newHeigth) // 2))
+
+
+        drawText(user, 1600, 60, 35)
+        window.blit(icon, (1750 * scaleFactorWidth,45 * scaleFactorHeigth))
+
+
         # drawRect()
         if language == "es":
             drawText("Jugar", 165 * scaleFactorWidth, 245 * scaleFactorHeigth, 35)
@@ -1020,6 +1047,6 @@ def principalMenu(user, language):
     pygame.quit()
     sys.exit()
 
-#principalMenu("DryGoz", "en")
+principalMenu("Felipe", "es")
 
 

@@ -199,7 +199,7 @@ def downloadAudio():
 
             uri = str(suggestions[index])
 
-            filePath = "Data/" + cleanTextUsername + "/Music/" + str(suggestionListbox.get(index) + ".txt")
+            filePath = "Data/" + cleanTextUsername + "/Music/" + str(suggestionListbox.get(index) )
             with open(filePath, "w", encoding='utf-8') as file:
                 file.write(uri)
 
@@ -215,7 +215,7 @@ def downloadAudio():
 
             uri = str(suggestions[index])
 
-            filePath = "Data/" + cleanTextUsername + "/Music/" + str(suggestionListbox.get(index) + ".txt")
+            filePath = "Data/" + cleanTextUsername + "/Music/" + str(suggestionListbox.get(index) )
             with open(filePath, "w", encoding='utf-8') as file:
                 file.write(uri)
 

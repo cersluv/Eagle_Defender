@@ -1,63 +1,42 @@
-import pygame
+import random
 import time
+import pygame
 import sys
 import os
 import math
 from eagle import Aguila
 from fence import Fence
-from musicHandler import playMusicUser, getMusicFeatures
-from winnerWindow import startWinnerWindow
+from winnerWindow import startWinnerWindowSolo
+from musicHandler import getMusicFeatures, playMusicUser
 
-global power, skinGoblin, skinProjectile, paletteAtacker, eagleSkin, boxSkin, paletteDefender, lang, winnerGlobal, points, firstPlayer, secondPlayer, lastTime, lastSongDuration
+
+global power, skinGoblin, skinProjectile, paletteAtacker, eagleSkin, boxSkin, paletteDefender
 
 power = 1
 
-def setVariables(firstUser, secondUser, language, winner, winnerPoints, timeAttacker, lastDuration):
-    global skinGoblin, skinProjectile, paletteAtacker, eagleSkin, boxSkin, paletteDefender, lang, winnerGlobal, points, firstPlayer, secondPlayer, lastTime, lastSongDuration
-    lang = language
-    points = winnerPoints
-    winnerGlobal = winner
-    firstPlayer = firstUser
-    secondPlayer = secondUser
-    lastTime = timeAttacker
-    lastSongDuration = lastDuration
 
+def startSolo(user, language):
+    global power, skinGoblin, skinProjectile, paletteAtacker, eagleSkin, boxSkin, paletteDefender, running
     try:
         datapath = os.getcwd() + "\Data"
-        personPath = datapath + "\\" + firstUser
+        personPath = datapath + "\\" + user
         configurationFile = personPath + "\\configuration.txt"
         file = open(configurationFile, "r")
         text = file.read()
         firstAttributes = text.split("\n")
 
-        datapath = os.getcwd() + "\Data"
-        personPath = datapath + "\\" + secondUser
-        configurationFile = personPath + "\\configuration.txt"
-        file = open(configurationFile, "r")
-        text = file.read()
-        secondAttributes = text.split("\n")
-
     except:
-        print("error")
         firstAttributes = None
-        secondAttributes = None
 
     skinGoblin = firstAttributes[4]
     skinProjectile = firstAttributes[2]
     paletteAtacker = firstAttributes[0]
+    paletteDefender = firstAttributes[0]
+    boxSkin = firstAttributes[2]
 
-    eagleSkin = secondAttributes[3]
-    boxSkin = secondAttributes[2]
-    paletteDefender = secondAttributes[0]
+    playMusicUser(user)
 
-    startGame()
-
-def startGame():
-    global power, skinGoblin, skinProjectile, paletteAtacker, eagleSkin, boxSkin, paletteDefender, running, lang, winnerGlobal, points, firstPlayer, secondPlayer, lastTime, lastSongDuration
-
-    playMusicUser(secondPlayer)
-
-    popularity, danceability, acoustics, tempo, duration = getMusicFeatures(firstPlayer)
+    popularity, danceability, acoustics, tempo, duration = getMusicFeatures(user)
 
     songMinutesDuration = duration//60000
     songSecondsDuration = duration//1000 - songMinutesDuration*60
@@ -66,8 +45,6 @@ def startGame():
 
     regeneration = int(30/bps)
 
-
-    pygame.init()
 
     # Constants
     goblinSpeed = 5
@@ -87,7 +64,7 @@ def startGame():
     fireProjectile = None
     dynamiteProjectile = None
 
-    attackingPhase = False
+    attackingPhase = True
 
     screenWidth, screenHeight = pygame.display.Info().current_w, pygame.display.Info().current_h
 
@@ -109,13 +86,13 @@ def startGame():
     newWidth = int(originalWidth * minScaleFactor)
     newHeigth = int(originalHeigth * minScaleFactor)
 
-
-
     # Colors
     white = (255, 255, 255)
 
     # Font
     font = pygame.font.Font(None, 36)
+
+    goblinImage = pygame.image.load("visuals/goblin/blueGob.png")
 
 
     # Load the goblin image
@@ -153,6 +130,42 @@ def startGame():
 
     fireImage = pygame.transform.scale(fireImage, (projectileSize + 40, projectileSize))
 
+    # Load the goblin image
+    if skinGoblin == "goblin1":
+        goblinImage = pygame.image.load("visuals/goblin/redGob.png")
+    if skinGoblin == "goblin2":
+        goblinImage = pygame.image.load("visuals/goblin/purpleGob.png")
+    if skinGoblin == "goblin3":
+        goblinImage = pygame.image.load("visuals/goblin/blueGob.png")
+    if skinGoblin == "goblin4":
+        goblinImage = pygame.image.load("visuals/goblin/pinkGob.png")
+    if skinGoblin == "goblin5":
+        goblinImage = pygame.image.load("visuals/goblin/greenGob.png")
+
+    goblinImage = pygame.transform.scale(goblinImage, (150, 150))
+
+
+    # Load the projectile image
+    if skinProjectile == "1":
+        waterImage = pygame.image.load("visuals/projectile/w1.png")
+        fireImage = pygame.image.load("visuals/projectile/f1.png")
+        dynamiteImage = pygame.image.load("visuals/projectile/d1.png")
+
+        waterImage = pygame.transform.scale(waterImage, (projectileSize, projectileSize))
+        waterImage = pygame.transform.rotate(waterImage, 25)
+        dynamiteImage = pygame.transform.scale(dynamiteImage, (projectileSize + 10, projectileSize + 10))
+
+    if skinProjectile == "2":
+        waterImage = pygame.image.load("visuals/projectile/w2.png")
+        fireImage = pygame.image.load("visuals/projectile/f2.png")
+        dynamiteImage = pygame.image.load("visuals/projectile/d2.png")
+
+        waterImage = pygame.transform.scale(waterImage, (projectileSize + 20, projectileSize + 10))
+        dynamiteImage = pygame.transform.scale(dynamiteImage, (projectileSize -10, projectileSize))
+
+    fireImage = pygame.transform.scale(fireImage, (projectileSize + 40, projectileSize))
+
+
     if boxSkin == "1":
         woodSkin = pygame.image.load("visuals/boxes/madera1.png")
         steelSkin = pygame.image.load("visuals/boxes/acero1.png")
@@ -169,15 +182,6 @@ def startGame():
         steelSkin = pygame.transform.scale(steelSkin, (80 * scaleFactorWidth, 80 * scaleFactorHeight))
         concreteSkin = pygame.transform.scale(concreteSkin, (100 * scaleFactorWidth, 80 * scaleFactorHeight))
         boxes = 2
-
-    if eagleSkin == "eagle1":
-        skinEagle = 1
-    if eagleSkin == "eagle2":
-        skinEagle = 2
-    if eagleSkin == "eagle3":
-        skinEagle = 3
-    if eagleSkin == "eagle4":
-        skinEagle = 4
 
     if paletteAtacker == "Palette 1":
         atackerGameplay = pygame.image.load("visuals/gameWindows/3.png")
@@ -200,8 +204,15 @@ def startGame():
     if paletteDefender == "Palette 5":
         defenderGameplay = pygame.image.load("visuals/gameWindows/12.png")
 
+
+    defenderGameplay = pygame.image.load("visuals/gameWindows/10.png")
+
+    skinEagle = 3
+
     scaledAtackerImage = pygame.transform.scale(atackerGameplay, (newWidth / 2, newHeigth))
     scaledDefenderImage = pygame.transform.scale(defenderGameplay, (newWidth / 2, newHeigth))
+
+    pygame.init()
 
     class Goblin:
         def __init__(self, x, y):
@@ -242,9 +253,10 @@ def startGame():
 
         def move(self):
             self.time += 1
-            self.rect.x = self.startX + self.velocity * self.time * math.cos(math.radians(self.angle)) * self.scaleFactor
-            self.rect.y = self.startY - (self.initialVerticalVelocity * self.time - 0.5 * self.gravity * (self.time ** 2)) * self.scaleFactor
-
+            self.rect.x = self.startX + self.velocity * self.time * math.cos(
+                math.radians(self.angle)) * self.scaleFactor
+            self.rect.y = self.startY - (self.initialVerticalVelocity * self.time - 0.5 * self.gravity * (
+                        self.time ** 2)) * self.scaleFactor
 
         def draw(self, type):
             if type == "water":
@@ -257,7 +269,7 @@ def startGame():
     eagle = Aguila(skinEagle)
     barrera = Fence(50, 50, 1, 0, boxes)
     aguila_Movement = True
-    barrera_Movement = False
+    barrera_Movement = True
     placing_Barrier = True
     barrerasTipo1 = []
     barrerasTipo2 = []
@@ -267,44 +279,144 @@ def startGame():
 
     projectiles = []
 
-
     goblin = Goblin(screenWidth - 120, screenHeight // 2)
     projectile = None
     trajectoryPointsWater = []
     trajectoryPointsFire = []
     trajectoryPointsDynamite = []
 
-    power1Rect = pygame.Rect(990 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
-    power2Rect = pygame.Rect(1135 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
-    power3Rect = pygame.Rect(1280 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
+    power1Rect = pygame.Rect(990 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth,
+                             120 * scaleFactorHeight)
+    power2Rect = pygame.Rect(1135 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth,
+                             120 * scaleFactorHeight)
+    power3Rect = pygame.Rect(1280 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth,
+                             120 * scaleFactorHeight)
 
-    box1Rect = pygame.Rect(500 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
-    box2Rect = pygame.Rect(645 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
-    box3Rect = pygame.Rect(790 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth, 120 * scaleFactorHeight)
-
+    box1Rect = pygame.Rect(500 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth,
+                           120 * scaleFactorHeight)
+    box2Rect = pygame.Rect(645 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth,
+                           120 * scaleFactorHeight)
+    box3Rect = pygame.Rect(790 * scaleFactorWidth, 930 * scaleFactorHeight, 140 * scaleFactorWidth,
+                           120 * scaleFactorHeight)
 
     clock = pygame.time.Clock()
 
-    totalTimeSeconds = 60 * 1
-
-    startTime = time.time()
-
-    winningTime = 0
+    regenCounter = time.time()
+    timerStarter = time.time()
 
 
     totalTimeSecondsAttacking = (60 * songMinutesDuration) + songSecondsDuration
-    startAttackingTime = time.time() + 60
+    startAttackingTime = time.time()
 
     running = True
+    iaDefense = True
+    eagleNotPlace = True
+    firstPlaceBLocks = True
+    replaceCount = 1000
+    replaceBlock = random.randint(1, 10)
+    print(f'Segundos antes de que se ponga otro bloque: {replaceBlock}')
 
     while running:
+        elapsedTimeSecondsAttacking = int(time.time() - startAttackingTime)
+        currentTimeSecondsAttacking = max(0, totalTimeSecondsAttacking - elapsedTimeSecondsAttacking)
+
+        minutesAttacking = currentTimeSecondsAttacking // 60
+        secondsAttacking = currentTimeSecondsAttacking % 60
+
+        regenerationTime = int(time.time() - regenCounter)
+
+        if regenerationTime == regeneration:
+            waterQuantity += 1
+            fireQuantity += 1
+            dynamiteQuantity += 1
+            regenCounter = time.time()
+
+
+        if iaDefense:
+            if eagleNotPlace:
+                moveX = random.randint(43, 150)
+                moveY = random.randint(40, 1000)
+                eagle.mover(moveX, moveY)
+                eagleNotPlace = False
+
+            if firstPlaceBLocks:
+                print(f'Inicio posicionamiento bloques')
+                for i in range(3):
+                    barrera = Fence(50, 50, 1, 0, boxes)
+                    xRandom = random.randint(150, 900)
+                    yRandom = random.randint(40, 869)
+                    newBarrera = Fence(barrera.rect.x + xRandom, barrera.rect.y + yRandom, barrera.tipo,
+                                       barrera.angulo_rotacion, boxes)
+                    barrerasTipo1.append(newBarrera)
+                    woodQuantity -= 1
+                    print(barrerasTipo1)
+
+                for i in range(3):
+                    barrera = Fence(50, 50, 2, 0, boxes)
+                    xRandom = random.randint(150, 900)
+                    yRandom = random.randint(40, 869)
+                    newBarrera = Fence(barrera.rect.x + xRandom, barrera.rect.y + yRandom, barrera.tipo,
+                                       barrera.angulo_rotacion, boxes)
+                    barrerasTipo2.append(newBarrera)
+                    steelQuantity -= 1
+
+                for i in range(3):
+                    barrera = Fence(50, 50, 3, 0, boxes)
+                    xRandom = random.randint(150, 900)
+                    yRandom = random.randint(40, 869)
+                    newBarrera = Fence(barrera.rect.x + xRandom, barrera.rect.y + yRandom, barrera.tipo,
+                                       barrera.angulo_rotacion, boxes)
+                    barrerasTipo3.append(newBarrera)
+                    concreteQuantity -= 1
+
+                firstPlaceBLocks = False
+
+            if replaceBlock == replaceCount:
+                replaceBlock = random.randint(1, 10)
+                replaceCount = 1000
+
+                selectedBlock = random.randint(1, 3)
+                if selectedBlock == 1 and woodQuantity > 0:
+                    print("Place wood")
+                    barrera = Fence(50, 50, 1, 0, boxes)
+                    xRandom = random.randint(150,900)
+                    yRandom = random.randint(40, 1050)
+                    newBarrera = Fence(barrera.rect.x + xRandom, barrera.rect.y + yRandom, barrera.tipo,
+                                       barrera.angulo_rotacion, boxes)
+                    barrerasTipo1.append(newBarrera)
+                    woodQuantity -= 1
+
+                if selectedBlock == 2 and steelQuantity > 0:
+                    print("Place steel")
+                    barrera = Fence(50, 50, 2, 0, boxes)
+                    xRandom = random.randint(150, 900)
+                    yRandom = random.randint(40, 1050)
+                    newBarrera = Fence(barrera.rect.x + xRandom, barrera.rect.y + yRandom, barrera.tipo,
+                                       barrera.angulo_rotacion, boxes)
+                    barrerasTipo2.append(newBarrera)
+                    steelQuantity -= 1
+
+                if selectedBlock == 3 and concreteQuantity > 0:
+                    print("Place concrete")
+                    barrera = Fence(50, 50, 3, 0, boxes)
+                    xRandom = random.randint(150, 900)
+                    yRandom = random.randint(40, 1050)
+                    newBarrera = Fence(barrera.rect.x + xRandom, barrera.rect.y + yRandom, barrera.tipo,
+                                       barrera.angulo_rotacion, boxes)
+                    barrerasTipo3.append(newBarrera)
+                    concreteQuantity -= 1
+
+            replaceCount -=1
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
+
             if event.type == pygame.MOUSEBUTTONDOWN:
+                print(f'Click registrado en: {pygame.mouse.get_pos()}')
                 if power1Rect.collidepoint(event.pos):
                     power = 1
                 if power2Rect.collidepoint(event.pos):
@@ -313,51 +425,6 @@ def startGame():
                     power = 3
 
         keys = pygame.key.get_pressed()
-
-        elapsedTimeSeconds = int(time.time() - startTime)
-        currentTimeSeconds = max(0, totalTimeSeconds - elapsedTimeSeconds)
-
-        minutes = currentTimeSeconds // 60
-        seconds = currentTimeSeconds % 60
-
-        if currentTimeSeconds == 0 and not attackingPhase:
-            attackingPhase = True
-            regenCounter = time.time()
-            timerStarter = time.time()
-            playMusicUser(firstPlayer)
-
-        if attackingPhase:
-            elapsedTimeSecondsAttacking = int(time.time() - startAttackingTime)
-            currentTimeSecondsAttacking = max(0, totalTimeSecondsAttacking - elapsedTimeSecondsAttacking)
-
-            minutesAttacking = currentTimeSecondsAttacking // 60
-            secondsAttacking = currentTimeSecondsAttacking % 60
-
-            regenerationTime = int(time.time() - regenCounter)
-
-
-
-            if regenerationTime == regeneration:
-                waterQuantity += 1
-                fireQuantity += 1
-                dynamiteQuantity += 1
-                regenCounter = time.time()
-
-        if aguila_Movement:
-            # Movimiento del aguila
-            if keys[pygame.K_a]:
-                eagle.mover(-eagle.velocidad, 0)
-            if keys[pygame.K_d]:
-                eagle.mover(eagle.velocidad, 0)
-            if keys[pygame.K_w]:
-                eagle.mover(0, -eagle.velocidad)
-            if keys[pygame.K_s]:
-                eagle.mover(0, eagle.velocidad)
-
-            # Posicionamiento del aguila
-            if keys[pygame.K_f]:
-                aguila_Movement = False
-                barrera_Movement = True
 
         if barrera_Movement:
             # Cambio de barrera
@@ -368,58 +435,6 @@ def startGame():
             elif keys[pygame.K_3]:
                 barrera = Fence(50, 50, 3, 0, boxes)
 
-            # Rotacion de las barreras
-            if keys[pygame.K_q]:
-                barrera.rotar("Q")
-            elif keys[pygame.K_e]:
-                barrera.rotar("E")
-
-            # Movimiento de las barreras
-            if keys[pygame.K_w]:
-                barrera.mover(0, -barrera.velocidad)
-            if keys[pygame.K_s]:
-                barrera.mover(0, barrera.velocidad)
-            if keys[pygame.K_a]:
-                barrera.mover(-barrera.velocidad, 0)
-            if keys[pygame.K_d]:
-                barrera.mover(barrera.velocidad, 0)
-
-            if keys[pygame.K_r] and not barrera.rect.colliderect(eagle.rect):
-                if barrera.tipo == 1:
-                    if len(barrerasTipo1) == 10:
-                        pass
-                    else:
-                        if not se_creo_nueva_barrera:
-                            if barrera.rect.x < 870:
-                                newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo,
-                                                   barrera.angulo_rotacion, boxes)
-                                barrerasTipo1.append(newBarrera)
-                                woodQuantity -= 1
-                                se_creo_nueva_barrera = True
-                elif barrera.tipo == 2:
-                    if len(barrerasTipo2) == 10:
-                        pass
-                    else:
-                        if not se_creo_nueva_barrera:
-                            if barrera.rect.x < 870:
-                                newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo,
-                                                   barrera.angulo_rotacion, boxes)
-                                barrerasTipo2.append(newBarrera)
-                                steelQuantity -= 1
-                                se_creo_nueva_barrera = True
-                elif barrera.tipo == 3:
-                    if len(barrerasTipo3) == 10:
-                        pass
-                    else:
-                        if not se_creo_nueva_barrera:
-                            if barrera.rect.x < 870:
-                                newBarrera = Fence(barrera.rect.x + 50, barrera.rect.y + 25, barrera.tipo,
-                                                   barrera.angulo_rotacion, boxes)
-                                barrerasTipo3.append(newBarrera)
-                                concreteQuantity -= 1
-                                se_creo_nueva_barrera = True
-            else:
-                se_creo_nueva_barrera = False
 
         if attackingPhase:
             if keys[pygame.K_8]:
@@ -460,13 +475,12 @@ def startGame():
                     projectiles.append(list)
                     trajectoryPointsDynamite.clear()
 
-
         screen.fill((0, 0, 0))
 
-        screen.blit(scaledAtackerImage, (960*scaleFactorWidth, 0))
+        screen.blit(scaledAtackerImage, (960 * scaleFactorWidth, 0))
         screen.blit(scaledDefenderImage, (0, 0))
-        #rectangulo1 = pygame.Rect(100, 230, 270, 475)
-        #rectangulo = pygame.draw.rect(screen, "#FF241F", rectangulo1, 0)
+        # rectangulo1 = pygame.Rect(100, 230, 270, 475)
+        # rectangulo = pygame.draw.rect(screen, "#FF241F", rectangulo1, 0)
 
         if len(trajectoryPointsWater) >= 2:
             pygame.draw.lines(screen, "#aeddeb", False, trajectoryPointsWater, 2)
@@ -479,8 +493,8 @@ def startGame():
             trajectoryPointsWater.append(waterProjectile.rect.center)
             waterProjectile.move()
             waterProjectile.draw("water")
-            #if rectangulo1.collidepoint(waterProjectile.rect.x, waterProjectile.rect.y):
-             #   print("Chocaron")
+            # if rectangulo1.collidepoint(waterProjectile.rect.x, waterProjectile.rect.y):
+            #   print("Chocaron")
             if waterProjectile.rect.x < 0 or waterProjectile.rect.y > screenHeight:
                 waterProjectile = None
 
@@ -498,106 +512,63 @@ def startGame():
             if dynamiteProjectile.rect.x < 0 or dynamiteProjectile.rect.y > screenHeight:
                 dynamiteProjectile = None
 
-
         goblin.draw()
         powers1 = pygame.draw.rect(screen, "#2e2f30", power1Rect, 0)
-        screen.blit(pygame.transform.scale(waterImage, (120 * scaleFactorWidth, 80 * scaleFactorHeight)), (1000 * scaleFactorWidth, 950* scaleFactorHeight))
+        screen.blit(pygame.transform.scale(waterImage, (120 * scaleFactorWidth, 80 * scaleFactorHeight)),
+                    (1000 * scaleFactorWidth, 950 * scaleFactorHeight))
         powers2 = pygame.draw.rect(screen, "#1a1b1c", power2Rect, 0)
-        screen.blit(pygame.transform.scale(fireImage, (120 * scaleFactorWidth, 60 * scaleFactorHeight)), (1155 * scaleFactorWidth, 955* scaleFactorHeight))
+        screen.blit(pygame.transform.scale(fireImage, (120 * scaleFactorWidth, 60 * scaleFactorHeight)),
+                    (1155 * scaleFactorWidth, 955 * scaleFactorHeight))
         powers3 = pygame.draw.rect(screen, "#2e2f30", power3Rect, 0)
-        screen.blit(pygame.transform.scale(dynamiteImage, (80 * scaleFactorWidth, 80* scaleFactorHeight)), (1310 * scaleFactorWidth, 950* scaleFactorHeight))
-
-        box1 = pygame.draw.rect(screen, "#2e2f30", box1Rect, 0)
-        screen.blit(pygame.transform.scale(woodSkin, (70 * scaleFactorWidth, 70 * scaleFactorHeight)), (535 * scaleFactorWidth, 955* scaleFactorHeight))
-        box2 = pygame.draw.rect(screen, "#1a1b1c", box2Rect, 0)
-        screen.blit(pygame.transform.scale(steelSkin, (80 * scaleFactorWidth, 60 * scaleFactorHeight)),(675 * scaleFactorWidth, 960 * scaleFactorHeight))
-        box3 = pygame.draw.rect(screen, "#2e2f30", box3Rect, 0)
-        if boxes == 1:
-            screen.blit(pygame.transform.scale(concreteSkin, (100 * scaleFactorWidth, 80 * scaleFactorHeight)),(810 * scaleFactorWidth, 950 * scaleFactorHeight))
-        if boxes == 2:
-            screen.blit(pygame.transform.scale(concreteSkin, (70 * scaleFactorWidth, 70 * scaleFactorHeight)),(825 * scaleFactorWidth, 955 * scaleFactorHeight))
-
+        screen.blit(pygame.transform.scale(dynamiteImage, (80 * scaleFactorWidth, 80 * scaleFactorHeight)),
+                    (1310 * scaleFactorWidth, 950 * scaleFactorHeight))
 
 
         # Display angle, x, and y values
-        if lang == "es":
-            angle_text = font.render(f"Ángulo: {goblin.angle}°", True, white)
-            angle_text_rect = angle_text.get_rect()
-            angle_text_rect.topleft = (1700 * scaleFactorWidth, 20 *  scaleFactorHeight)
-        if lang == "en":
-            angle_text = font.render(f"Angle: {goblin.angle}°", True, white)
-            angle_text_rect = angle_text.get_rect()
-            angle_text_rect.topleft = (1700 * scaleFactorWidth, 20 *  scaleFactorHeight)
+        angle_text = font.render(f"Angle: {goblin.angle} degrees", True, white)
+        angle_text_rect = angle_text.get_rect()
+        angle_text_rect.topleft = (1700 * scaleFactorWidth, 20 * scaleFactorHeight)
         x_text = font.render(f"X: {goblin.rect.x:.2f}", True, white)
         x_text_rect = x_text.get_rect()
-        x_text_rect.topleft = (1700 * scaleFactorWidth, 60 *  scaleFactorHeight)
+        x_text_rect.topleft = (1700 * scaleFactorWidth, 60 * scaleFactorHeight)
         y_text = font.render(f"Y: {goblin.rect.y:.2f}", True, white)
         y_text_rect = y_text.get_rect()
-        y_text_rect.topleft = (1700 * scaleFactorWidth, 100 *  scaleFactorHeight)
+        y_text_rect.topleft = (1700 * scaleFactorWidth, 100 * scaleFactorHeight)
 
         waterText = font.render(f"x{waterQuantity}", True, white)
         watertext_rect = waterText.get_rect()
-        watertext_rect.topleft = (1000 * scaleFactorWidth, 1022 *  scaleFactorHeight)
+        watertext_rect.topleft = (1000 * scaleFactorWidth, 1022 * scaleFactorHeight)
         fireText = font.render(f"x{fireQuantity}", True, white)
         firetext_rect = fireText.get_rect()
-        firetext_rect.topleft = (1147 * scaleFactorWidth, 1022 *  scaleFactorHeight)
+        firetext_rect.topleft = (1147 * scaleFactorWidth, 1022 * scaleFactorHeight)
         dynamiteText = font.render(f"x{dynamiteQuantity}", True, white)
         dynamitetext_rect = dynamiteText.get_rect()
-        dynamitetext_rect.topleft = (1290 * scaleFactorWidth, 1022 *  scaleFactorHeight)
+        dynamitetext_rect.topleft = (1290 * scaleFactorWidth, 1022 * scaleFactorHeight)
 
-        buttonText1_rect = font.render("[8]",True, white).get_rect()
-        buttonText1_rect.topleft = (1000 * scaleFactorWidth, 933 *  scaleFactorHeight)
+        buttonText1_rect = font.render("[8]", True, white).get_rect()
+        buttonText1_rect.topleft = (1000 * scaleFactorWidth, 933 * scaleFactorHeight)
         buttonText2_rect = font.render("[9]", True, white).get_rect()
         buttonText2_rect.topleft = (1147 * scaleFactorWidth, 933 * scaleFactorHeight)
         buttonText3_rect = font.render("[0]", True, white).get_rect()
         buttonText3_rect.topleft = (1290 * scaleFactorWidth, 933 * scaleFactorHeight)
 
+        screen.blit(angle_text, angle_text_rect)
+        screen.blit(x_text, x_text_rect)
+        screen.blit(y_text, y_text_rect)
+        screen.blit(waterText, watertext_rect)
+        screen.blit(fireText, firetext_rect)
+        screen.blit(dynamiteText, dynamitetext_rect)
 
-        woodText = font.render(f"x{woodQuantity}", True, white)
-        woodtext_rect = woodText.get_rect()
-        woodtext_rect.topleft = (510 * scaleFactorWidth, 1022 * scaleFactorHeight)
-        steelText = font.render(f"x{steelQuantity}", True, white)
-        steeltext_rect = steelText.get_rect()
-        steeltext_rect.topleft = (657 * scaleFactorWidth, 1022 * scaleFactorHeight)
-        concreteText = font.render(f"x{concreteQuantity}", True, white)
-        concretetext_rect = concreteText.get_rect()
-        concretetext_rect.topleft = (800 * scaleFactorWidth, 1022 * scaleFactorHeight)
-
-        buttonText4_rect = font.render("[1]", True, white).get_rect()
-        buttonText4_rect.topleft = (510 * scaleFactorWidth, 933 * scaleFactorHeight)
-        buttonText5_rect = font.render("[2]", True, white).get_rect()
-        buttonText5_rect.topleft = (657 * scaleFactorWidth, 933 * scaleFactorHeight)
-        buttonText6_rect = font.render("[3]", True, white).get_rect()
-        buttonText6_rect.topleft = (800 * scaleFactorWidth, 933 * scaleFactorHeight)
-
+        screen.blit(font.render("[8]", True, white), buttonText1_rect)
+        screen.blit(font.render("[9]", True, white), buttonText2_rect)
+        screen.blit(font.render("[0]", True, white), buttonText3_rect)
         def drawTimeText(text, x, y, size):
             font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size * int(scaleFactorWidth))
             renderedText = font.render(text, True, (255, 255, 255))
             screen.blit(renderedText, (x * scaleFactorWidth, y * scaleFactorHeight))
 
-        if not attackingPhase:
-            drawTimeText(f"{minutes:02d}:{seconds:02d}", 880, 15, 50)
 
-        if attackingPhase:
-            drawTimeText(f"{minutesAttacking:02d}:{secondsAttacking:02d}", 880, 15, 50)
-
-
-        screen.blit(angle_text, angle_text_rect)
-        screen.blit(x_text, x_text_rect)
-        screen.blit(y_text, y_text_rect)
-        screen.blit(waterText,watertext_rect)
-        screen.blit(fireText, firetext_rect)
-        screen.blit(dynamiteText, dynamitetext_rect)
-        screen.blit(woodText,woodtext_rect)
-        screen.blit(steelText, steeltext_rect)
-        screen.blit(concreteText, concretetext_rect)
-        screen.blit(font.render("[8]",True, white),buttonText1_rect)
-        screen.blit(font.render("[9]",True, white), buttonText2_rect)
-        screen.blit(font.render("[0]",True, white), buttonText3_rect)
-        screen.blit(font.render("[1]", True, white), buttonText4_rect)
-        screen.blit(font.render("[2]", True, white), buttonText5_rect)
-        screen.blit(font.render("[3]", True, white), buttonText6_rect)
-
+        drawTimeText(f"{minutesAttacking:02d}:{secondsAttacking:02d}", 880, 15, 50)
 
         destroyedBlocks = 0
         eagle.dibujar(screen)
@@ -683,40 +654,7 @@ def startGame():
         for projectileNumber in projectiles:
             if projectileNumber[0].rect.colliderect(eagle.rect):
                 winningTime = int(time.time() - timerStarter)
-
-                if winnerGlobal == None:
-                    winningTime = int(time.time() - timerStarter)
-                    setVariables(secondPlayer, firstPlayer, lang, firstPlayer, settleScoreAttacker(destroyedBlocks, songSecondsDuration-winningTime), songSecondsDuration-winningTime, songSecondsDuration)
-                elif settleScoreAttacker(destroyedBlocks, songSecondsDuration-winningTime) < points:
-                    winningTime = int(lastTime)
-                    startWinnerWindow(secondPlayer, firstPlayer, points, lastTime, lang)
-                elif points < settleScoreAttacker(destroyedBlocks, songSecondsDuration-winningTime):
-                    winningTime = int(time.time() - timerStarter)
-                    startWinnerWindow(firstPlayer, secondPlayer, settleScoreAttacker(destroyedBlocks, songSecondsDuration-winningTime), songSecondsDuration-winningTime, lang)
-                elif points == settleScoreAttacker(destroyedBlocks, songSecondsDuration-winningTime):
-                    winningTime = int(lastTime)
-                    setVariables(secondPlayer, firstPlayer, lang, secondPlayer, points, lastSongDuration-winningTime, lastSongDuration)
-
-
-        if attackingPhase:
-            if minutesAttacking == 0 and secondsAttacking == 0:
-                if winnerGlobal == None:
-                    winningTime = int(time.time() - timerStarter)
-                    setVariables(secondPlayer, firstPlayer, lang, firstPlayer,
-                                 settleScoreAttacker(destroyedBlocks, songSecondsDuration - winningTime),
-                                 songSecondsDuration - winningTime, songSecondsDuration)
-                elif settleScoreAttacker(destroyedBlocks, songSecondsDuration - winningTime) < points:
-                    winningTime = int(lastTime)
-                    startWinnerWindow(secondPlayer, firstPlayer, points, lastTime, lang)
-                elif points < settleScoreAttacker(destroyedBlocks, songSecondsDuration - winningTime):
-                    winningTime = int(time.time() - timerStarter)
-                    startWinnerWindow(firstPlayer, secondPlayer,
-                                      settleScoreAttacker(destroyedBlocks, songSecondsDuration - winningTime),
-                                      songSecondsDuration - winningTime, lang)
-                elif points == settleScoreAttacker(destroyedBlocks, songSecondsDuration - winningTime):
-                    winningTime = int(lastTime)
-                    setVariables(secondPlayer, firstPlayer, lang, secondPlayer, points, lastSongDuration - winningTime,
-                                 lastSongDuration)
+                startWinnerWindowSolo(user, settleScoreAttacker(destroyedBlocks, winningTime), language)
 
         pygame.display.flip()
         clock.tick(30)
@@ -725,4 +663,4 @@ def startGame():
     sys.exit()
 
 
-#setVariables("Felipe", "DryGoz", "es", None, 0, 0, 0)
+#startSolo("Felipe", "es")

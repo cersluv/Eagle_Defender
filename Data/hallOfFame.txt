@@ -1,6 +1,11 @@
-Jason 999
-Dylan 900
-Felipe 800
-Sebas 700
-Carlos 1
-
+Felipe 37.5
+Dylan 35.5
+carlos 32.0
+Felipe 19.5
+DryGoz 18.0
+DryGoz 17.0
+DryGoz 12.5
+DryGoz 12.5
+Sebas 11.0
+DryGoz 11.0
+carlos 5.0

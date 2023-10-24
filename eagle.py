@@ -17,9 +17,9 @@ class Aguila:
         if skin == 2:
             skinEagle = pygame.image.load("visuals/eagles/eagle2.png")
         if skin == 3:
-            skinEagle = pygame.image.load("visuals/eagles/eagle3.png")
-        if skin == 4:
             skinEagle = pygame.image.load("visuals/eagles/eagle4.png")
+        if skin == 4:
+            skinEagle = pygame.image.load("visuals/eagles/eagle3.png")
         skinEagle = pygame.transform.scale(skinEagle, (150 * scaleFactorWidth, 150 * scaleFactorHeigth))
         self.imagen = skinEagle
         self.rect = self.imagen.get_rect()

@@ -49,12 +49,12 @@ class Fence:
             self.vidaFuego = 1
             self.vidaBomba = 1
         elif self.tipo == 2:
-            self.vidaAgua = 3
-            self.vidaFuego = 2
-            self.vidaBomba = 1
-        elif self.tipo == 3:
             self.vidaAgua = 2
             self.vidaFuego = 1
+            self.vidaBomba = 1
+        elif self.tipo == 3:
+            self.vidaAgua = 3
+            self.vidaFuego = 2
             self.vidaBomba = 1
 
     def rotar(self, sentido):

@@ -1,6 +1,6 @@
-Palette 5
+Palette 4
 Eclipse by LIT killah.txt
-1
-eagle1
-goblin1
+2
+eagle3
+goblin5
 .

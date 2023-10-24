@@ -14,7 +14,7 @@ def startCoinFlip(user1, user2, lenguage):
         winnerText = [user1 +" Attacks", user2+" Attacks", "Continue", user1+" selects his side of the coin"]
 
     if lenguage == "es":
-        winnerText = [user1 +" Ataca", user2 +" Ataca", "Continuar", user2+" selecciona su lado de la moneda"]
+        winnerText = [user1 +" Ataca", user2 +" Ataca", "Continuar", user1+" selecciona su lado de la moneda"]
 
 
     # Inicializar Pygame
@@ -108,10 +108,10 @@ def startCoinFlip(user1, user2, lenguage):
                 elif winnerLabelVisible:
                     if winnerButton.collidepoint(mouse_pos) or continueButton.collidepoint(mouse_pos):
                         if n == randomNumber:
-                            setVariables(user1, user2, lenguage)
+                            setVariables(user1, user2, lenguage, None, 0, 0, 0)
                             running = False
                         else:
-                            setVariables(user2, user1, lenguage)
+                            setVariables(user2, user1, lenguage, None, 0, 0, 0)
                             running = False
 
         screen.fill((0, 0, 0))
@@ -128,46 +128,58 @@ def startCoinFlip(user1, user2, lenguage):
         pygame.time.delay(animationSpeed)
         clock.tick(60)
 
-        buttonWidth = 100*scaleFactorWidth
-        button_height = 50*scaleFactorHeigth
+        buttonWidth = 100 * scaleFactorWidth
+        button_height = 50 * scaleFactorHeigth
         buttonPadding = 200
         startX = (screenWidth - 2 * buttonWidth - buttonPadding) // 2
-        buttonY = 250*scaleFactorHeigth
+        buttonY = 250 * scaleFactorHeigth
 
         if coin1Visible:
-            coin1Button = pygame.draw.rect(screen, (0, 0, 255), (startX*scaleFactorWidth, buttonY*scaleFactorHeigth, buttonWidth*scaleFactorWidth, button_height*scaleFactorHeigth))
-            faceIMG = pygame.transform.scale(faceIMG, (250*scaleFactorWidth, 500*scaleFactorHeigth))
-            screen.blit(faceIMG, (startX - startX/9.5, buttonY-buttonY/1.3))
+            coin1Button = pygame.draw.rect(screen, (0, 0, 255), (
+            startX * scaleFactorWidth, buttonY * scaleFactorHeigth, buttonWidth * scaleFactorWidth,
+            button_height * scaleFactorHeigth))
+            faceIMG = pygame.transform.scale(faceIMG, (250 * scaleFactorWidth, 500 * scaleFactorHeigth))
+            screen.blit(faceIMG, (startX - startX / 9.5, buttonY - buttonY / 1.3))
 
         if coin2Visible:
-            coin2Button = pygame.draw.rect(screen, (0, 0, 255), ((startX + buttonWidth + buttonPadding)*scaleFactorWidth, buttonY*scaleFactorHeigth, buttonWidth, button_height*scaleFactorHeigth))
-            clawIMG = pygame.transform.scale(clawIMG, (270*scaleFactorWidth, 540*scaleFactorHeigth))
-            screen.blit(clawIMG, (startX + startX/3.5, buttonY-buttonY/1.18))
+            coin2Button = pygame.draw.rect(screen, (0, 0, 255), (
+            (startX + buttonWidth + buttonPadding) * scaleFactorWidth, buttonY * scaleFactorHeigth, buttonWidth,
+            button_height * scaleFactorHeigth))
+            clawIMG = pygame.transform.scale(clawIMG, (270 * scaleFactorWidth, 540 * scaleFactorHeigth))
+            screen.blit(clawIMG, (startX + startX / 3.5, buttonY - buttonY / 1.18))
 
         if winnerLabelVisible:
             if n == randomNumber:
                 winnerButton = pygame.draw.rect(screen, (0, 0, 0),
-                                                        (startX*scaleFactorWidth, buttonY*scaleFactorHeigth, (2 * buttonWidth + buttonPadding)*scaleFactorWidth, button_height*scaleFactorHeigth))
+                                                (startX * scaleFactorWidth, buttonY * scaleFactorHeigth,
+                                                 (2 * buttonWidth + buttonPadding) * scaleFactorWidth,
+                                                 button_height * scaleFactorHeigth))
                 text = font.render(winnerText[0], True, WHITE)
                 text_rect = text.get_rect(center=winnerButton.center)
                 screen.blit(text, text_rect)
             else:
                 winnerButton = pygame.draw.rect(screen, (0, 0, 0),
-                                                         (startX*scaleFactorWidth, buttonY*scaleFactorHeigth, (2 * buttonWidth + buttonPadding)*scaleFactorWidth, button_height*scaleFactorHeigth))
+                                                (startX * scaleFactorWidth, buttonY * scaleFactorHeigth,
+                                                 (2 * buttonWidth + buttonPadding) * scaleFactorWidth,
+                                                 button_height * scaleFactorHeigth))
                 text = font.render(winnerText[1], True, WHITE)
                 text_rect = text.get_rect(center=winnerButton.center)
                 screen.blit(text, text_rect)
 
         if continueLabelVisible:
             continueButton = pygame.draw.rect(screen, (169, 7, 7),
-                                                    (startX*scaleFactorWidth, (buttonY * 3.3)*scaleFactorHeigth, (2 * buttonWidth + buttonPadding)*scaleFactorWidth, button_height*scaleFactorHeigth))
+                                              (startX * scaleFactorWidth, (buttonY * 3.3) * scaleFactorHeigth,
+                                               (2 * buttonWidth + buttonPadding) * scaleFactorWidth,
+                                               button_height * scaleFactorHeigth))
             text = font.render(winnerText[2], True, WHITE)
             text_rect = text.get_rect(center=continueButton.center)
             screen.blit(text, text_rect)
 
         if selectLabelVisible:
             selectLabelText = pygame.draw.rect(screen, (169, 7, 7),
-                                                    (startX*scaleFactorWidth, (buttonY * 3.3)*scaleFactorHeigth, (2 * buttonWidth + buttonPadding)*scaleFactorWidth, button_height*scaleFactorHeigth))
+                                               (startX * scaleFactorWidth, (buttonY * 3.3) * scaleFactorHeigth,
+                                                (2 * buttonWidth + buttonPadding + 100) * scaleFactorWidth,
+                                                button_height * scaleFactorHeigth))
             text = font.render(winnerText[3], True, WHITE)
             text_rect = text.get_rect(center=selectLabelText.center)
             screen.blit(text, text_rect)
@@ -175,4 +187,4 @@ def startCoinFlip(user1, user2, lenguage):
     pygame.quit()
 
 
-# startCoinFlip("Dylan", "Carlos", "en") # Usage example.
+#startCoinFlip("DryGoz", "Carlos", "es") # Usage example.
