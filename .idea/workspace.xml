@@ -6,18 +6,49 @@
   <component name="ChangeListManager">
     <list default="true" id="59554c66-ef53-4a42-ba49-21598c851126" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Cers2/Images/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Cers2/Music/Thunder.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Cers2/Music/UN PREVIEW.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Cers2/Music/WHERE SHE GOES.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Cers2/configuration.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Cers2/information.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/DryGoz/Images/face.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/DryGoz/Images/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/DryGoz/Music/Enter Sandman.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/DryGoz/Music/Nothing Else Matters.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/DryGoz/Music/One.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/DryGoz/configuration.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/DryGoz/information.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Dylan/Images/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Dylan/Music/Heat Waves (Official Video).mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Dylan/Music/Hola (Remix).mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Dylan/Music/Loca (Remix).mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Dylan/configuration.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Dylan/information.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Felipe/Images/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Felipe/Music/Heat Waves (Official Video).mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Felipe/Music/Hola(Remix).mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Felipe/Music/Loca (Remix).mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Felipe/configuration.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Felipe/information.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Josedeodo/Images/face.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Josedeodo/Images/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Josedeodo/Music/Nothing Else Matters.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Josedeodo/Music/Torero.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Josedeodo/Music/Yo Soy El Aventurero (LETRA).mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Josedeodo/configuration.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Josedeodo/information.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Sebas/Music/Hola (Remix).mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/tempUser.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/baseLogin.py" beforeDir="false" afterPath="$PROJECT_DIR$/baseLogin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/musicHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/musicHandler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/registrationWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/registrationWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/registrationWindowSecond.py" beforeDir="false" afterPath="$PROJECT_DIR$/registrationWindowSecond.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -27,19 +58,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/maest/OneDrive/Documents/1. TEC/II Semestre - 2023/Modelado/proyecto/PROYECTO SERIO/Eagle_Defender/Data/Sebas",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Python.attacker">
-    <configuration name="attacker" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\maest\OneDrive\Documents\1. TEC\II Semestre - 2023\Modelado\proyecto\PROYECTO SERIO\Eagle_Defender\Data\Sebas" />
+      <recent name="C:\Users\maest\OneDrive\Documents\1. TEC\II Semestre - 2023\Modelado\proyecto\PROYECTO SERIO\Eagle_Defender\Data\Josedeodo\Music" />
+      <recent name="C:\Users\maest\OneDrive\Documents\1. TEC\II Semestre - 2023\Modelado\proyecto\PROYECTO SERIO\Eagle_Defender\Data\Josedeodo" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.navegabilityMain">
+    <configuration name="musicHandler" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Eagle_Defender" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -52,7 +91,29 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/attacker.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/musicHandler.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="navegabilityMain" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Eagle_Defender" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/navegabilityMain.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -83,9 +144,33 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="registrationWindowSecond" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Eagle_Defender" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/registrationWindowSecond.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.attacker" />
+        <item itemvalue="Python.navegabilityMain" />
+        <item itemvalue="Python.registrationWindowSecond" />
+        <item itemvalue="Python.musicHandler" />
       </list>
     </recent_temporary>
   </component>
@@ -100,6 +185,7 @@
       <workItem from="1696032000314" duration="142000" />
       <workItem from="1696032314539" duration="112000" />
       <workItem from="1696032607677" duration="1782000" />
+      <workItem from="1697486685273" duration="7418000" />
     </task>
     <servers />
   </component>
@@ -108,12 +194,14 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Eagle_Defender$loginConfig.coverage" NAME="loginConfig Coverage Results" MODIFIED="1696281697859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Eagle_Defender$registrationWindowSecond.coverage" NAME="registrationWindowSecond Coverage Results" MODIFIED="1697155901020" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Eagle_Defender$localMultiplayer.coverage" NAME="localMultiplayer Coverage Results" MODIFIED="1697499188569" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Eagle_Defender$registrationWindowSecond.coverage" NAME="registrationWindowSecond Coverage Results" MODIFIED="1697917533572" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Eagle_Defender$main.coverage" NAME="registrationWindow Coverage Results" MODIFIED="1696034322155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Eagle_Defender$attacker.coverage" NAME="attacker Coverage Results" MODIFIED="1697266165138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Eagle_Defender$attacker.coverage" NAME="attacker Coverage Results" MODIFIED="1697499158553" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Eagle_Defender$registrationWindow.coverage" NAME="registrationWindow Coverage Results" MODIFIED="1696286582136" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Eagle_Defender$musicHandler.coverage" NAME="musicHandler Coverage Results" MODIFIED="1697916880508" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Eagle_Defender$questionLogin.coverage" NAME="questionLogin Coverage Results" MODIFIED="1697251806896" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Eagle_Defender$navegabilityMain.coverage" NAME="navegabilityMain Coverage Results" MODIFIED="1697260935531" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Eagle_Defender$navegabilityMain.coverage" NAME="navegabilityMain Coverage Results" MODIFIED="1697917607329" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Eagle_Defender$baseLogin.coverage" NAME="baseLogin Coverage Results" MODIFIED="1696286380891" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Eagle_Defender$registrationWindow__1_.coverage" NAME="registrationWindow (1) Coverage Results" MODIFIED="1696281449099" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
