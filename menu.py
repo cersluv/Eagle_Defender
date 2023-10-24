@@ -1047,6 +1047,6 @@ def principalMenu(user, language):
     pygame.quit()
     sys.exit()
 
-principalMenu("Felipe", "es")
+#principalMenu("Felipe", "es")
 
 
