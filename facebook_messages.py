@@ -12,7 +12,7 @@ asafb = fb.GraphAPI(accessToken)
 def postTextToPage(user1, user2, time, language):
     if language == "es":
         msg = "El jugador " + user1 + " a vencido a " + user2 + " con un tiempo de " + str(
-            time) + " y a ingresado al salón de la fama"
+            time) + " y ha ingresado al salón de la fama"
     if language == "en":
         msg = "The Player " + user1 + " has beaten " + user2 + " with a time of " + str(
             time) + " and has entered the hall of fame"
@@ -39,7 +39,7 @@ def postTextToPage(user1, user2, time, language):
 #description: This funtion creates a publication on the feed of eagle defender
 #output     : void
 def postImageToPage(user, profilePic):
-    user = "¡"+user + " a sido registrado en Eagle Defender! ¡Bienvenido!"
+    user = "¡"+user + " ha sido registrado en Eagle Defender! ¡Bienvenido!"
     try:
         asafb.put_photo(open(profilePic, "rb"), message=user)
     except requests.exceptions.HTTPError as errh:
