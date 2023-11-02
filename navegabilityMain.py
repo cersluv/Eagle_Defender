@@ -168,8 +168,7 @@ def navegabilityMain(secondUserBool, firstUser):
                         print(f'Processando: {reference_image_path}')
 
                         try:
-                            result = DeepFace.verify(img1_path=detected_face, img2_path=reference_image_path,
-                                                     model_name=models[0], enforce_detection=False)
+                            result = DeepFace.verify(img1_path=detected_face, img2_path=reference_image_path, enforce_detection=False)
                             distance = result['distance']
                             print(
                                 f'Distancia: {distance} // Distancia Minima: {min_distance} // ThreshHold: {distance_threshold} // Confidence: {1 - min_distance}')
