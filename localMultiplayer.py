@@ -731,8 +731,8 @@ def startGame():
                     setVariables(secondPlayer, firstPlayer, lang, secondPlayer, points, lastSongDuration - winningTime,
                                  lastSongDuration)
 
-        screen.blit(keysAttacker, (1424*scaleFactorWidth, 930))
-        screen.blit(keysDefender, (20*scaleFactorWidth, 930))
+        screen.blit(keysAttacker, (1620*scaleFactorWidth, 930))
+        screen.blit(keysDefender, (30*scaleFactorWidth, 930))
 
 
         pygame.display.flip()
@@ -742,4 +742,4 @@ def startGame():
     sys.exit()
 
 
-#setVariables("Felipe", "Esteban", "es", None, 0, 0, 0)
+#setVariables("Felipe", "Esteban", "en", None, 0, 0, 0)

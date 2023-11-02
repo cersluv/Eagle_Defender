@@ -34,12 +34,13 @@ def playMusicUser(user):
     datapath = os.getcwd() + "\Data"
     personPath = datapath + "\\" + user
     configurationFile = personPath + "\\configuration.txt"
+    print(configurationFile)
     file = open(configurationFile, "r")
     text = file.read()
     configurationList = text.split("\n")
     song = configurationList[1]
     songPath = "Data/" + user + "/Music/" + song
-    print(songPath)
+
     mixer.music.stop()
     with open(songPath, "r", encoding="utf-8") as songFile:
         uriSelectedSong = songFile.readline()

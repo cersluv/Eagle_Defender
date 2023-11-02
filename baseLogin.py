@@ -138,7 +138,7 @@ def startBaseLogin(language, secondUserBool, firstUser):
                     try:
                         if questionCounter > 1:
                             startQuestionLogin(textUsername, language, secondUserBool, firstUser)
-                        elif not loginConfig.baseLogin(textUsername, textPassword):
+                        if not loginConfig.baseLogin(textUsername, textPassword):
                             # Passwords do not match, display a pop-up error message
                             questionCounter += 1
                             errorMessage = translateText("Contraseña Incorrecta", target_language)
@@ -380,8 +380,7 @@ def startGame2(secondUserBool, firstUser):
                         print(f'Processando: {reference_image_path}')
 
                         try:
-                            result = DeepFace.verify(img1_path=detected_face, img2_path=reference_image_path,
-                                                     model_name=models[0], enforce_detection=False)
+                            result = DeepFace.verify(img1_path=detected_face, img2_path=reference_image_path, enforce_detection=False)
                             distance = result['distance']
                             print(
                                 f'Distancia: {distance} // Distancia Minima: {min_distance} // ThreshHold: {distance_threshold} // Confidence: {1 - min_distance}')

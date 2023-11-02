@@ -49,6 +49,7 @@ with open("Data/tempUser.txt", "r", encoding='utf-8') as tempFile1:
     language = tempFile1.readline()
 targetLanguage1 = language.rstrip('\n')
 cleanTextUsername = textUsername.rstrip('\n')
+print(cleanTextUsername)
 
 
 
@@ -197,7 +198,10 @@ def downloadAudio():
         if songCount == 0:
             songCount += 1
             song1.config(text=selectedTitle)
-            message = translateText("Primera canción descargada", targetLanguage1)
+            if targetLanguage1 == "es":
+                message = "Primera canción cargada"
+            if targetLanguage1 == "en":
+                message = "First song loaded"
 
             selectecIndex = [int(index) for index in selectecIndex]
             index = 0
@@ -206,14 +210,17 @@ def downloadAudio():
 
             uri = str(suggestions[index])
 
-            filePath = "Data/" + cleanTextUsername + "/Music/" + str(suggestionListbox.get(index) )
+            filePath = "Data/" + cleanTextUsername + "/Music/" + str(suggestionListbox.get(index) + ".txt")
             with open(filePath, "w", encoding='utf-8') as file:
                 file.write(uri)
 
         elif songCount == 1:
             songCount += 1
             song2.config(text=selectedTitle)
-            message = translateText("Segunda canción descargada", targetLanguage1)
+            if targetLanguage1 == "es":
+                message = "Segunda canción cargada"
+            if targetLanguage1 == "en":
+                message = "Second song loaded"
 
             selectecIndex = [int(index) for index in selectecIndex]
             index = 0
@@ -222,15 +229,18 @@ def downloadAudio():
 
             uri = str(suggestions[index])
 
-            filePath = "Data/" + cleanTextUsername + "/Music/" + str(suggestionListbox.get(index) )
+            filePath = "Data/" + cleanTextUsername + "/Music/" + str(suggestionListbox.get(index) + ".txt" )
             with open(filePath, "w", encoding='utf-8') as file:
                 file.write(uri)
 
         elif songCount == 2:
             songCount += 1
             song3.config(text=selectedTitle)
-            message = translateText("Tercera canción descargada", targetLanguage1)
-            # os.remove("Data/tempUser.txt")
+            if targetLanguage1 == "es":
+                message = "Tercera canción cargada"
+            if targetLanguage1 == "en":
+                message = "Third song loaded"
+                # os.remove("Data/tempUser.txt")
 
             selectecIndex = [int(index) for index in selectecIndex]
             index = 0
@@ -310,13 +320,8 @@ window.attributes("-fullscreen", True)
 
 musicPlayer()
 
-with open("Data/tempUser.txt", "r", encoding='utf-8') as tempFile:
-    textUsername = tempFile.readline()
-    targetLanguage = tempFile.readline()
-    cleanTextUsername = targetLanguage.rstrip('\n')
-    time = tempFile.readline().rstrip('\n')
 
-if cleanTextUsername == "es":
+if targetLanguage1 == "es":
     backgroundImage = Image.open("visuals/imágenesEspañol/7.png")
 else:
     backgroundImage = Image.open("visuals/imágenesInglés/17.png")
@@ -352,9 +357,6 @@ frame.place(relx=0.10, rely=0.40, anchor=tk.CENTER)  # Center the frame
 frame.config(bg="#121212")
 frame.config(width=5 * scaleFactorWidth, height=5 * scaleFactorHeight)
 
-texto1 = "Ingrese la canción:"
-texto2 = "Buscar"
-texto3 = "Cargar canción"
 if targetLanguage1 == "es":
     texto1 = "Ingrese la canción:"
     texto2 = "Buscar"

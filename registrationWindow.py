@@ -379,4 +379,4 @@ def startRegistrationWindow(targetLanguage):
     pygame.quit()
     subprocess.run(["python", "registrationWindowSecond.py"])
 
-startRegistrationWindow("en")
+#startRegistrationWindow("en")

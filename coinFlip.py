@@ -9,6 +9,7 @@ from localMultiplayer import setVariables
 # descritpion : A window used to see who´s going to attack first
 
 def startCoinFlip(user1, user2, lenguage):
+    print("llegó bien")
     winnerText = []
     if lenguage == "en":
         winnerText = [user1 +" Attacks", user2+" Attacks", "Continue", user1+" selects his side of the coin"]

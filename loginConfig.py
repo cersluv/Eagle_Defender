@@ -29,7 +29,7 @@ def baseLogin(userInfo, passwordInfo):
             print("Contraseña incorrecta, ingrese de nuevo")
             return False  #this changes for an error message
     else:
-        print("Usuario no encontrado")
+        print("Usuario no encontradoOOOO")
         return False #this changes for an error message
 
 # Input      : Two answers for the questions and the username
@@ -63,7 +63,7 @@ def registerConfiguration(user, Music):
     personPath = datapath + "\\" + user
     configPath = personPath + "\\configuration.txt"
     archivo = open(configPath, "w", encoding='utf-8')
-    archivo.write("Palette 3" + "\n")
+    archivo.write("Palette 1" + "\n")
     archivo.write(str(Music) + ".txt" + "\n")
     archivo.write("1" + "\n")
     archivo.write("eagle1" + "\n")
