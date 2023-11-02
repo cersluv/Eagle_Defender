@@ -16,6 +16,8 @@ from loginConfig import registerConfiguration
 from baseLogin import startGame2
 from musicHandler import buttonSoundEffect, musicPlayer
 
+global language
+
 # Replace 'YOUR_API_KEY' with your actual YouTube API key
 apiKey = 'AIzaSyDj1am7jSbTOzU9VS6xqOMmVr1lqzpxGZs'
 
@@ -41,6 +43,13 @@ username = '12151711299'
 scope = 'user-library-read user-modify-playback-state'
 token = util.prompt_for_user_token(username, scope, clientID, clientSecret, redirectURI)
 sp = spotipy.Spotify(auth=token)
+
+with open("Data/tempUser.txt", "r", encoding='utf-8') as tempFile1:
+    textUsername = tempFile1.readline()
+    language = tempFile1.readline()
+targetLanguage1 = language.rstrip('\n')
+cleanTextUsername = textUsername.rstrip('\n')
+
 
 
 def saveInformation():
@@ -75,6 +84,8 @@ Output: text translated
 
 
 def translateText(text, targetLanguage):
+    global language
+    language = targetLanguage
     translator = Translator()
     try:
         translated = translator.translate(text, dest=targetLanguage)
@@ -178,11 +189,7 @@ def downloadAudio():
     global songCount, suggestions, songSelected
     buttonSoundEffect()
     selectecIndex = suggestionListbox.curselection()
-    with open("Data/tempUser.txt", "r", encoding='utf-8') as tempFile1:
-        textUsername = tempFile1.readline()
-        language = tempFile1.readline()
-    targetLanguage1 = language.rstrip('\n')
-    cleanTextUsername = textUsername.rstrip('\n')
+
 
     if selectecIndex:
         selectedTitle = suggestionListbox.get(selectecIndex)
@@ -256,7 +263,6 @@ def takePhoto():
     camera = cv2.VideoCapture(0)
     while boolImageTake:
         # Retrieve the camera frame
-        print("TOma de foto")
         ret, frame = camera.read()
         if not ret:
             break
@@ -346,14 +352,26 @@ frame.place(relx=0.10, rely=0.40, anchor=tk.CENTER)  # Center the frame
 frame.config(bg="#121212")
 frame.config(width=5 * scaleFactorWidth, height=5 * scaleFactorHeight)
 
-label = tk.Label(frame, text="Enter Song Name:", bg="#121212", fg="#FF6C69", font=("Arial", 15))
+texto1 = "Ingrese la canción:"
+texto2 = "Buscar"
+texto3 = "Cargar canción"
+if targetLanguage1 == "es":
+    texto1 = "Ingrese la canción:"
+    texto2 = "Buscar"
+    texto3 = "Cargar canción"
+if targetLanguage1 == "en":
+    texto1 = "Enter song name::"
+    texto2 = "Search"
+    texto3 = "Load song"
+
+label = tk.Label(frame, text=texto1, bg="#121212", fg="#FF6C69", font=("Arial", 15))
 label.pack()
 
 songEntry = tk.Entry(frame, width=int(40 * scaleFactorWidth), bg="#1f1f1f", font=("Arial", 10), fg="white")
 songEntry.config(borderwidth=0)
 songEntry.pack()
 
-search_button = tk.Button(frame, text="Search", command=update_suggestions, bg="#121212", fg="#FF6C69",
+search_button = tk.Button(frame, text=texto2, command=update_suggestions, bg="#121212", fg="#FF6C69",
                           font=("Arial", 15))
 search_button.pack()
 search_button.config(borderwidth=int(8 * scaleFactorWidth))
@@ -363,7 +381,7 @@ suggestionListbox = tk.Listbox(frame, width=int(40 * scaleFactorWidth), height=i
 suggestionListbox.config(borderwidth=0)
 suggestionListbox.pack()
 
-download_button = tk.Button(frame, text="Download Audio", command=downloadAudio, bg="#121212", fg="#FF6C69",
+download_button = tk.Button(frame, text=texto3, command=downloadAudio, bg="#121212", fg="#FF6C69",
                             font=("Arial", 15))
 download_button.config(borderwidth=int(8 * scaleFactorWidth))
 download_button.pack()

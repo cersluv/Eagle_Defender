@@ -203,6 +203,16 @@ def startGame():
     scaledAtackerImage = pygame.transform.scale(atackerGameplay, (newWidth / 2, newHeigth))
     scaledDefenderImage = pygame.transform.scale(defenderGameplay, (newWidth / 2, newHeigth))
 
+
+    if lang == "es":
+        keysAttacker = pygame.image.load("visuals/gameWindows/keysEsAt.png")
+        keysDefender = pygame.image.load("visuals/gameWindows/keysEsDef.png")
+
+    if lang == "en":
+        keysAttacker = pygame.image.load("visuals/gameWindows/keysEnAt.png")
+        keysDefender = pygame.image.load("visuals/gameWindows/keysEnDef.png")
+
+
     class Goblin:
         def __init__(self, x, y):
             self.rect = goblinImage.get_rect()
@@ -355,7 +365,7 @@ def startGame():
                 eagle.mover(0, eagle.velocidad)
 
             # Posicionamiento del aguila
-            if keys[pygame.K_f]:
+            if keys[pygame.K_r]:
                 aguila_Movement = False
                 barrera_Movement = True
 
@@ -384,7 +394,7 @@ def startGame():
             if keys[pygame.K_d]:
                 barrera.mover(barrera.velocidad, 0)
 
-            if keys[pygame.K_r] and not barrera.rect.colliderect(eagle.rect):
+            if keys[pygame.K_f] and not barrera.rect.colliderect(eagle.rect):
                 if barrera.tipo == 1:
                     if len(barrerasTipo1) == 10:
                         pass
@@ -720,6 +730,10 @@ def startGame():
                     winningTime = int(lastTime)
                     setVariables(secondPlayer, firstPlayer, lang, secondPlayer, points, lastSongDuration - winningTime,
                                  lastSongDuration)
+
+        screen.blit(keysAttacker, (1424*scaleFactorWidth, 930))
+        screen.blit(keysDefender, (20*scaleFactorWidth, 930))
+
 
         pygame.display.flip()
         clock.tick(30)

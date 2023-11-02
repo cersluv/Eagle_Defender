@@ -240,7 +240,6 @@ def startRegistrationWindow(targetLanguage):
                     boolImageTake = True
                     while boolImageTake:
                         # Retrieve the camera frame
-                        print("Toma de foto")
                         ret, frame = camera.read()
                         if not ret:
                             boolImageTake = False
@@ -380,4 +379,4 @@ def startRegistrationWindow(targetLanguage):
     pygame.quit()
     subprocess.run(["python", "registrationWindowSecond.py"])
 
-# startRegistrationWindow("en")
+startRegistrationWindow("en")
