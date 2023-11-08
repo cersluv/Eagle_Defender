@@ -1,4 +1,5 @@
 Esteban 118.0
+Esteban 110.5
 Laura 106.5
 Esteban 104.5
 sebas 103.5
@@ -10,6 +11,6 @@ DryGoz 18.0
 DryGoz 17.0
 DryGoz 12.5
 DryGoz 12.5
-Sebas 11.0
 DryGoz 11.0
+Sebas 11.0
 carlos 5.0

@@ -305,13 +305,13 @@ def startGame():
 
     winningTime = 0
 
-    totalTimeSecondsDefending = (60 * songMinutesDuration2) + songSecondsDuration2
-
 
     totalTimeSecondsAttacking = (60 * songMinutesDuration) + songSecondsDuration
-    startAttackingTime = time.time() + totalTimeSecondsDefending
+    startAttackingTime = time.time() + 60
 
     running = True
+
+    destroyedBlocks = 0
 
     while running:
         for event in pygame.event.get():
@@ -330,13 +330,13 @@ def startGame():
 
         keys = pygame.key.get_pressed()
 
-        elapsedTimeSeconds2 = int(time.time() - startTime)
-        currentTimeSeconds = max(0, totalTimeSecondsDefending - elapsedTimeSeconds2)
+        elapsedTimeSeconds = int(time.time() - startTime)
+        currentTimeSeconds = max(0, totalTimeSeconds - elapsedTimeSeconds)
 
         minutes = currentTimeSeconds // 60
         seconds = currentTimeSeconds % 60
 
-        if currentTimeSeconds == 250 and not attackingPhase:
+        if currentTimeSeconds == 0 and not attackingPhase:
             attackingPhase = True
             regenCounter = time.time()
             timerStarter = time.time()
@@ -444,14 +444,23 @@ def startGame():
                 power = 2
             if keys[pygame.K_0]:
                 power = 3
-            if keys[pygame.K_UP]:
-                goblin.move(0, -goblinSpeed)
-            if keys[pygame.K_DOWN]:
-                goblin.move(0, goblinSpeed)
+            if goblin.rect.y > 0 :
+                if keys[pygame.K_UP]:
+                    goblin.move(0, -goblinSpeed)
+            if 1050 > goblin.rect.y:
+                if keys[pygame.K_DOWN]:
+                    goblin.move(0, goblinSpeed)
+            if 1900 > goblin.rect.x:
+                if keys[pygame.K_RIGHT]:
+                    goblin.move(goblinSpeed, 0)
+            if goblin.rect.x > 960:
+                if keys[pygame.K_LEFT]:
+                    goblin.move(-goblinSpeed, 0)
 
-            if keys[pygame.K_LEFT]:
+
+            if keys[pygame.K_o]:
                 goblin.rotate(2)
-            if keys[pygame.K_RIGHT]:
+            if keys[pygame.K_p]:
                 goblin.rotate(-2)
 
             if keys[pygame.K_SPACE]:
@@ -615,7 +624,6 @@ def startGame():
         screen.blit(font.render("[3]", True, white), buttonText6_rect)
 
 
-        destroyedBlocks = 0
         eagle.dibujar(screen)
         if barrera_Movement:
             barrera.dibujar(screen)
@@ -714,7 +722,22 @@ def startGame():
                                 if tipos.tipo == 3:
                                     concreteQuantity += 1
 
-        seconds = duration//1000
+        def drawText(text, x, y, size):
+            font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size * int(scaleFactorWidth))
+            renderedText = font.render(text, True, (255, 255, 255))
+            screen.blit(renderedText, (x * scaleFactorWidth, y * scaleFactorHeight))
+
+        seconds = duration // 1000
+
+        drawText(f"{firstPlayer}", 1300, 10, 30)
+        drawText(f"{secondPlayer}", 300, 10, 30)
+        if attackingPhase:
+            drawText(f"{destroyedBlocks*0.5 + round((seconds-(time.time() - startAttackingTime))*0.5,1)}", 1300, 50, 20)
+        else:
+            drawText(f"{destroyedBlocks * 0.5 + (seconds) * 0.5}", 1300, 50, 20)
+        drawText(f"{points} pts", 300, 50, 20)
+
+
         def settleScoreAttacker(blocks, timeLeft):
             score = blocks * 0.5 + timeLeft * 0.5
             return score
@@ -769,4 +792,4 @@ def startGame():
     sys.exit()
 
 
-setVariables("Felipe", "Esteban", "en", None, 0, 0, 0)
+setVariables("Felipe", "Esteban", "en", None, 0.0, 0, 0)
