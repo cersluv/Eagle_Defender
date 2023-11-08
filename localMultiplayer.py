@@ -66,6 +66,10 @@ def startGame():
 
     regeneration = int(30/bps)
 
+    popularity2, danceability2, acoustics2, tempo2, duration2 = getMusicFeatures(secondPlayer)
+
+    songMinutesDuration2 = duration2//60000
+    songSecondsDuration2 = duration2//1000 - songMinutesDuration2*60
 
     pygame.init()
 
@@ -301,9 +305,11 @@ def startGame():
 
     winningTime = 0
 
+    totalTimeSecondsDefending = (60 * songMinutesDuration2) + songSecondsDuration2
+
 
     totalTimeSecondsAttacking = (60 * songMinutesDuration) + songSecondsDuration
-    startAttackingTime = time.time() + 60
+    startAttackingTime = time.time() + totalTimeSecondsDefending
 
     running = True
 
@@ -324,13 +330,13 @@ def startGame():
 
         keys = pygame.key.get_pressed()
 
-        elapsedTimeSeconds = int(time.time() - startTime)
-        currentTimeSeconds = max(0, totalTimeSeconds - elapsedTimeSeconds)
+        elapsedTimeSeconds2 = int(time.time() - startTime)
+        currentTimeSeconds = max(0, totalTimeSecondsDefending - elapsedTimeSeconds2)
 
         minutes = currentTimeSeconds // 60
         seconds = currentTimeSeconds % 60
 
-        if currentTimeSeconds == 0 and not attackingPhase:
+        if currentTimeSeconds == 250 and not attackingPhase:
             attackingPhase = True
             regenCounter = time.time()
             timerStarter = time.time()
@@ -613,6 +619,7 @@ def startGame():
         eagle.dibujar(screen)
         if barrera_Movement:
             barrera.dibujar(screen)
+
             for cantBarreras in barreras:
                 for cantTipos in cantBarreras:
                     cantTipos.dibujar(screen)
@@ -622,70 +629,90 @@ def startGame():
                         if projectileNumber[0].rect.colliderect(cantTipos.rect):
                             if projectileNumber[1] == "water":
                                 if cantTipos.tipo == 1 and waterProjectile != None:
-                                    cantTipos.vidaAgua -= 1
+                                    cantTipos.vida -= 1
                                     waterProjectile.startX = -1000
-                                    if cantTipos.vidaAgua == 0:
+                                    cantTipos.actualizarOpacidad("water")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 2 and waterProjectile != None:
-                                    cantTipos.vidaAgua -= 1
+                                    cantTipos.vida -= 1
                                     waterProjectile.startX = -1000
-                                    if cantTipos.vidaAgua == 0:
+                                    cantTipos.actualizarOpacidad("water")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 3 and waterProjectile != None:
-                                    cantTipos.vidaAgua -= 1
+                                    cantTipos.vida -= 1
                                     waterProjectile.startX = -1000
-                                    if cantTipos.vidaAgua == 0:
+                                    cantTipos.actualizarOpacidad("water")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                             if projectileNumber[1] == "fire":
                                 if cantTipos.tipo == 1:
-                                    cantTipos.vidaFuego -= 1
+                                    cantTipos.vida -= 2
                                     fireProjectile.startX = -1000
-                                    if cantTipos.vidaFuego == 0:
+                                    cantTipos.actualizarOpacidad("fire")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 2:
-                                    cantTipos.vidaFuego -= 1
+                                    cantTipos.vida -= 2
                                     fireProjectile.startX = -1000
-                                    if cantTipos.vidaFuego == 0:
+                                    cantTipos.actualizarOpacidad("fire")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 3:
-                                    cantTipos.vidaFuego -= 1
+                                    cantTipos.vida -= 2
                                     fireProjectile.startX = -1000
-                                    if cantTipos.vidaFuego == 0:
+                                    cantTipos.actualizarOpacidad("fire")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                             if projectileNumber[1] == "dynamite":
                                 if cantTipos.tipo == 1:
-                                    cantTipos.vidaBomba -= 1
+                                    cantTipos.vida -= 3
                                     dynamiteProjectile.startX = -1000
-                                    if cantTipos.vidaBomba == 0:
+                                    cantTipos.actualizarOpacidad("dynamite")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 2:
-                                    cantTipos.vidaBomba -= 1
+                                    cantTipos.vida -= 3
                                     dynamiteProjectile.startX = -1000
-                                    if cantTipos.vidaBomba == 0:
+                                    cantTipos.actualizarOpacidad("dynamite")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 3:
-                                    cantTipos.vidaBomba -= 1
+                                    cantTipos.vida -= 3
                                     dynamiteProjectile.startX = -1000
-                                    if cantTipos.vidaBomba == 0:
+                                    cantTipos.actualizarOpacidad("dynamite")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
-
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for cantidad in barreras:
+                        for tipos in cantidad:
+                            if tipos.rect.collidepoint(event.pos):
+                                cantidad.remove(tipos)
+                                if tipos.tipo == 1:
+                                    woodQuantity += 1
+                                if tipos.tipo == 2:
+                                    steelQuantity += 1
+                                if tipos.tipo == 3:
+                                    concreteQuantity += 1
 
         seconds = duration//1000
         def settleScoreAttacker(blocks, timeLeft):
@@ -742,4 +769,4 @@ def startGame():
     sys.exit()
 
 
-#setVariables("Felipe", "Esteban", "en", None, 0, 0, 0)
+setVariables("Felipe", "Esteban", "en", None, 0, 0, 0)

@@ -21,6 +21,7 @@ class Fence:
         self.velocidad = 10
         self.angulo_rotacion = angulo
         self.inicializar_vida()
+        self.opacity = 255
         if skin == 1:
             wood = pygame.image.load("visuals/boxes/madera1.png")
             steel = pygame.image.load("visuals/boxes/acero1.png")
@@ -45,17 +46,11 @@ class Fence:
     
     def inicializar_vida(self):
         if self.tipo == 1:
-            self.vidaAgua = 1
-            self.vidaFuego = 1
-            self.vidaBomba = 1
+            self.vida = 1
         elif self.tipo == 2:
-            self.vidaAgua = 2
-            self.vidaFuego = 1
-            self.vidaBomba = 1
+            self.vida = 2
         elif self.tipo == 3:
-            self.vidaAgua = 3
-            self.vidaFuego = 2
-            self.vidaBomba = 1
+            self.vida = 3
 
     def rotar(self, sentido):
         if sentido == "Q":
@@ -67,10 +62,29 @@ class Fence:
         self.rect.x += dx
         self.rect.y += dy
 
+    def actualizarOpacidad(self, proyectil):
+        if self.tipo == 2:
+            if proyectil == "water":
+                self.opacity -= 120
+            if proyectil == "fire":
+                self.opacity -= 170
+            if proyectil == "dynamite":
+                self.opacity -= 255
+        if self.tipo == 3:
+            if proyectil == "water":
+                self.opacity -= 80
+            if proyectil == "fire":
+                self.opacity -= 150
+            if proyectil == "dynamite":
+                self.opacity -= 255
+        self.opacity = max(0,self.opacity)
+
+
     def dibujar(self, pantalla):
         imagen_rotada = pygame.transform.rotate(self.imagenes[self.tipo - 1], self.angulo_rotacion)
         self.imagen_actual = imagen_rotada
         self.rect = self.imagen_actual.get_rect(center=self.rect.center)
+        self.imagen_actual.set_alpha(self.opacity)
         pantalla.blit(self.imagen_actual, self.rect)
             
 
