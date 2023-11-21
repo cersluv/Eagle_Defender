@@ -261,4 +261,4 @@ def navegabilityMain(secondUserBool, firstUser):
     cv2.destroyAllWindows()
     pygame.quit()
 
-navegabilityMain(False, None)
+#navegabilityMain(False, None)

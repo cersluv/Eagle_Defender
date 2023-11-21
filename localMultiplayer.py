@@ -7,10 +7,28 @@ from eagle import Aguila
 from fence import Fence
 from musicHandler import playMusicUser, getMusicFeatures
 from winnerWindow import startWinnerWindow
+import socket
 
 global power, skinGoblin, skinProjectile, paletteAtacker, eagleSkin, boxSkin, paletteDefender, lang, winnerGlobal, points, firstPlayer, secondPlayer, lastTime, lastSongDuration
-
 power = 1
+host = '0.0.0.0'  # Escucha en todas las interfaces de red
+port = 12345       # Puerto de escucha (puedes elegir otro puerto)
+
+# Crea un socket TCP/IP
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Asocia el socket al puerto
+server_address = (host, port)
+server_socket.bind(server_address)
+
+# Escucha las conexiones entrantes
+server_socket.listen(1)
+
+print(f"Esperando una conexión en {host}:{port}")
+
+# Acepta la conexión
+client_socket, client_address = server_socket.accept()
+print(f"Conexión aceptada desde {client_address}")
 
 def setVariables(firstUser, secondUser, language, winner, winnerPoints, timeAttacker, lastDuration):
     global skinGoblin, skinProjectile, paletteAtacker, eagleSkin, boxSkin, paletteDefender, lang, winnerGlobal, points, firstPlayer, secondPlayer, lastTime, lastSongDuration
@@ -66,6 +84,10 @@ def startGame():
 
     regeneration = int(30/bps)
 
+    popularity2, danceability2, acoustics2, tempo2, duration2 = getMusicFeatures(secondPlayer)
+
+    songMinutesDuration2 = duration2//60000
+    songSecondsDuration2 = duration2//1000 - songMinutesDuration2*60
 
     pygame.init()
 
@@ -307,7 +329,11 @@ def startGame():
 
     running = True
 
+    destroyedBlocks = 0
+    
     while running:
+        data = client_socket.recv(1024)
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -355,46 +381,46 @@ def startGame():
 
         if aguila_Movement:
             # Movimiento del aguila
-            if keys[pygame.K_a]:
+            if keys[pygame.K_a] or data.decode('utf-8') == "32":
                 eagle.mover(-eagle.velocidad, 0)
-            if keys[pygame.K_d]:
+            if keys[pygame.K_d] or data.decode('utf-8') == "21": 
                 eagle.mover(eagle.velocidad, 0)
-            if keys[pygame.K_w]:
+            if keys[pygame.K_w] or data.decode('utf-8') == "22":
                 eagle.mover(0, -eagle.velocidad)
-            if keys[pygame.K_s]:
+            if keys[pygame.K_s] or data.decode('utf-8') == "23":
                 eagle.mover(0, eagle.velocidad)
 
             # Posicionamiento del aguila
-            if keys[pygame.K_r]:
+            if keys[pygame.K_r] or data.decode('utf-8') == "24":
                 aguila_Movement = False
                 barrera_Movement = True
 
         if barrera_Movement:
             # Cambio de barrera
-            if keys[pygame.K_1]:
+            if keys[pygame.K_1] or data.decode('utf-8') == "25":
                 barrera = Fence(50, 50, 1, 0, boxes)
-            elif keys[pygame.K_2]:
+            elif keys[pygame.K_2] or data.decode('utf-8') == "26":
                 barrera = Fence(50, 50, 2, 0, boxes)
-            elif keys[pygame.K_3]:
+            elif keys[pygame.K_3] or data.decode('utf-8') == "27":
                 barrera = Fence(50, 50, 3, 0, boxes)
 
             # Rotacion de las barreras
-            if keys[pygame.K_q]:
+            if keys[pygame.K_q] or data.decode('utf-8') == "28":
                 barrera.rotar("Q")
-            elif keys[pygame.K_e]:
+            elif keys[pygame.K_e] or data.decode('utf-8') == "29":
                 barrera.rotar("E")
 
             # Movimiento de las barreras
-            if keys[pygame.K_w]:
+            if keys[pygame.K_w] or data.decode('utf-8') == "22":
                 barrera.mover(0, -barrera.velocidad)
-            if keys[pygame.K_s]:
+            if keys[pygame.K_s] or data.decode('utf-8') == "23":
                 barrera.mover(0, barrera.velocidad)
-            if keys[pygame.K_a]:
+            if keys[pygame.K_a] or data.decode('utf-8') == "32":
                 barrera.mover(-barrera.velocidad, 0)
-            if keys[pygame.K_d]:
+            if keys[pygame.K_d] or data.decode('utf-8') == "21":
                 barrera.mover(barrera.velocidad, 0)
 
-            if keys[pygame.K_f] and not barrera.rect.colliderect(eagle.rect):
+            if keys[pygame.K_f] or data.decode('utf-8') == "31" and not barrera.rect.colliderect(eagle.rect):
                 if barrera.tipo == 1:
                     if len(barrerasTipo1) == 10:
                         pass
@@ -432,38 +458,47 @@ def startGame():
                 se_creo_nueva_barrera = False
 
         if attackingPhase:
-            if keys[pygame.K_8]:
+            if keys[pygame.K_8] or data.decode('utf-8') == "1":
                 power = 1
-            if keys[pygame.K_9]:
+            if keys[pygame.K_9] or data.decode('utf-8') == "2":
                 power = 2
-            if keys[pygame.K_0]:
+            if keys[pygame.K_0] or data.decode('utf-8') == "3":
                 power = 3
-            if keys[pygame.K_UP]:
-                goblin.move(0, -goblinSpeed)
-            if keys[pygame.K_DOWN]:
-                goblin.move(0, goblinSpeed)
+            if goblin.rect.y > 0 :
+                if keys[pygame.K_UP] or data.decode('utf-8') == "15":
+                    goblin.move(0, -goblinSpeed)
+            if 1050 > goblin.rect.y:
+                if keys[pygame.K_DOWN] or data.decode('utf-8') == "13":
+                    goblin.move(0, goblinSpeed)
+            if 1900 > goblin.rect.x:
+                if keys[pygame.K_RIGHT] or data.decode('utf-8') == "10":
+                    goblin.move(goblinSpeed, 0)
+            if goblin.rect.x > 960:
+                if keys[pygame.K_LEFT] or data.decode('utf-8') == "12":
+                    goblin.move(-goblinSpeed, 0)
 
-            if keys[pygame.K_LEFT]:
+
+            if keys[pygame.K_o] or data.decode('utf-8') == "5":
                 goblin.rotate(2)
-            if keys[pygame.K_RIGHT]:
+            if keys[pygame.K_p] or data.decode('utf-8') == "6":
                 goblin.rotate(-2)
 
-            if keys[pygame.K_SPACE]:
-                if waterProjectile is None and power == 1:
+            if keys[pygame.K_SPACE] or data.decode('utf-8') == "4":
+                if waterProjectile is None and power == 1 and waterQuantity > 0:
                     waterQuantity -= 1
                     waterProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
                     list = [waterProjectile, "water"]
                     projectiles.append(list)
                     trajectoryPointsWater.clear()
 
-                if fireProjectile is None and power == 2:
+                if fireProjectile is None and power == 2 and fireQuantity > 0:
                     fireQuantity -= 1
                     fireProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
                     list = [fireProjectile, "fire"]
                     projectiles.append(list)
                     trajectoryPointsFire.clear()
 
-                if dynamiteProjectile is None and power == 3:
+                if dynamiteProjectile is None and power == 3 and dynamiteQuantity > 0:
                     dynamiteQuantity -= 1
                     dynamiteProjectile = Projectile(goblin.rect.x, goblin.rect.y, goblin.angle)
                     list = [dynamiteProjectile, "dynamite"]
@@ -609,10 +644,10 @@ def startGame():
         screen.blit(font.render("[3]", True, white), buttonText6_rect)
 
 
-        destroyedBlocks = 0
         eagle.dibujar(screen)
         if barrera_Movement:
             barrera.dibujar(screen)
+
             for cantBarreras in barreras:
                 for cantTipos in cantBarreras:
                     cantTipos.dibujar(screen)
@@ -622,72 +657,107 @@ def startGame():
                         if projectileNumber[0].rect.colliderect(cantTipos.rect):
                             if projectileNumber[1] == "water":
                                 if cantTipos.tipo == 1 and waterProjectile != None:
-                                    cantTipos.vidaAgua -= 1
+                                    cantTipos.vida -= 1
                                     waterProjectile.startX = -1000
-                                    if cantTipos.vidaAgua == 0:
+                                    cantTipos.actualizarOpacidad("water")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 2 and waterProjectile != None:
-                                    cantTipos.vidaAgua -= 1
+                                    cantTipos.vida -= 1
                                     waterProjectile.startX = -1000
-                                    if cantTipos.vidaAgua == 0:
+                                    cantTipos.actualizarOpacidad("water")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 3 and waterProjectile != None:
-                                    cantTipos.vidaAgua -= 1
+                                    cantTipos.vida -= 1
                                     waterProjectile.startX = -1000
-                                    if cantTipos.vidaAgua == 0:
+                                    cantTipos.actualizarOpacidad("water")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                             if projectileNumber[1] == "fire":
                                 if cantTipos.tipo == 1:
-                                    cantTipos.vidaFuego -= 1
+                                    cantTipos.vida -= 2
                                     fireProjectile.startX = -1000
-                                    if cantTipos.vidaFuego == 0:
+                                    cantTipos.actualizarOpacidad("fire")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 2:
-                                    cantTipos.vidaFuego -= 1
+                                    cantTipos.vida -= 2
                                     fireProjectile.startX = -1000
-                                    if cantTipos.vidaFuego == 0:
+                                    cantTipos.actualizarOpacidad("fire")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 3:
-                                    cantTipos.vidaFuego -= 1
+                                    cantTipos.vida -= 2
                                     fireProjectile.startX = -1000
-                                    if cantTipos.vidaFuego == 0:
+                                    cantTipos.actualizarOpacidad("fire")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                             if projectileNumber[1] == "dynamite":
                                 if cantTipos.tipo == 1:
-                                    cantTipos.vidaBomba -= 1
+                                    cantTipos.vida -= 3
                                     dynamiteProjectile.startX = -1000
-                                    if cantTipos.vidaBomba == 0:
+                                    cantTipos.actualizarOpacidad("dynamite")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 2:
-                                    cantTipos.vidaBomba -= 1
+                                    cantTipos.vida -= 3
                                     dynamiteProjectile.startX = -1000
-                                    if cantTipos.vidaBomba == 0:
+                                    cantTipos.actualizarOpacidad("dynamite")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
 
                                 if cantTipos.tipo == 3:
-                                    cantTipos.vidaBomba -= 1
+                                    cantTipos.vida -= 3
                                     dynamiteProjectile.startX = -1000
-                                    if cantTipos.vidaBomba == 0:
+                                    cantTipos.actualizarOpacidad("dynamite")
+                                    if cantTipos.vida <= 0:
                                         destroyedBlocks += 1
                                         cantBarreras.remove(cantTipos)
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for cantidad in barreras:
+                        for tipos in cantidad:
+                            if tipos.rect.collidepoint(event.pos):
+                                cantidad.remove(tipos)
+                                if tipos.tipo == 1:
+                                    woodQuantity += 1
+                                if tipos.tipo == 2:
+                                    steelQuantity += 1
+                                if tipos.tipo == 3:
+                                    concreteQuantity += 1
+
+        def drawText(text, x, y, size):
+            font = pygame.font.Font("visuals/LEMONMILK-Bold.ttf", size * int(scaleFactorWidth))
+            renderedText = font.render(text, True, (255, 255, 255))
+            screen.blit(renderedText, (x * scaleFactorWidth, y * scaleFactorHeight))
+
+        seconds = duration // 1000
+
+        drawText(f"{firstPlayer}", 1300, 10, 30)
+        drawText(f"{secondPlayer}", 300, 10, 30)
+        if attackingPhase:
+            drawText(f"{destroyedBlocks*0.5 + round((seconds-(time.time() - startAttackingTime))*0.5,1)}", 1300, 50, 20)
+        else:
+            drawText(f"{destroyedBlocks * 0.5 + (seconds) * 0.5}", 1300, 50, 20)
+        drawText(f"{points} pts", 300, 50, 20)
 
 
-        seconds = duration//1000
         def settleScoreAttacker(blocks, timeLeft):
             score = blocks * 0.5 + timeLeft * 0.5
             return score
@@ -736,10 +806,11 @@ def startGame():
 
 
         pygame.display.flip()
-        clock.tick(30)
-
+        clock.tick(60)
+    client_socket.close()
+    server_socket.close() 
     pygame.quit()
     sys.exit()
 
 
-#setVariables("Felipe", "Esteban", "en", None, 0, 0, 0)
+setVariables("Felipe", "Esteban", "en", None, 0.0, 0, 0)
